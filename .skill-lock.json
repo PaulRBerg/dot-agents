@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "skills": {
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "installedAt": "2026-01-22T21:54:15.046Z",
+      "updatedAt": "2026-01-22T21:54:15.046Z"
+    }
+  }
+}
