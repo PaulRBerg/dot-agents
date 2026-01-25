@@ -1,0 +1,54 @@
+# dot-agents
+
+Central repository for AI agent skills built around the [Skills ecosystem](https://skills.sh/) by Vercel.
+
+## Overview
+
+This repository follows the file structure used by the [`skills`](https://www.npmjs.com/package/skills) CLI.
+
+See the [official announcement](https://vercel.com/changelog/introducing-skills-the-open-agent-skills-ecosystem) for more details.
+
+## Structure
+
+```
+~/.agents/
+├── skills/     # Active skills (loaded by agents)
+└── shelf/      # Inactive skills (move to skills/ to activate)
+```
+
+## How It Works
+
+AI agents (Claude Code, Cursor, GitHub Copilot, etc.) look for skills in their config directories. This repository acts as a central location that agents can reference via symlink:
+
+```bash
+# Example for Claude Code
+ln -s ~/.agents/skills ~/.claude/skills
+```
+
+This way, all your agents share the same skill library.
+
+### Managing Skills
+
+**Install a skill:**
+
+```bash
+npx skills add owner/repo
+```
+
+> [!NOTE]
+> The GitHub repository must contain a `skills/` directory with skill definitions.
+> See [skill discovery](https://github.com/vercel-labs/add-skill?tab=readme-ov-file#skill-discovery) for supported directory structures.
+
+**Activate/deactivate skills:**
+
+```bash
+# Deactivate a skill
+mv skills/some-skill shelf/
+
+# Activate a skill
+mv shelf/some-skill skills/
+```
+
+## License
+
+MIT
