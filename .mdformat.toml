@@ -3,5 +3,6 @@ exclude = [
   "node_modules/**",
   # External plugin docs; avoid reformatting vendored content.
   "skills/vercel-react-best-practices/**",
+  "skills/.system/**",
 ]
 number = true

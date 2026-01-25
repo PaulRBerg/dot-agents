@@ -16,6 +16,9 @@ See the [official announcement](https://vercel.com/changelog/introducing-skills-
 └── shelf/      # Inactive skills (move to skills/ to activate)
 ```
 
+> [!NOTE]
+> `skills/.system` contains Claude Code's official skills. There is an open issue in the Claude Code repo to relocate it: `https://github.com/anthropics/claude-code/issues/20820`.
+
 ## How It Works
 
 AI agents (Claude Code, Cursor, GitHub Copilot, etc.) look for skills in their config directories. This repository acts as a central location that agents can reference via symlink:
