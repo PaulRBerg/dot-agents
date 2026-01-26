@@ -1,7 +1,7 @@
 ---
 name: typescript
 user-invocable: false
-description: This skill should be used when the user asks to "configure TypeScript", "fix type errors", "use dayjs", "add type definitions", "set up React with TypeScript", mentions ".ts" or ".tsx" files, or asks about TypeScript best practices or TypeScript-specific tooling.
+description: This skill should be used when the user asks to "apply TypeScript style conventions", "organize types alphabetically", "add comment dividers", or asks about specific TypeScript style rules for this codebase. Do not activate for general TypeScript development, type error fixing, or routine TS/TSX file editing.
 ---
 
 # TypeScript Skill

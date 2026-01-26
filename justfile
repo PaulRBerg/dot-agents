@@ -50,3 +50,9 @@ alias sa := skill-activate
     mv "skills/{{ name }}" "shelf/{{ name }}"
     echo "Deactivated: {{ name }}"
 alias sd := skill-deactivate
+
+# List externally installed skills (from .skill-lock.json)
+[group("skills")]
+@list-external-skills:
+    jq -r '.skills | keys[]' .skill-lock.json 2>/dev/null || echo "(none)"
+alias les := list-external-skills
