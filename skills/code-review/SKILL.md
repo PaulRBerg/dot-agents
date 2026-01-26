@@ -14,6 +14,8 @@ Perform expert-level code review focusing on security vulnerabilities, correctne
 
 ## Review Workflow
 
+**Before starting**: Verify you're in a git repository by running `git rev-parse --git-dir`. If this fails (exit code 128), inform the user they must run the code review from within a git repository and stop.
+
 Begin every code review by running `git diff` to understand the scope of changes. Examine both the changed lines and surrounding context to understand intent. Identify file types being modified: application code, test files, configuration, database migrations, or documentation.
 
 Assess risk level based on change scope and type. High-risk areas include authentication logic, authorization checks, payment processing, data persistence, external API integrations, and cryptographic operations.
