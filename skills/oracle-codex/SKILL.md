@@ -17,7 +17,7 @@ Use OpenAI Codex CLI as a **planning oracle** and **code reviewer**. Codex provi
 Before invoking Codex, validate availability:
 
 ```bash
-~/.claude/skills/oracle-codex/scripts/check-codex.sh
+~/.agents/skills/oracle-codex/scripts/check-codex.sh
 ```
 
 If the script exits non-zero, display the error message and stop. Do not proceed without Codex CLI.
@@ -90,6 +90,21 @@ codex review --commit <SHA>
 # With custom focus instructions
 codex review --base main "Focus on security and error handling"
 ```
+
+**Important**: Before using `--uncommitted`, verify there are changes to review:
+
+```bash
+# Check for uncommitted changes (staged or unstaged)
+if git diff --quiet && git diff --cached --quiet; then
+  echo "No uncommitted changes to review"
+  # Fall back to --base or inform user
+fi
+```
+
+If there are no uncommitted changes, either:
+
+1. Use `--base <branch>` to review committed changes against a branch
+2. Inform the user there's nothing to review
 
 This is simpler than `codex exec` for review workflows. Fall back to `codex exec` when more control is needed (custom prompts, specific reasoning effort, output redirection).
 
@@ -200,7 +215,7 @@ After presenting Codex output:
 1. Synthesize key insights from Codex analysis
 2. Identify actionable items and critical decisions
 3. **If Codex's analysis presents multiple viable approaches or significant trade-offs**, consider using `AskUserQuestion` to clarify user preferences before finalizing the plan
-4. Write a structured plan to `~/.claude/plans/[plan-name].md`
+4. Write a structured plan
 5. Call `ExitPlanMode` to present the plan for user approval
 
 **When to use AskUserQuestion:**
@@ -225,6 +240,13 @@ The check script returns specific exit codes:
 | 2         | Codex not responding    | Suggest running `codex --version` manually       |
 | 3         | Codex not authenticated | Show login instructions from check script        |
 
+The `codex review` command returns:
+
+| Exit Code | Meaning                                    | Response                                  |
+| --------- | ------------------------------------------ | ----------------------------------------- |
+| 0         | Review completed                           | Present results                           |
+| 2         | Nothing to review (e.g., no changes found) | Inform user; suggest alternative (--base) |
+
 Runtime errors:
 
 | Error          | Response                                              |
@@ -246,7 +268,6 @@ User: "Ask Codex to plan how to add authentication to this app"
 5. Execute Codex with `gpt-5.2-codex` and `high`
 6. Present Codex's architecture recommendations
 7. Synthesize into Claude plan format
-8. Write to `~/.claude/plans/` and call `ExitPlanMode`
 
 ### Code Review Request
 

@@ -31,13 +31,12 @@ Configured via `-c model_reasoning_effort=<level>` or in `~/.codex/config.toml`.
 
 These flags work with all Codex commands:
 
-| Flag                      | Description                                                   |
-| ------------------------- | ------------------------------------------------------------- |
-| `-C <dir>` / `--cd <dir>` | Set working directory                                         |
-| `--search`                | Enable live web search (native Responses `web_search` tool)   |
-| `--add-dir <DIR>`         | Additional directories that should be writable                |
-| `--no-alt-screen`         | Disable alternate screen mode (preserves terminal scrollback) |
-| `--full-auto`             | Shorthand for workspace-write with auto-approval              |
+| Flag                      | Description                                                 |
+| ------------------------- | ----------------------------------------------------------- |
+| `-C <dir>` / `--cd <dir>` | Set working directory                                       |
+| `--search`                | Enable live web search (native Responses `web_search` tool) |
+| `--add-dir <DIR>`         | Additional directories that should be writable              |
+| `--full-auto`             | Shorthand for workspace-write with auto-approval            |
 
 ## Exec Subcommand Flags
 

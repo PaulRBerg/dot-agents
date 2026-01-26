@@ -236,8 +236,8 @@ Collect relevant environment details:
 # Claude Code version
 claude --version
 
-# Operating system
-uname -a
+# Operating system (macOS)
+~/.agents/helpers/get_macos_version.sh
 
 # Terminal emulator (macOS)
 echo $TERM_PROGRAM
@@ -304,8 +304,8 @@ Collect relevant environment details:
 # Codex CLI version
 codex --version
 
-# Platform (macOS/Linux)
-uname -mprs
+# Platform (macOS)
+~/.agents/helpers/get_macos_version.sh
 
 # For VS Code extension issues
 code --version

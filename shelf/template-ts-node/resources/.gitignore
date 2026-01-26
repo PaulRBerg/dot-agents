@@ -17,6 +17,5 @@ dist/
 .env.local
 *.local
 
-# Claude
-.claude/
+# AI agents
 .serena/

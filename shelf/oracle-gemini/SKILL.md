@@ -17,7 +17,7 @@ Use Google Gemini CLI as a **planning oracle** and **code reviewer**. Gemini pro
 Before invoking Gemini, validate availability:
 
 ```bash
-~/.claude/skills/oracle-gemini/scripts/check-gemini.sh
+~/.agents/skills/oracle-gemini/scripts/check-gemini.sh
 ```
 
 If the script exits non-zero, display the error message and stop. Do not proceed without Gemini CLI.
@@ -174,7 +174,7 @@ After presenting Gemini output:
 1. Synthesize key insights from Gemini analysis
 2. Identify actionable items and critical decisions
 3. **If Gemini's analysis presents multiple viable approaches or significant trade-offs**, consider using `AskUserQuestion` to clarify user preferences before finalizing the plan
-4. Write a structured plan to `~/.claude/plans/[plan-name].md`
+4. Write a structured plan
 5. Call `ExitPlanMode` to present the plan for user approval
 
 **When to use AskUserQuestion:**
@@ -211,7 +211,6 @@ User: "Ask Gemini to plan how to add authentication to this app"
 5. Execute Gemini with `gemini-2.5-pro` model
 6. Present Gemini's architecture recommendations
 7. Synthesize into Claude plan format
-8. Write to `~/.claude/plans/` and call `ExitPlanMode`
 
 ### Code Review Request
 

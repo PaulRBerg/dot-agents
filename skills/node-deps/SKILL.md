@@ -14,7 +14,7 @@ Update Node.js dependencies using taze CLI with smart prompting: auto-apply MINO
 Before starting, verify taze is installed by running:
 
 ```bash
-~/.claude/skills/node-deps/scripts/run-taze.sh
+~/.agents/skills/node-deps/scripts/run-taze.sh
 ```
 
 If exit code is 1, stop and inform the user that taze must be installed:
@@ -34,10 +34,10 @@ Run the taze script to discover all available updates:
 
 ```bash
 # Single package
-~/.claude/skills/node-deps/scripts/run-taze.sh
+~/.agents/skills/node-deps/scripts/run-taze.sh
 
 # Monorepo (recursive)
-~/.claude/skills/node-deps/scripts/run-taze.sh -r
+~/.agents/skills/node-deps/scripts/run-taze.sh -r
 ```
 
 ### Step 3: Parse and Categorize Updates

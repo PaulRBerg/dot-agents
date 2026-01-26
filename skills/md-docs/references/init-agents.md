@@ -24,7 +24,7 @@ Guided mode examples:
 
 Check for existing files:
 
-- Run `test -f CLAUDE.md && echo "root" || test -f .claude/CLAUDE.md && echo "claude" || echo "none"`
+- Run `test -f CLAUDE.md && echo "root" && echo "claude" || echo "none"`
 
 If existing file found:
 
@@ -140,8 +140,7 @@ Infer priorities from project signals:
 
 #### Location
 
-- **Prefer**: `./CLAUDE.md` (root)
-- **Only if user explicitly requests**: `./.claude/CLAUDE.md`
+`./CLAUDE.md` (root)
 
 #### Write Operation
 
@@ -203,7 +202,6 @@ Add these lines to CLAUDE.md to auto-load context.
 ## Key Principles
 
 - **Case-by-case content** - No rigid template, adapt to user's description
-- **Root location preferred** - `./CLAUDE.md` over `./.claude/CLAUDE.md` (easier discovery)
 - **Import awareness** - CLAUDE.md can use `@path/to/file` syntax to import other files
 - **Hierarchy context** - Project CLAUDE.md supplements (not replaces) user/enterprise CLAUDE.md
 - **Writing style matches user** - Analyzed from existing agents/commands/skills
@@ -211,4 +209,3 @@ Add these lines to CLAUDE.md to auto-load context.
 ## Related Resources
 
 - Memory docs: https://docs.anthropic.com/en/docs/claude-code/memory
-- Command source: `~/.claude/commands/md-docs/init-agents.md`
