@@ -36,6 +36,7 @@ set positional-arguments          # Pass recipe args as $1, $2, etc.
 | Attribute                 | Purpose                                        |
 | ------------------------- | ---------------------------------------------- |
 | `[arg("p", long, ...)]`   | Configure parameter as `--flag` option (v1.46) |
+| `[arg("p", pattern="…")]` | Constrain parameter to match regex pattern     |
 | `[group("name")]`         | Group recipes in `just --list` output          |
 | `[no-cd]`                 | Don't change to justfile directory             |
 | `[private]`               | Hide from `just --list` (same as `_` prefix)   |
@@ -356,7 +357,9 @@ Example topics to search:
 
 For detailed patterns and comprehensive coverage, consult:
 
-- **[`references/just-features.md`](references/just-features.md)** - Complete settings, modules, attributes, functions reference
+- **[`references/settings.md`](references/settings.md)** - Settings configuration and module system
+- **[`references/recipes.md`](references/recipes.md)** - Recipe attributes, parameters, dependencies, and prefixes
+- **[`references/syntax.md`](references/syntax.md)** - Constants, functions, variables, and CLI options
 - **[`references/patterns.md`](references/patterns.md)** - Established conventions, section organization, helper patterns
 
 ### Example Templates
