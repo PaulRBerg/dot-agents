@@ -307,14 +307,14 @@ info flag:
 
 ### Arg Attribute Syntax Summary
 
-| Option           | Description                            |
-| ---------------- | -------------------------------------- |
-| `long`           | Accept `--param` (defaults to name)    |
-| `long="name"`    | Accept `--name`                        |
-| `short="x"`      | Accept `-x`                            |
-| `value="val"`    | Set this value when flag present       |
-| `help="text"`    | Description for `just --usage`         |
-| `pattern="regex"`| Constrain argument to match regex      |
+| Option            | Description                         |
+| ----------------- | ----------------------------------- |
+| `long`            | Accept `--param` (defaults to name) |
+| `long="name"`     | Accept `--name`                     |
+| `short="x"`       | Accept `-x`                         |
+| `value="val"`     | Set this value when flag present    |
+| `help="text"`     | Description for `just --usage`      |
+| `pattern="regex"` | Constrain argument to match regex   |
 
 ## Recipe Dependencies
 

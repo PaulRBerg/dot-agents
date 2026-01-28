@@ -232,20 +232,20 @@ files := ```
 
 ## Just CLI Options
 
-| Option                   | Description                            |
-| ------------------------ | -------------------------------------- |
-| `just --list`            | List available recipes                 |
-| `just --list --unsorted` | List in source order                   |
-| `just --summary`         | Brief recipe list                      |
-| `just --show RECIPE`     | Show recipe source                     |
-| `just --usage RECIPE`    | Show recipe argument usage (v1.46)     |
-| `just --dry-run RECIPE`  | Print commands without running         |
-| `just --evaluate`        | Print all variables                    |
-| `just --fmt`             | Format justfile                        |
-| `just --fmt --check`     | Check formatting                       |
-| `just --choose`          | Interactive recipe selection (fzf)     |
-| `just -f PATH`           | Use specific justfile                  |
-| `just -d DIR`            | Set working directory                  |
+| Option                   | Description                        |
+| ------------------------ | ---------------------------------- |
+| `just --list`            | List available recipes             |
+| `just --list --unsorted` | List in source order               |
+| `just --summary`         | Brief recipe list                  |
+| `just --show RECIPE`     | Show recipe source                 |
+| `just --usage RECIPE`    | Show recipe argument usage (v1.46) |
+| `just --dry-run RECIPE`  | Print commands without running     |
+| `just --evaluate`        | Print all variables                |
+| `just --fmt`             | Format justfile                    |
+| `just --fmt --check`     | Check formatting                   |
+| `just --choose`          | Interactive recipe selection (fzf) |
+| `just -f PATH`           | Use specific justfile              |
+| `just -d DIR`            | Set working directory              |
 
 ## Glob Patterns
 
