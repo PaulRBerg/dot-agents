@@ -22,6 +22,12 @@ Before invoking Codex, validate availability:
 
 If the script exits non-zero, display the error message and stop. Do not proceed without Codex CLI.
 
+For `codex exec`, prefer the wrapper script (handles flag compatibility and surfaces errors):
+
+```bash
+~/.agents/skills/oracle-codex/scripts/run-codex-exec.sh
+```
+
 ## Configuration Defaults
 
 | Setting   | Default                       | User Override                                 |
@@ -159,18 +165,15 @@ Redirect output to a temp file to avoid context bloat and race conditions.
 CODEX_OUTPUT="/tmp/codex-${RANDOM}${RANDOM}.txt"
 ```
 
-**Step 2**: Execute Codex with output to the temp file:
+**Step 2**: Execute Codex via the wrapper (detects supported flags and surfaces stderr):
 
 ```bash
 # Select EFFORT based on complexity assessment (low/medium/high/xhigh)
 # Bash tool timeout: 5-20 minutes based on complexity
-codex exec \
-  -m "${MODEL:-gpt-5.2-codex}" \
-  -c "model_reasoning_effort=${EFFORT}" \
-  -s read-only \
-  --skip-git-repo-check \
-  -o "$CODEX_OUTPUT" \
-  2>/dev/null <<'EOF'
+MODEL="${MODEL:-gpt-5.2-codex}" \
+EFFORT="${EFFORT}" \
+CODEX_OUTPUT="$CODEX_OUTPUT" \
+~/.agents/skills/oracle-codex/scripts/run-codex-exec.sh <<'EOF'
 [constructed prompt]
 EOF
 ```
@@ -246,6 +249,14 @@ The `codex review` command returns:
 | --------- | ------------------------------------------ | ----------------------------------------- |
 | 0         | Review completed                           | Present results                           |
 | 2         | Nothing to review (e.g., no changes found) | Inform user; suggest alternative (--base) |
+
+The `codex exec` command returns:
+
+| Exit Code | Meaning                                                    | Response                                                       |
+| --------- | ---------------------------------------------------------- | -------------------------------------------------------------- |
+| 0         | Exec completed                                             | Present results                                                |
+| 1         | Prompt/config error or runtime failure                     | Show stderr and adjust prompt/config                           |
+| 2         | CLI usage error (usually unsupported flag / bad arguments) | Use the wrapper script or re-check `codex exec --help` options |
 
 Runtime errors:
 

@@ -2,6 +2,7 @@ exclude = [
   ".venv/**",
   "node_modules/**",
   # External plugin docs; avoid reformatting vendored content.
+  "skills/vercel-composition-patterns/**",
   "skills/vercel-react-best-practices/**",
   "skills/.system/**",
 ]

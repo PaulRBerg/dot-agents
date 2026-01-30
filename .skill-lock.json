@@ -1,13 +1,14 @@
 {
-  "version": 1,
+  "version": 3,
   "skills": {
-    "vercel-react-best-practices": {
+    "vercel-composition-patterns": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
-      "skillPath": "skills/react-best-practices/SKILL.md",
-      "installedAt": "2026-01-22T21:54:15.046Z",
-      "updatedAt": "2026-01-22T21:54:15.046Z"
+      "skillPath": "skills/composition-patterns/SKILL.md",
+      "skillFolderHash": "bf90d0a4b83ea054653350f9c67f6de235d3a368",
+      "installedAt": "2026-01-30T08:37:06.670Z",
+      "updatedAt": "2026-01-30T08:37:06.670Z"
     }
   }
 }
