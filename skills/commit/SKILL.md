@@ -37,9 +37,10 @@ Note: The staged diff may become stale after staging changes; re-read `git diff 
   - If already staged: proceed
   - Log staged files with status (A/M/D)
 - Otherwise (atomic commits):
-  - Unstage all: `git reset`
-  - Session-modified files = files edited in this Codex session
-  - Stage only session-modified files that have actual changes
+  - Session-modified files = files edited in this session
+  - Currently staged files: `git diff --cached --name-only`
+  - For staged files NOT in session-modified set: `git restore --staged <file>`
+  - For session-modified files with changes: `git add <file>`
   - Log staged files with status (A/M/D)
   - If none: error "No files modified in this session"
 - Re-read staged diff: `git diff --cached`
