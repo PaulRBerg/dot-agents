@@ -144,6 +144,51 @@
       "skillFolderHash": "",
       "installedAt": "2026-02-05T12:07:10.034Z",
       "updatedAt": "2026-02-05T12:10:37.090Z"
+    },
+    "effect-ts": {
+      "source": "sablier-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
+      "skillPath": "skills/effect-ts/SKILL.md",
+      "skillFolderHash": "3e3a3770bae7775641a2384633114a1107f07485",
+      "installedAt": "2026-02-05T15:56:10.540Z",
+      "updatedAt": "2026-02-05T15:56:10.540Z"
+    },
+    "vitest": {
+      "source": "sablier-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
+      "skillPath": "skills/vitest/SKILL.md",
+      "skillFolderHash": "3510a49b54a9247ed7c0903ade452c036883dc21",
+      "installedAt": "2026-02-05T15:56:10.637Z",
+      "updatedAt": "2026-02-05T15:56:10.637Z"
+    },
+    "sablier-writing": {
+      "source": "sablier-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
+      "skillPath": "skills/sablier-writing/SKILL.md",
+      "skillFolderHash": "4fe3615230ca49d87b43e2e7e33dab6fb8b90530",
+      "installedAt": "2026-02-05T15:56:10.733Z",
+      "updatedAt": "2026-02-05T15:56:10.733Z"
+    },
+    "sablier-protocol": {
+      "source": "sablier-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
+      "skillPath": "skills/sablier-protocol/SKILL.md",
+      "skillFolderHash": "2f724dae37ebb0b737d9c35bd44c94573196d0ce",
+      "installedAt": "2026-02-05T15:56:10.831Z",
+      "updatedAt": "2026-02-05T15:56:10.831Z"
+    },
+    "sablier-design": {
+      "source": "sablier-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
+      "skillPath": "skills/sablier-design/SKILL.md",
+      "skillFolderHash": "b2ce785b3c01a51b65c506f375027344fff25fe8",
+      "installedAt": "2026-02-05T15:56:10.930Z",
+      "updatedAt": "2026-02-05T15:56:10.930Z"
     }
   }
 }
