@@ -15,11 +15,13 @@ default:
 # Check Markdown formatting
 @mdformat-check +paths=".":
     uvx mdformat --check {{ paths }}
+
 alias mc := mdformat-check
 
 # Format Markdown files
 @mdformat-write +paths=".":
     uvx mdformat {{ paths }}
+
 alias mw := mdformat-write
 
 # ---------------------------------------------------------------------------- #
@@ -34,6 +36,7 @@ alias mw := mdformat-write
     echo ""
     echo "Deactivated skills:"
     ls -1 shelf 2>/dev/null || echo "  (none)"
+
 alias sl := skill-list
 alias list := skill-list
 
@@ -42,6 +45,7 @@ alias list := skill-list
 @skill-activate name:
     mv "shelf/{{ name }}" "skills/{{ name }}"
     echo "Activated: {{ name }}"
+
 alias sa := skill-activate
 
 # Deactivate a skill (move from skills to shelf)
@@ -49,10 +53,24 @@ alias sa := skill-activate
 @skill-deactivate name:
     mv "skills/{{ name }}" "shelf/{{ name }}"
     echo "Deactivated: {{ name }}"
+
 alias sd := skill-deactivate
 
-# List externally installed skills (from .skill-lock.json)
+# Purge all skills and print reinstall commands
+[confirm("This will purge all skills. Continue? [y/N]")]
 [group("skills")]
-@list-external-skills:
-    jq -r '.skills | keys[]' .skill-lock.json 2>/dev/null || echo "(none)"
-alias les := list-external-skills
+[script("bash")]
+reset-skills:
+    set -euo pipefail
+    rm -rf ./skills
+    rm -rf ~/.codex/skills
+    find ~/.claude/skills -mindepth 1 -maxdepth 1 ! -name '.system' -exec rm -rf {} +
+    rm -f .skill-lock.json
+    echo ""
+    echo "Skills purged. Run these commands to reinstall:"
+    echo ""
+    echo "  npx skills add PaulRBerg/agent-skills"
+    echo "  npx skills add sablier-labs/agent-skills"
+    echo "  npx skills add vercel-labs/agent-skills"
+
+alias rs := reset-skills
