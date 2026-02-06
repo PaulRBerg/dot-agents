@@ -1,23 +1,14 @@
 {
   "version": 3,
   "skills": {
-    "vercel-composition-patterns": {
-      "source": "vercel-labs/agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
-      "skillPath": "skills/composition-patterns/SKILL.md",
-      "skillFolderHash": "bf90d0a4b83ea054653350f9c67f6de235d3a368",
-      "installedAt": "2026-01-30T08:37:06.670Z",
-      "updatedAt": "2026-01-30T08:48:40.430Z"
-    },
     "biome-js": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/biome-js/SKILL.md",
       "skillFolderHash": "f184c837ecb2353d6dfc027a54ce0754c2cf8509",
-      "installedAt": "2026-02-05T12:07:09.155Z",
-      "updatedAt": "2026-02-06T12:55:31.300Z"
+      "installedAt": "2026-02-06T13:11:38.457Z",
+      "updatedAt": "2026-02-06T13:11:38.457Z"
     },
     "bump-release": {
       "source": "PaulRBerg/agent-skills",
@@ -25,8 +16,8 @@
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/bump-release/SKILL.md",
       "skillFolderHash": "fd67e42712ec9b01d982bf495443fd278027ba1b",
-      "installedAt": "2026-02-05T12:07:09.206Z",
-      "updatedAt": "2026-02-06T12:55:31.382Z"
+      "installedAt": "2026-02-06T13:11:38.637Z",
+      "updatedAt": "2026-02-06T13:11:38.637Z"
     },
     "code-review": {
       "source": "PaulRBerg/agent-skills",
@@ -34,8 +25,8 @@
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/code-review/SKILL.md",
       "skillFolderHash": "8a0cd8c8742de6ac70dcb0680cd7e2e853034e59",
-      "installedAt": "2026-02-05T12:07:09.273Z",
-      "updatedAt": "2026-02-06T12:55:31.574Z"
+      "installedAt": "2026-02-06T13:11:38.836Z",
+      "updatedAt": "2026-02-06T13:11:38.836Z"
     },
     "code-simplify": {
       "source": "PaulRBerg/agent-skills",
@@ -43,8 +34,8 @@
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/code-simplify/SKILL.md",
       "skillFolderHash": "145bc71216ebee2299802553f01468e90885057c",
-      "installedAt": "2026-02-05T12:07:09.341Z",
-      "updatedAt": "2026-02-06T12:55:31.760Z"
+      "installedAt": "2026-02-06T13:11:38.945Z",
+      "updatedAt": "2026-02-06T13:11:38.945Z"
     },
     "commit": {
       "source": "PaulRBerg/agent-skills",
@@ -52,8 +43,8 @@
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/commit/SKILL.md",
       "skillFolderHash": "8ed76e00c2eec669930beefc3e2a21e48a0b15a3",
-      "installedAt": "2026-02-05T12:07:09.407Z",
-      "updatedAt": "2026-02-06T12:55:31.932Z"
+      "installedAt": "2026-02-06T13:11:39.081Z",
+      "updatedAt": "2026-02-06T13:11:39.081Z"
     },
     "delayed-command": {
       "source": "PaulRBerg/agent-skills",
@@ -61,8 +52,8 @@
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/delayed-command/SKILL.md",
       "skillFolderHash": "673000b17cff9469319bb411dcb820e3ccf956b9",
-      "installedAt": "2026-02-05T12:07:09.462Z",
-      "updatedAt": "2026-02-06T12:55:32.132Z"
+      "installedAt": "2026-02-06T13:11:39.182Z",
+      "updatedAt": "2026-02-06T13:11:39.182Z"
     },
     "gh-cli": {
       "source": "PaulRBerg/agent-skills",
@@ -70,80 +61,80 @@
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/gh-cli/SKILL.md",
       "skillFolderHash": "76abe6e017cc963dbf338ca454eb1e4beeb0045e",
-      "installedAt": "2026-02-05T12:07:09.529Z",
-      "updatedAt": "2026-02-06T12:55:32.230Z"
+      "installedAt": "2026-02-06T13:11:39.330Z",
+      "updatedAt": "2026-02-06T13:11:39.330Z"
     },
     "just-cli": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/just-cli/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-02-05T12:07:09.592Z",
-      "updatedAt": "2026-02-06T12:55:32.626Z"
+      "skillFolderHash": "7ad696b3d6508d0aa00357d2912b02d39ce922e1",
+      "installedAt": "2026-02-06T13:11:39.511Z",
+      "updatedAt": "2026-02-06T13:11:39.511Z"
     },
     "ls-lint": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/ls-lint/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-02-05T12:07:09.665Z",
-      "updatedAt": "2026-02-06T12:55:32.749Z"
+      "skillFolderHash": "7039a57dd6bede938a200dd0411a68dc15de7c2f",
+      "installedAt": "2026-02-06T13:11:39.684Z",
+      "updatedAt": "2026-02-06T13:11:39.684Z"
     },
     "md-docs": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/md-docs/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-02-05T12:07:09.734Z",
-      "updatedAt": "2026-02-06T12:55:33.040Z"
+      "skillFolderHash": "9e402d19c1c79281efcbd92cf23fa81d7375ce65",
+      "installedAt": "2026-02-06T13:11:39.854Z",
+      "updatedAt": "2026-02-06T13:11:39.854Z"
     },
     "node-deps": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/node-deps/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-02-05T12:07:09.796Z",
-      "updatedAt": "2026-02-06T12:55:33.283Z"
+      "skillFolderHash": "9d3ff223b5e78e146ccc66bb0f19012a7526e67f",
+      "installedAt": "2026-02-06T13:11:40.031Z",
+      "updatedAt": "2026-02-06T13:11:40.031Z"
     },
     "openclaw": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/openclaw/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-02-05T12:07:09.857Z",
-      "updatedAt": "2026-02-06T12:55:33.458Z"
+      "skillFolderHash": "88f9c837345e8135bd157f9be130df450cc4de02",
+      "installedAt": "2026-02-06T13:11:40.118Z",
+      "updatedAt": "2026-02-06T13:11:40.118Z"
     },
     "oracle-codex": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/oracle-codex/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-02-05T12:07:09.919Z",
-      "updatedAt": "2026-02-06T12:55:33.672Z"
+      "skillFolderHash": "710996ca396a3674e30b3c17640f4f7d7d14db37",
+      "installedAt": "2026-02-06T13:11:40.194Z",
+      "updatedAt": "2026-02-06T13:11:40.194Z"
     },
     "oss": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/oss/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-02-05T12:07:09.975Z",
-      "updatedAt": "2026-02-06T12:55:34.022Z"
+      "skillFolderHash": "7a342a22ffd8da4d50b6ef83e5ead3ac72e282d8",
+      "installedAt": "2026-02-06T13:11:40.279Z",
+      "updatedAt": "2026-02-06T13:11:40.279Z"
     },
     "refine-prompt": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/refine-prompt/SKILL.md",
-      "skillFolderHash": "",
-      "installedAt": "2026-02-05T12:07:10.034Z",
-      "updatedAt": "2026-02-06T12:55:34.194Z"
+      "skillFolderHash": "1a4e70470f4d60c381bcc7a70ca8f4b6ed2d4753",
+      "installedAt": "2026-02-06T13:11:40.380Z",
+      "updatedAt": "2026-02-06T13:11:40.380Z"
     },
     "effect-ts": {
       "source": "sablier-labs/agent-skills",
@@ -151,35 +142,8 @@
       "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
       "skillPath": "skills/effect-ts/SKILL.md",
       "skillFolderHash": "3e3a3770bae7775641a2384633114a1107f07485",
-      "installedAt": "2026-02-05T15:56:10.540Z",
-      "updatedAt": "2026-02-05T15:56:10.540Z"
-    },
-    "vitest": {
-      "source": "sablier-labs/agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
-      "skillPath": "skills/vitest/SKILL.md",
-      "skillFolderHash": "3510a49b54a9247ed7c0903ade452c036883dc21",
-      "installedAt": "2026-02-05T15:56:10.637Z",
-      "updatedAt": "2026-02-05T15:56:10.637Z"
-    },
-    "sablier-writing": {
-      "source": "sablier-labs/agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
-      "skillPath": "skills/sablier-writing/SKILL.md",
-      "skillFolderHash": "4fe3615230ca49d87b43e2e7e33dab6fb8b90530",
-      "installedAt": "2026-02-05T15:56:10.733Z",
-      "updatedAt": "2026-02-05T15:56:10.733Z"
-    },
-    "sablier-protocol": {
-      "source": "sablier-labs/agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
-      "skillPath": "skills/sablier-protocol/SKILL.md",
-      "skillFolderHash": "2f724dae37ebb0b737d9c35bd44c94573196d0ce",
-      "installedAt": "2026-02-05T15:56:10.831Z",
-      "updatedAt": "2026-02-05T15:56:10.831Z"
+      "installedAt": "2026-02-06T13:12:29.697Z",
+      "updatedAt": "2026-02-06T13:12:29.697Z"
     },
     "sablier-design": {
       "source": "sablier-labs/agent-skills",
@@ -187,8 +151,62 @@
       "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
       "skillPath": "skills/sablier-design/SKILL.md",
       "skillFolderHash": "b2ce785b3c01a51b65c506f375027344fff25fe8",
-      "installedAt": "2026-02-05T15:56:10.930Z",
-      "updatedAt": "2026-02-05T15:56:10.930Z"
+      "installedAt": "2026-02-06T13:12:29.772Z",
+      "updatedAt": "2026-02-06T13:12:29.772Z"
+    },
+    "sablier-protocol": {
+      "source": "sablier-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
+      "skillPath": "skills/sablier-protocol/SKILL.md",
+      "skillFolderHash": "2f724dae37ebb0b737d9c35bd44c94573196d0ce",
+      "installedAt": "2026-02-06T13:12:29.871Z",
+      "updatedAt": "2026-02-06T13:12:29.871Z"
+    },
+    "sablier-writing": {
+      "source": "sablier-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
+      "skillPath": "skills/sablier-writing/SKILL.md",
+      "skillFolderHash": "4fe3615230ca49d87b43e2e7e33dab6fb8b90530",
+      "installedAt": "2026-02-06T13:12:29.947Z",
+      "updatedAt": "2026-02-06T13:12:29.947Z"
+    },
+    "vitest": {
+      "source": "sablier-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
+      "skillPath": "skills/vitest/SKILL.md",
+      "skillFolderHash": "3510a49b54a9247ed7c0903ade452c036883dc21",
+      "installedAt": "2026-02-06T13:12:30.031Z",
+      "updatedAt": "2026-02-06T13:12:30.031Z"
+    },
+    "vercel-composition-patterns": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
+      "skillPath": "skills/composition-patterns/SKILL.md",
+      "skillFolderHash": "bf90d0a4b83ea054653350f9c67f6de235d3a368",
+      "installedAt": "2026-02-06T13:12:56.154Z",
+      "updatedAt": "2026-02-06T13:12:56.154Z"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "skillFolderHash": "079b06a135401704ea94ab74c7c9d86c92ba259f",
+      "installedAt": "2026-02-06T13:12:56.253Z",
+      "updatedAt": "2026-02-06T13:12:56.253Z"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "skillFolderHash": "3116f3e62dbd02b44a598b1aa690d2a8938e8f89",
+      "installedAt": "2026-02-06T13:12:56.400Z",
+      "updatedAt": "2026-02-06T13:12:56.400Z"
     }
   }
 }
