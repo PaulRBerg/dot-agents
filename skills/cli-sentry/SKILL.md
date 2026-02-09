@@ -6,6 +6,12 @@ description: This skill should be used when the user asks to "fetch Sentry issue
 
 # Sentry CLI Issue Management
 
+> **Compatibility**: This skill is compatible with `sentry-cli` v3 only.
+>
+> **Important**: `sentry-cli api` was removed in v3. Do **not** use `sentry-cli api` for anything. Use `curl` with the Sentry REST API instead (see [API Fallbacks](#api-fallbacks) and `~/.agents/skills/cli-sentry/scripts/fetch-issues.sh`).
+>
+> **File paths**: All `scripts/` and `references/` paths in this skill resolve under `~/.agents/skills/cli-sentry/`. Do not look for them in the current working directory.
+
 ## Overview
 
 Expert guidance for managing Sentry issues via the CLI and API. Use this skill for fetching, triaging, categorizing, and resolving Sentry issues.
@@ -21,6 +27,7 @@ Expert guidance for managing Sentry issues via the CLI and API. Use this skill f
 
 **Prohibited operations:**
 
+- `sentry-cli api` — Removed in v3. Use `curl` with the Sentry REST API instead
 - `DELETE /issues/{id}/` - Issue deletion (irreversible)
 - Project or release deletion
 - Bulk status changes without explicit user confirmation
@@ -35,11 +42,38 @@ Expert guidance for managing Sentry issues via the CLI and API. Use this skill f
 
 ## Prerequisites
 
-Run the preflight check before any Sentry operations:
+### Configuration (`~/.sentryclirc`)
+
+Sentry credentials are stored in `~/.sentryclirc` (the native sentry-cli config file):
+
+```ini
+[auth]
+token=sntrys_...
+
+[defaults]
+org=your-org-slug
+project=your-project-slug
+```
+
+- **`token`** — Org token (`sntrys_`) or user token (`sntryu_`). Both use `Authorization: Bearer`. Generate at https://sentry.io/settings/account/api/auth-tokens/
+- **`org`** — Your organization slug in Sentry
+- **`project`** — Your project slug in Sentry
+
+> Environment variables (`SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT`) override rc file values when set. The rc file is the primary persistent store.
+
+### Setup: Missing Configuration
+
+Before running any Sentry operation, run the preflight check:
 
 ```bash
-bash scripts/check-sentry.sh -v
+bash ~/.agents/skills/cli-sentry/scripts/check-sentry.sh -v
 ```
+
+If the preflight check fails with exit code 4 (missing config), prompt the user for each missing value using `AskUserQuestion`, then write the values to `~/.sentryclirc`:
+
+- If the file doesn't exist, create it with `[auth]` and `[defaults]` sections
+- If the file exists, add missing keys under the appropriate section (`token` → `[auth]`, `org`/`project` → `[defaults]`)
+- Re-run the preflight check to confirm
 
 ### Configuration Resolution Order
 
@@ -47,35 +81,33 @@ Settings resolve in this order (first wins):
 
 1. CLI flags (`--org`, `--project`)
 2. Environment variables (`SENTRY_ORG`, `SENTRY_PROJECT`, `SENTRY_AUTH_TOKEN`)
-3. `.sentryclirc` file (project root or `~/.sentryclirc`)
-
-### Auth Token Sources
-
-| Source               | Example                                          |
-| -------------------- | ------------------------------------------------ |
-| Environment variable | `export SENTRY_AUTH_TOKEN=sntrys_...`            |
-| `.sentryclirc` file  | `[auth]` section with `token=sntrys_...`         |
-| `.env.local` file    | `SENTRY_AUTH_TOKEN=sntrys_...` (source it first) |
+3. `~/.sentryclirc`
 
 ## Issue Management
 
 ### List Issues (CLI)
 
 ```bash
-# List unresolved issues
+# List all issues
 sentry-cli issues list --project <project>
 
 # List with status filter
 sentry-cli issues list --project <project> --status unresolved
+
+# Full search syntax (Sentry query language)
+sentry-cli issues list --project <project> --query "is:unresolved browser.name:Chrome"
+
+# Pagination control (default: 5 pages)
+sentry-cli issues list --project <project> --pages 10
 ```
 
 ### List Issues (API - Richer Data)
 
-Use `scripts/fetch-issues.sh` for triage-quality JSON with metadata, culprit, event counts, and timestamps:
+Use `~/.agents/skills/cli-sentry/scripts/fetch-issues.sh` for triage-quality JSON with metadata, culprit, event counts, and timestamps:
 
 ```bash
-bash scripts/fetch-issues.sh --org=<org> --project=<project>
-bash scripts/fetch-issues.sh --org=<org> --project=<project> --stats-period=7d --limit=50
+bash ~/.agents/skills/cli-sentry/scripts/fetch-issues.sh --org=<org> --project=<project>
+bash ~/.agents/skills/cli-sentry/scripts/fetch-issues.sh --org=<org> --project=<project> --stats-period=7d --limit=50
 ```
 
 ### Get Issue Details (API)
@@ -96,13 +128,16 @@ curl -s -H "Authorization: Bearer $SENTRY_AUTH_TOKEN" \
 
 ```bash
 # Resolve
-sentry-cli issues resolve <issue_id> --project <project>
+sentry-cli issues resolve --project <project> -i <issue_id>
 
 # Mute (ignore)
-sentry-cli issues mute <issue_id> --project <project>
+sentry-cli issues mute --project <project> -i <issue_id>
 
 # Unresolve
-sentry-cli issues unresolve <issue_id> --project <project>
+sentry-cli issues unresolve --project <project> -i <issue_id>
+
+# Resolve in next release only
+sentry-cli issues resolve --project <project> -i <issue_id> --next-release
 ```
 
 ## Issue Categorization
@@ -144,7 +179,7 @@ Issues that have been fixed in subsequent deployments.
 
 ### 4. Third Party
 
-Errors originating from browser extensions or external scripts. See `references/extension-patterns.md` for comprehensive detection patterns.
+Errors originating from browser extensions or external scripts. See `~/.agents/skills/cli-sentry/references/extension-patterns.md` for comprehensive detection patterns.
 
 **Indicators:**
 
@@ -155,8 +190,8 @@ Errors originating from browser extensions or external scripts. See `references/
 
 ## Triage Workflow
 
-1. **Preflight** - Run `bash scripts/check-sentry.sh -v` to verify sentry-cli and auth
-2. **Fetch** - Run `bash scripts/fetch-issues.sh --org=<org> --project=<project>` to get all unresolved issues
+1. **Preflight** - Run `bash ~/.agents/skills/cli-sentry/scripts/check-sentry.sh -v` to verify config and auth. If missing, prompt the user and write to `~/.sentryclirc`
+2. **Fetch** - Run `bash ~/.agents/skills/cli-sentry/scripts/fetch-issues.sh --org=<org> --project=<project>` to get all unresolved issues
 3. **Inspect** - For each issue, fetch its latest event to examine the stack trace:
    ```bash
    curl -s -H "Authorization: Bearer $SENTRY_AUTH_TOKEN" \
@@ -214,29 +249,28 @@ curl -X PUT -H "Authorization: Bearer $SENTRY_AUTH_TOKEN" \
 
 ## Quick Reference
 
-| Operation          | Method | Command / Endpoint                                |
-| ------------------ | ------ | ------------------------------------------------- |
-| List issues        | CLI    | `sentry-cli issues list --project <p>`            |
-| List issues (rich) | Script | `scripts/fetch-issues.sh --org=<o> --project=<p>` |
-| Issue details      | API    | `GET /issues/{id}/`                               |
-| Latest event       | API    | `GET /issues/{id}/events/latest/`                 |
-| Event list         | API    | `GET /issues/{id}/events/`                        |
-| Resolve            | CLI    | `sentry-cli issues resolve <id>`                  |
-| Mute               | CLI    | `sentry-cli issues mute <id>`                     |
-| Unresolve          | CLI    | `sentry-cli issues unresolve <id>`                |
-| Bulk update        | API    | `PUT /projects/{org}/{project}/issues/?id=...`    |
+| Operation          | Method | Command / Endpoint                                                            |
+| ------------------ | ------ | ----------------------------------------------------------------------------- |
+| List issues        | CLI    | `sentry-cli issues list --project <p>`                                        |
+| List issues (rich) | Script | `~/.agents/skills/cli-sentry/scripts/fetch-issues.sh --org=<o> --project=<p>` |
+| Issue details      | API    | `GET /issues/{id}/`                                                           |
+| Latest event       | API    | `GET /issues/{id}/events/latest/`                                             |
+| Event list         | API    | `GET /issues/{id}/events/`                                                    |
+| Resolve            | CLI    | `sentry-cli issues resolve --project <p> -i <id>`                             |
+| Mute               | CLI    | `sentry-cli issues mute --project <p> -i <id>`                                |
+| Unresolve          | CLI    | `sentry-cli issues unresolve --project <p> -i <id>`                           |
+| Bulk update        | API    | `PUT /projects/{org}/{project}/issues/?id=...`                                |
 
 ## Additional Resources
 
-- **`scripts/check-sentry.sh`** - Preflight validation (installation, responsiveness, auth)
-- **`scripts/fetch-issues.sh`** - Fetch unresolved issues with rich JSON
-- **`references/api-fallbacks.md`** - API endpoints for operations sentry-cli can't handle
-- **`references/extension-patterns.md`** - Browser extension error detection patterns
+- **`~/.agents/skills/cli-sentry/scripts/check-sentry.sh`** - Preflight validation (config, installation, responsiveness, auth)
+- **`~/.agents/skills/cli-sentry/scripts/fetch-issues.sh`** - Fetch unresolved issues with rich JSON
+- **`~/.agents/skills/cli-sentry/references/api-fallbacks.md`** - API endpoints for operations sentry-cli can't handle
+- **`~/.agents/skills/cli-sentry/references/extension-patterns.md`** - Browser extension error detection patterns
 
 ## Tips
 
-1. Set `SENTRY_ORG` and `SENTRY_PROJECT` in your shell profile to avoid passing flags repeatedly
-2. Run `sentry-cli info` to verify configuration and auth status from any source
-3. Pipe API responses through `jq` for readable output: `... | jq '.[] | {shortId, title, count, lastSeen}'`
-4. Triage Third Party issues first - they are the easiest to identify and often the most numerous
-5. Check `references/extension-patterns.md` before categorizing ambiguous stack traces
+1. Run `sentry-cli info` to verify configuration and auth status from any source
+2. Pipe API responses through `jq` for readable output: `... | jq '.[] | {shortId, title, count, lastSeen}'`
+3. Triage Third Party issues first - they are the easiest to identify and often the most numerous
+4. Check `~/.agents/skills/cli-sentry/references/extension-patterns.md` before categorizing ambiguous stack traces

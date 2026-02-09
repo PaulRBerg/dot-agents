@@ -6,6 +6,7 @@
 #   1 - sentry-cli is not installed
 #   2 - sentry-cli is not responding (timeout)
 #   3 - sentry-cli is not authenticated
+#   4 - missing required config (token, org, project)
 #
 # Options:
 #   -v, --verbose   Show detailed status
@@ -13,6 +14,8 @@
 #   --skip-auth     Skip authentication check
 
 set -euo pipefail
+
+source "$(dirname "$0")/lib.sh"
 
 VERBOSE=0
 QUIET=0
@@ -36,6 +39,7 @@ Exit codes:
   1  sentry-cli is not installed
   2  sentry-cli is not responding
   3  sentry-cli is not authenticated
+  4  missing required config
 EOF
 }
 
@@ -61,7 +65,40 @@ log_error() {
     echo "$@" >&2
 }
 
-# Check 1: Is sentry-cli installed?
+# Check 0: Load config from ~/.sentryclirc (env vars override rc file)
+log_verbose "Reading config from ~/.sentryclirc"
+
+export SENTRY_AUTH_TOKEN="${SENTRY_AUTH_TOKEN:-$(rc_value auth token)}"
+export SENTRY_ORG="${SENTRY_ORG:-$(rc_value defaults org)}"
+export SENTRY_PROJECT="${SENTRY_PROJECT:-$(rc_value defaults project)}"
+
+# Check 1: Validate all required values are present
+MISSING=""
+[[ -z "${SENTRY_AUTH_TOKEN:-}" ]] && MISSING="${MISSING:+$MISSING, }token (SENTRY_AUTH_TOKEN)"
+[[ -z "${SENTRY_ORG:-}" ]] && MISSING="${MISSING:+$MISSING, }org (SENTRY_ORG)"
+[[ -z "${SENTRY_PROJECT:-}" ]] && MISSING="${MISSING:+$MISSING, }project (SENTRY_PROJECT)"
+
+if [[ -n "$MISSING" ]]; then
+    log_error "ERROR: Missing Sentry configuration: $MISSING"
+    log_error ""
+    log_error "Add them to ~/.sentryclirc:"
+    log_error ""
+    log_error "  [auth]"
+    log_error "  token=sntrys_..."
+    log_error ""
+    log_error "  [defaults]"
+    log_error "  org=your-org-slug"
+    log_error "  project=your-project-slug"
+    log_error ""
+    log_error "Generate a token at: https://sentry.io/settings/account/api/auth-tokens/"
+    exit 4
+fi
+
+log_verbose "SENTRY_AUTH_TOKEN: set"
+log_verbose "SENTRY_ORG: $SENTRY_ORG"
+log_verbose "SENTRY_PROJECT: $SENTRY_PROJECT"
+
+# Check 2: Is sentry-cli installed?
 if ! command -v sentry-cli &>/dev/null; then
     log_error "ERROR: sentry-cli is not installed or not in PATH."
     log_error ""
@@ -80,7 +117,7 @@ fi
 
 log_verbose "Found: $(command -v sentry-cli)"
 
-# Check 2: Is sentry-cli responding?
+# Check 3: Is sentry-cli responding?
 if ! version=$(timeout "$TIMEOUT_SECS" sentry-cli --version 2>/dev/null); then
     log_error "ERROR: sentry-cli is installed but not responding (timeout after ${TIMEOUT_SECS}s)"
     log_error "Try running 'sentry-cli --version' manually to diagnose."
@@ -89,7 +126,7 @@ fi
 
 log_verbose "Version: $version"
 
-# Check 3: Is sentry-cli authenticated?
+# Check 4: Is sentry-cli authenticated?
 if [[ $SKIP_AUTH -eq 0 ]]; then
     if ! auth_info=$(timeout "$TIMEOUT_SECS" sentry-cli info 2>&1); then
         log_error "ERROR: sentry-cli is not authenticated."
@@ -100,16 +137,6 @@ if [[ $SKIP_AUTH -eq 0 ]]; then
         log_error "Or create a .sentryclirc file:"
         log_error "  [auth]"
         log_error "  token=sntrys_..."
-        log_error ""
-        log_error "Generate a token at: https://sentry.io/settings/account/api/auth-tokens/"
-        exit 3
-    fi
-
-    if echo "$auth_info" | grep -Eqi "not logged in|no auth|error|unauthorized"; then
-        log_error "ERROR: sentry-cli is not authenticated."
-        log_error ""
-        log_error "Set up authentication:"
-        log_error "  export SENTRY_AUTH_TOKEN=sntrys_..."
         log_error ""
         log_error "Generate a token at: https://sentry.io/settings/account/api/auth-tokens/"
         exit 3
