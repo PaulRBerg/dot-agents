@@ -49,36 +49,6 @@ These flags are specific to `codex exec`:
 | `--output-schema <FILE>` | Structured output schema          |
 | `--skip-git-repo-check`  | Bypass git repository requirement |
 
-## Review Subcommand
-
-The `codex review` subcommand provides a streamlined interface for code reviews:
-
-```bash
-codex review [OPTIONS] [PROMPT]
-```
-
-| Flag              | Description                             |
-| ----------------- | --------------------------------------- |
-| `--uncommitted`   | Review uncommitted working tree changes |
-| `--base <BRANCH>` | Review changes compared to base branch  |
-| `--commit <SHA>`  | Review a specific commit                |
-
-**Examples:**
-
-```bash
-# Review uncommitted changes
-codex review --uncommitted
-
-# Review changes against main branch
-codex review --base main
-
-# Review with specific focus
-codex review --base main "Focus on security vulnerabilities"
-
-# Review a specific commit
-codex review --commit abc1234
-```
-
 ## Example Commands
 
 ### Planning Query (High Complexity → `high`)
@@ -95,14 +65,19 @@ Analyze this codebase and design an implementation plan for [feature].
 EOF
 ```
 
-### Code Review with `codex review`
+### Code Review with `codex exec`
 
 ```bash
-# Simple review of uncommitted changes
-codex review --uncommitted
-
-# Review against main with custom instructions
-codex review --base main "Check for SQL injection and XSS vulnerabilities"
+CODEX_OUTPUT="/tmp/codex-${RANDOM}${RANDOM}.txt"
+codex exec \
+  -m codex-5.3-gpt \
+  -c model_reasoning_effort=medium \
+  -s read-only \
+  -o "$CODEX_OUTPUT" \
+  2>/dev/null <<'EOF'
+Review the recent changes for security vulnerabilities, focusing on SQL injection and XSS.
+Include file paths and line references for each finding.
+EOF
 ```
 
 ### Planning Query with Web Search

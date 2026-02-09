@@ -15,9 +15,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/bump-release/SKILL.md",
-      "skillFolderHash": "fd67e42712ec9b01d982bf495443fd278027ba1b",
+      "skillFolderHash": "6cd9950c613cbfc22133161f31183d886488d7f8",
       "installedAt": "2026-02-06T13:11:38.637Z",
-      "updatedAt": "2026-02-06T13:11:38.637Z"
+      "updatedAt": "2026-02-09T11:09:37.872Z"
     },
     "code-review": {
       "source": "PaulRBerg/agent-skills",
@@ -42,9 +42,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/commit/SKILL.md",
-      "skillFolderHash": "8ed76e00c2eec669930beefc3e2a21e48a0b15a3",
+      "skillFolderHash": "942b75fc65fdd560baed1e922c9801215824b2ba",
       "installedAt": "2026-02-06T13:11:39.081Z",
-      "updatedAt": "2026-02-06T13:11:39.081Z"
+      "updatedAt": "2026-02-09T11:09:37.758Z"
     },
     "delayed-command": {
       "source": "PaulRBerg/agent-skills",
@@ -54,24 +54,6 @@
       "skillFolderHash": "673000b17cff9469319bb411dcb820e3ccf956b9",
       "installedAt": "2026-02-06T13:11:39.182Z",
       "updatedAt": "2026-02-06T13:11:39.182Z"
-    },
-    "gh-cli": {
-      "source": "PaulRBerg/agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
-      "skillPath": "skills/gh-cli/SKILL.md",
-      "skillFolderHash": "76abe6e017cc963dbf338ca454eb1e4beeb0045e",
-      "installedAt": "2026-02-06T13:11:39.330Z",
-      "updatedAt": "2026-02-06T13:11:39.330Z"
-    },
-    "just-cli": {
-      "source": "PaulRBerg/agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
-      "skillPath": "skills/just-cli/SKILL.md",
-      "skillFolderHash": "7ad696b3d6508d0aa00357d2912b02d39ce922e1",
-      "installedAt": "2026-02-06T13:11:39.511Z",
-      "updatedAt": "2026-02-06T13:11:39.511Z"
     },
     "ls-lint": {
       "source": "PaulRBerg/agent-skills",
@@ -114,9 +96,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/oracle-codex/SKILL.md",
-      "skillFolderHash": "32bebb96aa8089a036b170bb077c0f94b9373319",
+      "skillFolderHash": "95bb909ad260c23f37832f081bc0dbcdda13f12b",
       "installedAt": "2026-02-06T13:11:40.194Z",
-      "updatedAt": "2026-02-06T15:19:21.739Z"
+      "updatedAt": "2026-02-09T11:09:37.674Z"
     },
     "oss": {
       "source": "PaulRBerg/agent-skills",
@@ -207,6 +189,54 @@
       "skillFolderHash": "3116f3e62dbd02b44a598b1aa690d2a8938e8f89",
       "installedAt": "2026-02-06T13:12:56.400Z",
       "updatedAt": "2026-02-06T13:12:56.400Z"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/skills.git",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "skillFolderHash": "c2f31172b6f256272305a5e6e7228b258446899f",
+      "installedAt": "2026-02-08T09:36:01.431Z",
+      "updatedAt": "2026-02-08T09:36:01.431Z"
+    },
+    "cli-gh": {
+      "source": "PaulRBerg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "skillPath": "skills/cli-gh/SKILL.md",
+      "skillFolderHash": "80a85938eb45a94b201d22f17126a775cdbd2ee9",
+      "installedAt": "2026-02-09T11:09:37.380Z",
+      "updatedAt": "2026-02-09T11:09:37.380Z"
+    },
+    "cli-just": {
+      "source": "PaulRBerg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "skillPath": "skills/cli-just/SKILL.md",
+      "skillFolderHash": "b0789c65ece4d8a4d544b349c54732929c1bedc7",
+      "installedAt": "2026-02-09T11:09:37.457Z",
+      "updatedAt": "2026-02-09T11:09:37.457Z"
+    },
+    "cli-sentry": {
+      "source": "PaulRBerg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "skillPath": "skills/cli-sentry/SKILL.md",
+      "skillFolderHash": "bebf33ed44e74a207ecc241d92c56fd8e0d60cc9",
+      "installedAt": "2026-02-09T11:09:37.542Z",
+      "updatedAt": "2026-02-09T11:09:37.542Z"
     }
+  },
+  "lastSelectedAgents": [
+    "amp",
+    "codex",
+    "gemini-cli",
+    "github-copilot",
+    "kimi-cli",
+    "opencode",
+    "claude-code"
+  ],
+  "dismissed": {
+    "findSkillsPrompt": true
   }
 }
