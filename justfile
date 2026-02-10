@@ -62,6 +62,26 @@ skill-deactivate +names:
 
 alias sd := skill-deactivate
 
+# Install PaulRBerg skills, removing any that are shelved
+[group("skills")]
+[script("bash")]
+install-prb:
+    set -euo pipefail
+    npx skills add PaulRBerg/agent-skills --yes --all
+    removed=()
+    for entry in shelf/*; do
+        name=$(basename "$entry")
+        if [ -d "skills/$name" ]; then
+            npx skills remove "$name" -y
+            removed+=("$name")
+        fi
+    done
+    if [ ${#removed[@]} -gt 0 ]; then
+        echo -e '{{ YELLOW }}📦 Removed shelved skills: {{ BOLD }}'"${removed[*]}"'{{ NORMAL }}'
+    fi
+
+alias ip := install-prb
+
 # Purge all skills and print reinstall commands
 [confirm("This will purge all skills. Continue? [y/N]")]
 [group("skills")]
