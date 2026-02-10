@@ -8,7 +8,7 @@
       "skillPath": "skills/biome-js/SKILL.md",
       "skillFolderHash": "f184c837ecb2353d6dfc027a54ce0754c2cf8509",
       "installedAt": "2026-02-06T13:11:38.457Z",
-      "updatedAt": "2026-02-10T14:20:45.176Z"
+      "updatedAt": "2026-02-10T17:46:07.226Z"
     },
     "bump-release": {
       "source": "PaulRBerg/agent-skills",
@@ -17,7 +17,7 @@
       "skillPath": "skills/bump-release/SKILL.md",
       "skillFolderHash": "1591377415a14afa614ff5b3b46170122338a714",
       "installedAt": "2026-02-06T13:11:38.637Z",
-      "updatedAt": "2026-02-10T14:20:45.232Z"
+      "updatedAt": "2026-02-10T17:46:07.612Z"
     },
     "code-review": {
       "source": "PaulRBerg/agent-skills",
@@ -26,7 +26,7 @@
       "skillPath": "skills/code-review/SKILL.md",
       "skillFolderHash": "e8a28a92c51cb62fb23f38f7c0ccbd73f4ea1ebd",
       "installedAt": "2026-02-06T13:11:38.836Z",
-      "updatedAt": "2026-02-10T14:20:45.448Z"
+      "updatedAt": "2026-02-10T17:46:09.726Z"
     },
     "code-simplify": {
       "source": "PaulRBerg/agent-skills",
@@ -35,7 +35,7 @@
       "skillPath": "skills/code-simplify/SKILL.md",
       "skillFolderHash": "e5755d6c9d4dbafbce7b7aeaa9ecd4f8fd607ff9",
       "installedAt": "2026-02-06T13:11:38.945Z",
-      "updatedAt": "2026-02-10T14:20:45.501Z"
+      "updatedAt": "2026-02-10T17:46:10.114Z"
     },
     "commit": {
       "source": "PaulRBerg/agent-skills",
@@ -44,7 +44,7 @@
       "skillPath": "skills/commit/SKILL.md",
       "skillFolderHash": "63d220bba9e2ad59fc3c7ea831aa79ba0c1b39c4",
       "installedAt": "2026-02-06T13:11:39.081Z",
-      "updatedAt": "2026-02-10T14:20:45.561Z"
+      "updatedAt": "2026-02-10T17:46:10.535Z"
     },
     "delayed-command": {
       "source": "PaulRBerg/agent-skills",
@@ -53,7 +53,7 @@
       "skillPath": "skills/delayed-command/SKILL.md",
       "skillFolderHash": "53dae824c3beb5bd5ba0f4f8356cc4d934aaebd0",
       "installedAt": "2026-02-06T13:11:39.182Z",
-      "updatedAt": "2026-02-10T14:20:45.617Z"
+      "updatedAt": "2026-02-10T17:46:10.893Z"
     },
     "ls-lint": {
       "source": "PaulRBerg/agent-skills",
@@ -62,7 +62,7 @@
       "skillPath": "skills/ls-lint/SKILL.md",
       "skillFolderHash": "7039a57dd6bede938a200dd0411a68dc15de7c2f",
       "installedAt": "2026-02-06T13:11:39.684Z",
-      "updatedAt": "2026-02-10T14:20:45.670Z"
+      "updatedAt": "2026-02-10T17:46:11.161Z"
     },
     "md-docs": {
       "source": "PaulRBerg/agent-skills",
@@ -71,7 +71,7 @@
       "skillPath": "skills/md-docs/SKILL.md",
       "skillFolderHash": "e6c1d133fe370a65f447253a4e50ab7e5dd7abe2",
       "installedAt": "2026-02-06T13:11:39.854Z",
-      "updatedAt": "2026-02-10T14:20:45.740Z"
+      "updatedAt": "2026-02-10T17:46:11.425Z"
     },
     "node-deps": {
       "source": "PaulRBerg/agent-skills",
@@ -80,7 +80,7 @@
       "skillPath": "skills/node-deps/SKILL.md",
       "skillFolderHash": "58819f42f175ad92eed8651fd51d90a44048d40d",
       "installedAt": "2026-02-06T13:11:40.031Z",
-      "updatedAt": "2026-02-10T14:20:45.793Z"
+      "updatedAt": "2026-02-10T17:46:11.758Z"
     },
     "openclaw": {
       "source": "PaulRBerg/agent-skills",
@@ -89,7 +89,7 @@
       "skillPath": "skills/openclaw/SKILL.md",
       "skillFolderHash": "88f9c837345e8135bd157f9be130df450cc4de02",
       "installedAt": "2026-02-06T13:11:40.118Z",
-      "updatedAt": "2026-02-10T14:20:45.849Z"
+      "updatedAt": "2026-02-10T17:46:12.159Z"
     },
     "oracle-codex": {
       "source": "PaulRBerg/agent-skills",
@@ -98,7 +98,7 @@
       "skillPath": "skills/oracle-codex/SKILL.md",
       "skillFolderHash": "3d5109336efd5601627a3e6656dd07f216a3bdc7",
       "installedAt": "2026-02-06T13:11:40.194Z",
-      "updatedAt": "2026-02-10T14:20:45.902Z"
+      "updatedAt": "2026-02-10T17:46:14.310Z"
     },
     "oss": {
       "source": "PaulRBerg/agent-skills",
@@ -107,7 +107,7 @@
       "skillPath": "skills/oss/SKILL.md",
       "skillFolderHash": "b08dcf40ca3443c9835d745432bcad71968d09fc",
       "installedAt": "2026-02-06T13:11:40.279Z",
-      "updatedAt": "2026-02-10T14:20:45.957Z"
+      "updatedAt": "2026-02-10T17:46:15.026Z"
     },
     "refine-prompt": {
       "source": "PaulRBerg/agent-skills",
@@ -116,7 +116,7 @@
       "skillPath": "skills/refine-prompt/SKILL.md",
       "skillFolderHash": "0e683c2c146c19987f1976b7a85b7f6fad4721bc",
       "installedAt": "2026-02-06T13:11:40.380Z",
-      "updatedAt": "2026-02-10T14:20:46.013Z"
+      "updatedAt": "2026-02-10T17:46:15.766Z"
     },
     "effect-ts": {
       "source": "sablier-labs/agent-skills",
@@ -206,7 +206,7 @@
       "skillPath": "skills/cli-gh/SKILL.md",
       "skillFolderHash": "f7235b378f249348f18a563a7d19fbd69e4da69c",
       "installedAt": "2026-02-09T11:09:37.380Z",
-      "updatedAt": "2026-02-10T14:20:45.289Z"
+      "updatedAt": "2026-02-10T17:46:08.009Z"
     },
     "cli-just": {
       "source": "PaulRBerg/agent-skills",
@@ -215,7 +215,7 @@
       "skillPath": "skills/cli-just/SKILL.md",
       "skillFolderHash": "ca390bcfdee2b5d3cef2e7d3cd476eb0e6555a1f",
       "installedAt": "2026-02-09T11:09:37.457Z",
-      "updatedAt": "2026-02-10T14:20:45.340Z"
+      "updatedAt": "2026-02-10T17:46:08.418Z"
     },
     "cli-sentry": {
       "source": "PaulRBerg/agent-skills",
@@ -224,7 +224,7 @@
       "skillPath": "skills/cli-sentry/SKILL.md",
       "skillFolderHash": "7239b385e67423e81ee5e2d775fe3616d9528bf9",
       "installedAt": "2026-02-09T11:09:37.542Z",
-      "updatedAt": "2026-02-10T14:20:45.395Z"
+      "updatedAt": "2026-02-10T17:46:09.103Z"
     }
   },
   "lastSelectedAgents": [
