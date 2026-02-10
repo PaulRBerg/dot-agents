@@ -31,11 +31,11 @@ alias mw := mdformat-write
 # List skills (active and shelved)
 [group("skills")]
 @skill-list:
-    echo "Active skills:"
-    ls -1 skills 2>/dev/null || echo "  (none)"
+    echo -e '{{ BOLD }}{{ GREEN }}● Active skills:{{ NORMAL }}'
+    ls -1 skills 2>/dev/null | sed 's/^/  {{ CYAN }}▸ /' | sed 's/$/{{ NORMAL }}/' | while read -r line; do echo -e "$line"; done || echo -e '  {{ YELLOW }}(none){{ NORMAL }}'
     echo ""
-    echo "Deactivated skills:"
-    ls -1 shelf 2>/dev/null || echo "  (none)"
+    echo -e '{{ BOLD }}{{ YELLOW }}○ Shelved skills:{{ NORMAL }}'
+    ls -1 shelf 2>/dev/null | sed 's/^/  {{ BLUE }}▹ /' | sed 's/$/{{ NORMAL }}/' | while read -r line; do echo -e "$line"; done || echo -e '  {{ YELLOW }}(none){{ NORMAL }}'
 
 alias sl := skill-list
 alias list := skill-list
@@ -44,7 +44,7 @@ alias list := skill-list
 [group("skills")]
 @skill-activate name:
     mv "shelf/{{ name }}" "skills/{{ name }}"
-    echo "Activated: {{ name }}"
+    echo -e '{{ GREEN }}✅ Activated: {{ BOLD }}{{ name }}{{ NORMAL }}'
 
 alias sa := skill-activate
 
@@ -52,7 +52,7 @@ alias sa := skill-activate
 [group("skills")]
 @skill-deactivate name:
     mv "skills/{{ name }}" "shelf/{{ name }}"
-    echo "Deactivated: {{ name }}"
+    echo -e '{{ YELLOW }}📦 Shelved: {{ BOLD }}{{ name }}{{ NORMAL }}'
 
 alias sd := skill-deactivate
 
