@@ -62,17 +62,25 @@ skill-deactivate +names:
 
 alias sd := skill-deactivate
 
-# Install PaulRBerg skills, removing any that are shelved
+# Install skills from a repo, removing any that are shelved
 [group("skills")]
 [script("bash")]
-install-prb:
+install-all repo="PaulRBerg/agent-skills":
     set -euo pipefail
-    npx skills add PaulRBerg/agent-skills --yes --all
+    # TODO: replace "> /dev/null" with "--quiet" when available
+    # https://github.com/vercel-labs/skills/issues/331
+    npx skills add {{ repo }} \
+        --global \
+        --agent claude-code \
+        --skill '*' \
+        --yes \
+        > /dev/null
+    echo -e '{{ GREEN }}✅ Installed all skills from {{ repo }}{{ NORMAL }}'
     removed=()
     for entry in shelf/*; do
         name=$(basename "$entry")
         if [ -d "skills/$name" ]; then
-            npx skills remove "$name" -y
+            npx skills remove "$name" -y > /dev/null
             removed+=("$name")
         fi
     done
@@ -80,7 +88,7 @@ install-prb:
         echo -e '{{ YELLOW }}📦 Removed shelved skills: {{ BOLD }}'"${removed[*]}"'{{ NORMAL }}'
     fi
 
-alias ip := install-prb
+alias ia := install-all
 
 # Purge all skills and print reinstall commands
 [confirm("This will purge all skills. Continue? [y/N]")]
