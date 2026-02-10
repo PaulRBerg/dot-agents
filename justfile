@@ -40,19 +40,25 @@ alias mw := mdformat-write
 alias sl := skill-list
 alias list := skill-list
 
-# Activate a skill (move from shelf to skills)
+# Activate skills (move from shelf to skills)
 [group("skills")]
-@skill-activate name:
-    mv "shelf/{{ name }}" "skills/{{ name }}"
-    echo -e '{{ GREEN }}✅ Activated: {{ BOLD }}{{ name }}{{ NORMAL }}'
+[script("bash")]
+skill-activate +names:
+    for name in {{ names }}; do
+        mv "shelf/$name" "skills/$name"
+        echo -e '{{ GREEN }}✅ Activated: {{ BOLD }}'"$name"'{{ NORMAL }}'
+    done
 
 alias sa := skill-activate
 
-# Deactivate a skill (move from skills to shelf)
+# Deactivate skills (move from skills to shelf)
 [group("skills")]
-@skill-deactivate name:
-    mv "skills/{{ name }}" "shelf/{{ name }}"
-    echo -e '{{ YELLOW }}📦 Shelved: {{ BOLD }}{{ name }}{{ NORMAL }}'
+[script("bash")]
+skill-deactivate +names:
+    for name in {{ names }}; do
+        mv "skills/$name" "shelf/$name"
+        echo -e '{{ YELLOW }}📦 Shelved: {{ BOLD }}'"$name"'{{ NORMAL }}'
+    done
 
 alias sd := skill-deactivate
 
