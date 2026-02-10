@@ -222,9 +222,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/cli-sentry/SKILL.md",
-      "skillFolderHash": "",
+      "skillFolderHash": "7239b385e67423e81ee5e2d775fe3616d9528bf9",
       "installedAt": "2026-02-09T11:09:37.542Z",
-      "updatedAt": "2026-02-09T15:24:29.452Z"
+      "updatedAt": "2026-02-09T18:26:07.380Z"
     }
   },
   "lastSelectedAgents": [
