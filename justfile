@@ -8,6 +8,11 @@ set shell := ["bash", "-euo", "pipefail", "-c"]
 default:
     @just --list
 
+# Abort if the working tree has uncommitted changes
+[private]
+@_require-clean:
+    git diff --quiet && git diff --cached --quiet || { echo 'Error: uncommitted changes in git' >&2; exit 1; }
+
 # ---------------------------------------------------------------------------- #
 #                                    CHECKS                                    #
 # ---------------------------------------------------------------------------- #
@@ -30,7 +35,7 @@ alias mw := mdformat-write
 
 # List skills (active and shelved)
 [group("skills")]
-@skill-list:
+@skill-list: _require-clean
     echo -e '{{ BOLD }}{{ GREEN }}● Active skills:{{ NORMAL }}'
     ls -1 skills 2>/dev/null | sed 's/^/  {{ CYAN }}▸ /' | sed 's/$/{{ NORMAL }}/' | while read -r line; do echo -e "$line"; done || echo -e '  {{ YELLOW }}(none){{ NORMAL }}'
     echo ""
@@ -43,7 +48,7 @@ alias list := skill-list
 # Activate skills (move from shelf to skills)
 [group("skills")]
 [script("bash")]
-skill-activate +names:
+skill-activate +names: _require-clean
     for name in {{ names }}; do
         mv "shelf/$name" "skills/$name"
         echo -e '{{ GREEN }}✅ Activated: {{ BOLD }}'"$name"'{{ NORMAL }}'
@@ -54,7 +59,7 @@ alias sa := skill-activate
 # Deactivate skills (move from skills to shelf)
 [group("skills")]
 [script("bash")]
-skill-deactivate +names:
+skill-deactivate +names: _require-clean
     for name in {{ names }}; do
         mv "skills/$name" "shelf/$name"
         echo -e '{{ YELLOW }}📦 Shelved: {{ BOLD }}'"$name"'{{ NORMAL }}'
@@ -65,7 +70,7 @@ alias sd := skill-deactivate
 # Install skills from a repo, removing any that are shelved
 [group("skills")]
 [script("bash")]
-install-all repo="PaulRBerg/agent-skills":
+install-all repo="PaulRBerg/agent-skills": _require-clean
     set -euo pipefail
     # TODO: replace "> /dev/null" with "--quiet" when available
     # https://github.com/vercel-labs/skills/issues/331
@@ -94,7 +99,7 @@ alias ia := install-all
 [confirm("This will purge all skills. Continue? [y/N]")]
 [group("skills")]
 [script("bash")]
-reset-skills:
+reset-skills: _require-clean
     set -euo pipefail
     rm -rf ./skills
     rm -rf ~/.codex/skills
