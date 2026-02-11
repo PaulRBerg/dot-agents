@@ -125,7 +125,7 @@
       "skillPath": "skills/effect-ts/SKILL.md",
       "skillFolderHash": "3e3a3770bae7775641a2384633114a1107f07485",
       "installedAt": "2026-02-06T13:12:29.697Z",
-      "updatedAt": "2026-02-06T13:12:29.697Z"
+      "updatedAt": "2026-02-11T08:48:39.738Z"
     },
     "sablier-design": {
       "source": "sablier-labs/agent-skills",
@@ -206,7 +206,7 @@
       "skillPath": "skills/cli-gh/SKILL.md",
       "skillFolderHash": "f7235b378f249348f18a563a7d19fbd69e4da69c",
       "installedAt": "2026-02-09T11:09:37.380Z",
-      "updatedAt": "2026-02-10T17:46:08.009Z"
+      "updatedAt": "2026-02-10T21:07:35.823Z"
     },
     "cli-just": {
       "source": "PaulRBerg/agent-skills",
@@ -225,6 +225,33 @@
       "skillFolderHash": "7239b385e67423e81ee5e2d775fe3616d9528bf9",
       "installedAt": "2026-02-09T11:09:37.542Z",
       "updatedAt": "2026-02-10T17:46:09.103Z"
+    },
+    "etherscan-api": {
+      "source": "sablier-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
+      "skillPath": "skills/etherscan-api/SKILL.md",
+      "skillFolderHash": "3b3b6357ee2f707f762fa3dd53b9b18cfa503df5",
+      "installedAt": "2026-02-11T08:48:39.792Z",
+      "updatedAt": "2026-02-11T08:48:39.792Z"
+    },
+    "web3-foundry": {
+      "source": "sablier-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
+      "skillPath": "skills/web3-foundry/SKILL.md",
+      "skillFolderHash": "bc608acbda29b78788eb80a29c8b27e6a5634bd4",
+      "installedAt": "2026-02-11T08:48:39.845Z",
+      "updatedAt": "2026-02-11T08:48:39.845Z"
+    },
+    "xstate-react": {
+      "source": "sablier-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
+      "skillPath": "skills/xstate-react/SKILL.md",
+      "skillFolderHash": "97d2bbaa8aa4c8c02a212ac5018ac6cef71157b2",
+      "installedAt": "2026-02-11T08:48:39.897Z",
+      "updatedAt": "2026-02-11T08:48:39.897Z"
     }
   },
   "lastSelectedAgents": [
