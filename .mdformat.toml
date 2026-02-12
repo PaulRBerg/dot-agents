@@ -2,6 +2,6 @@ exclude = [
   ".venv/**",
   "node_modules/**",
   # All skills are externally installed
-  "skills",
+  "skills/**",
 ]
 number = true
