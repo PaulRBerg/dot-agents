@@ -73,15 +73,6 @@
       "installedAt": "2026-02-06T13:11:39.854Z",
       "updatedAt": "2026-02-12T14:58:28.821Z"
     },
-    "node-deps": {
-      "source": "PaulRBerg/agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
-      "skillPath": "skills/node-deps/SKILL.md",
-      "skillFolderHash": "58819f42f175ad92eed8651fd51d90a44048d40d",
-      "installedAt": "2026-02-06T13:11:40.031Z",
-      "updatedAt": "2026-02-11T16:55:12.103Z"
-    },
     "openclaw": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
