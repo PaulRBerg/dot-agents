@@ -224,7 +224,7 @@
       "skillPath": "skills/etherscan-api/SKILL.md",
       "skillFolderHash": "3b3b6357ee2f707f762fa3dd53b9b18cfa503df5",
       "installedAt": "2026-02-11T08:48:39.792Z",
-      "updatedAt": "2026-02-11T08:48:39.792Z"
+      "updatedAt": "2026-02-12T17:00:25.439Z"
     },
     "web3-foundry": {
       "source": "sablier-labs/agent-skills",
@@ -261,6 +261,15 @@
       "skillFolderHash": "b7e9e836714dc147189b6758a3e6d4c2bf04fdf5",
       "installedAt": "2026-02-12T14:58:27.760Z",
       "updatedAt": "2026-02-12T16:22:02.810Z"
+    },
+    "sablier-icon": {
+      "source": "sablier-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
+      "skillPath": "skills/sablier-icon/SKILL.md",
+      "skillFolderHash": "3d96c008312b8f9d465b7c96aed069a4debc4399",
+      "installedAt": "2026-02-12T17:00:25.539Z",
+      "updatedAt": "2026-02-12T17:28:41.215Z"
     }
   },
   "lastSelectedAgents": [
