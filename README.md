@@ -52,6 +52,12 @@ mv skills/some-skill shelf/
 mv shelf/some-skill skills/
 ```
 
+## External Skills
+
+Skills listed in `.skill-lock.json` are externally installed and managed. **Do not modify, refactor, or include these skills in any task.**
+
+To see the current list: `just list-external-skills`
+
 ## License
 
 MIT
