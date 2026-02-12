@@ -15,9 +15,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/bump-release/SKILL.md",
-      "skillFolderHash": "1591377415a14afa614ff5b3b46170122338a714",
+      "skillFolderHash": "af5747bb1c33278d2a935d3f7023d7021b1cdbbc",
       "installedAt": "2026-02-06T13:11:38.637Z",
-      "updatedAt": "2026-02-11T16:55:11.494Z"
+      "updatedAt": "2026-02-11T17:08:05.963Z"
     },
     "code-review": {
       "source": "PaulRBerg/agent-skills",
@@ -42,9 +42,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/commit/SKILL.md",
-      "skillFolderHash": "63d220bba9e2ad59fc3c7ea831aa79ba0c1b39c4",
+      "skillFolderHash": "3f03b71be4f430be02e0e2be5cf2fb3f539dcf17",
       "installedAt": "2026-02-06T13:11:39.081Z",
-      "updatedAt": "2026-02-11T16:55:11.889Z"
+      "updatedAt": "2026-02-12T14:03:24.676Z"
     },
     "delayed-command": {
       "source": "PaulRBerg/agent-skills",
