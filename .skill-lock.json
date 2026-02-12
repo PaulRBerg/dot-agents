@@ -267,9 +267,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
       "skillPath": "skills/sablier-icon/SKILL.md",
-      "skillFolderHash": "3d96c008312b8f9d465b7c96aed069a4debc4399",
+      "skillFolderHash": "dc3fba65db1e7655d892aea4f87fa22fd357ddd8",
       "installedAt": "2026-02-12T17:00:25.539Z",
-      "updatedAt": "2026-02-12T17:28:41.215Z"
+      "updatedAt": "2026-02-12T17:48:47.261Z"
     },
     "work": {
       "source": "PaulRBerg/agent-skills",
@@ -279,6 +279,15 @@
       "skillFolderHash": "145d59a5eed0fa31111c59de7911bdc5740dfa4c",
       "installedAt": "2026-02-12T17:31:43.696Z",
       "updatedAt": "2026-02-12T17:31:43.696Z"
+    },
+    "cli-cast": {
+      "source": "PaulRBerg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "skillPath": "skills/cli-cast/SKILL.md",
+      "skillFolderHash": "79c63ffe0c40f7e79218ec6551ad423729e94172",
+      "installedAt": "2026-02-12T18:24:09.412Z",
+      "updatedAt": "2026-02-12T18:24:09.412Z"
     }
   },
   "lastSelectedAgents": [
