@@ -4,7 +4,8 @@ argument-hint: '[prompt-request]'
 disable-model-invocation: true
 model: opus
 name: refine-prompt
-description: Optimize prompts for LLMs and append to PROMPT.md
+user-invocable: true
+description: This skill should be used when the user asks to "refine a prompt", "optimize a prompt", "improve my prompt", "rewrite prompt for LLM", "craft a better prompt", or mentions prompt engineering, prompt optimization, or appending to PROMPT.md.
 ---
 
 ## Context

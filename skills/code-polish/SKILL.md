@@ -1,5 +1,7 @@
 ---
+argument-hint: '[--all]'
 context: fork
+disable-model-invocation: false
 name: code-polish
 user-invocable: true
 description: This skill should be used when the user asks to "polish code", "simplify and review", "clean up and review code", "full code polish", "simplify then review", "refactor and review", "simplify and fix", "clean up and fix", or wants a combined simplification and review workflow on recently changed code.
@@ -7,23 +9,24 @@ description: This skill should be used when the user asks to "polish code", "sim
 
 # Code Polish
 
-> **File paths**: All `references/` paths in this skill resolve under `~/.agents/skills/code-review/`. Do not look for them in the current working directory.
-
 ## Overview
 
 Combined simplification and review pipeline for recently changed code. Simplify for readability and maintainability, then review for correctness, security, and quality, auto-applying all fixes. Run as a single pass with shared scope determination and one verification phase at the end.
+
+## Scope Resolution
+
+1. Verify repository context: `git rev-parse --git-dir`. If this fails, stop and tell the user to run from a git repository.
+2. If `$ARGUMENTS` includes `--all`, scope is `git diff --name-only --diff-filter=ACMR`.
+3. Otherwise, if user provides file paths/patterns or a commit/range, scope is exactly those targets.
+4. Otherwise, scope is session-modified files.
+5. Exclude generated/low-signal files unless requested: lockfiles, minified bundles, build outputs, vendored code.
+6. If scope resolves to zero files, report and stop. Do not widen scope silently.
 
 ## Workflow
 
 ### 1) Determine Scope
 
-- Verify repository context: `git rev-parse --git-dir`. If this fails, stop.
-- Identify candidate files:
-  - If `$ARGUMENTS` contains file paths or patterns, use them.
-  - Otherwise, use session-modified files (files edited in this chat session).
-  - If no session edits exist, fall back to `git diff --name-only --diff-filter=ACMR`.
-- Exclude generated or low-signal files: lockfiles, minified bundles, build outputs, vendored code.
-- If no target files found, ask for explicit scope.
+- Resolve target files using the "Scope Resolution" section above.
 - Read all in-scope files and surrounding context once. This context serves both the simplification and review phases.
 
 ### 2) Build Baseline
@@ -75,14 +78,14 @@ Review the code (including simplifications just applied) using the checklist bel
 
 For domain-specific review depth, consult:
 
-- **`~/.agents/skills/code-review/references/security.md`** — OWASP, auth, crypto, input validation
-- **`~/.agents/skills/code-review/references/typescript-react.md`** — Frontend, Node.js, React, TypeScript patterns
-- **`~/.agents/skills/code-review/references/python.md`** — Type hints, async, exceptions, common bugs
-- **`~/.agents/skills/code-review/references/shell.md`** — Quoting, error handling, portability, injection
-- **`~/.agents/skills/code-review/references/smart-contracts.md`** — Solidity, Solana, economic attacks
-- **`~/.agents/skills/code-review/references/configuration.md`** — Limits, timeouts, environment-specific validation
-- **`~/.agents/skills/code-review/references/data-formats.md`** — CSV, JSON, parsing safety, encoding
-- **`~/.agents/skills/code-review/references/naming.md`** — Language-specific naming conventions and anti-patterns
+- **`references/security.md`** — OWASP, auth, crypto, input validation
+- **`references/typescript-react.md`** — Frontend, Node.js, React, TypeScript patterns
+- **`references/python.md`** — Type hints, async, exceptions, common bugs
+- **`references/shell.md`** — Quoting, error handling, portability, injection
+- **`references/smart-contracts.md`** — Solidity, Solana, economic attacks
+- **`references/configuration.md`** — Limits, timeouts, environment-specific validation
+- **`references/data-formats.md`** — CSV, JSON, parsing safety, encoding
+- **`references/naming.md`** — Language-specific naming conventions and anti-patterns
 
 ### 5) Verify and Report
 
