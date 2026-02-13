@@ -35,7 +35,7 @@ alias mw := mdformat-write
 
 # List skills (active and shelved)
 [group("skills")]
-@skill-list: _require-clean
+@skill-list:
     echo -e '{{ BOLD }}{{ GREEN }}● Active skills:{{ NORMAL }}'
     ls -1 skills 2>/dev/null | sed 's/^/  {{ CYAN }}▸ /' | sed 's/$/{{ NORMAL }}/' | while read -r line; do echo -e "$line"; done || echo -e '  {{ YELLOW }}(none){{ NORMAL }}'
     echo ""
