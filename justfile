@@ -69,7 +69,7 @@ alias sd := skill-deactivate
 
 # Install skills from a repo, removing any that are shelved
 [group("skills")]
-[script("zsh -i")]
+[script("zsh", "-i")]
 install-all repo="PaulRBerg/agent-skills": _require-clean
     set -euo pipefail
     # TODO: replace "> /dev/null" with "--quiet" when available
