@@ -26,7 +26,7 @@
       "skillPath": "skills/code-review/SKILL.md",
       "skillFolderHash": "2356dc3a4c16ff968b70046f1d87f940e1a63ea6",
       "installedAt": "2026-02-06T13:11:38.836Z",
-      "updatedAt": "2026-02-13T13:10:08.268Z"
+      "updatedAt": "2026-02-13T14:52:33.658Z"
     },
     "code-simplify": {
       "source": "PaulRBerg/agent-skills",
@@ -35,7 +35,7 @@
       "skillPath": "skills/code-simplify/SKILL.md",
       "skillFolderHash": "29bfd81eeb30523808abfa8543f49cbf79f8c13a",
       "installedAt": "2026-02-06T13:11:38.945Z",
-      "updatedAt": "2026-02-13T13:10:08.353Z"
+      "updatedAt": "2026-02-13T14:52:33.728Z"
     },
     "commit": {
       "source": "PaulRBerg/agent-skills",
@@ -69,9 +69,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/oracle-codex/SKILL.md",
-      "skillFolderHash": "cd4bbebd4572c3b9fd974f739b396b7a66342e00",
+      "skillFolderHash": "c297c0b28fc0e3742f3697eadf3a75be1d47e6d3",
       "installedAt": "2026-02-06T13:11:40.194Z",
-      "updatedAt": "2026-02-13T13:10:09.133Z"
+      "updatedAt": "2026-02-13T17:12:25.495Z"
     },
     "refine-prompt": {
       "source": "PaulRBerg/agent-skills",
@@ -213,9 +213,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/code-polish/SKILL.md",
-      "skillFolderHash": "a83e5b9eff9cbee176c46a9b83ea84084de7e370",
+      "skillFolderHash": "faa72f9fff16fb0a9072af3d2caca6bfa7adadc7",
       "installedAt": "2026-02-11T11:12:56.733Z",
-      "updatedAt": "2026-02-13T13:10:08.185Z"
+      "updatedAt": "2026-02-13T14:52:33.587Z"
     },
     "bump-deps": {
       "source": "PaulRBerg/agent-skills",
@@ -240,9 +240,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/work/SKILL.md",
-      "skillFolderHash": "145d59a5eed0fa31111c59de7911bdc5740dfa4c",
+      "skillFolderHash": "500485efc6e5c35c27b53bd529b2b15df6cd2d1d",
       "installedAt": "2026-02-12T17:31:43.696Z",
-      "updatedAt": "2026-02-13T13:10:09.369Z"
+      "updatedAt": "2026-02-13T14:52:33.802Z"
     },
     "cli-cast": {
       "source": "PaulRBerg/agent-skills",
@@ -260,7 +260,7 @@
       "skillPath": "skills/yeet/SKILL.md",
       "skillFolderHash": "6c06b89d406e8b2113fa830810b35c979ad66289",
       "installedAt": "2026-02-13T12:59:07.069Z",
-      "updatedAt": "2026-02-13T13:10:09.540Z"
+      "updatedAt": "2026-02-13T14:38:04.073Z"
     },
     "cli-sentry": {
       "source": "PaulRBerg/agent-skills",
@@ -288,6 +288,60 @@
       "skillFolderHash": "94a7c812db29c51ef07093c8bdeb6544a39c6f4e",
       "installedAt": "2026-02-13T13:10:09.017Z",
       "updatedAt": "2026-02-13T13:10:09.017Z"
+    },
+    "coderabbit": {
+      "source": "PaulRBerg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "skillPath": "skills/coderabbit/SKILL.md",
+      "skillFolderHash": "bc4e6d44157c5fd817c2c6b48e6ed51a50f6345e",
+      "installedAt": "2026-02-13T17:12:25.367Z",
+      "updatedAt": "2026-02-13T17:12:25.367Z"
+    },
+    "frontend-design": {
+      "source": "anthropics/claude-plugins-official",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/anthropics/claude-plugins-official.git",
+      "skillPath": "plugins/frontend-design/skills/frontend-design/SKILL.md",
+      "skillFolderHash": "3bd61bab4d6b858c5d3af8adf14b917ce853e4c5",
+      "installedAt": "2026-02-14T10:33:40.097Z",
+      "updatedAt": "2026-02-14T10:33:40.097Z"
+    },
+    "playground": {
+      "source": "anthropics/claude-plugins-official",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/anthropics/claude-plugins-official.git",
+      "skillPath": "plugins/playground/skills/playground/SKILL.md",
+      "skillFolderHash": "8b48d9161c33190447492f7d7d106cc140322772",
+      "installedAt": "2026-02-14T10:33:40.160Z",
+      "updatedAt": "2026-02-14T10:33:40.160Z"
+    },
+    "agent-development": {
+      "source": "anthropics/claude-plugins-official",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/anthropics/claude-plugins-official.git",
+      "skillPath": "plugins/plugin-dev/skills/agent-development/SKILL.md",
+      "skillFolderHash": "9d033f08d114179a2873d68c830df32faaa1c339",
+      "installedAt": "2026-02-14T10:33:40.224Z",
+      "updatedAt": "2026-02-14T10:33:40.224Z"
+    },
+    "skill-development": {
+      "source": "anthropics/claude-plugins-official",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/anthropics/claude-plugins-official.git",
+      "skillPath": "plugins/plugin-dev/skills/skill-development/SKILL.md",
+      "skillFolderHash": "eb778d2062b41fa6b0aca146c5d5462890d749a3",
+      "installedAt": "2026-02-14T10:33:40.290Z",
+      "updatedAt": "2026-02-14T10:33:40.290Z"
+    },
+    "claude-automation-recommender": {
+      "source": "anthropics/claude-plugins-official",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/anthropics/claude-plugins-official.git",
+      "skillPath": "plugins/claude-code-setup/skills/claude-automation-recommender/SKILL.md",
+      "skillFolderHash": "b43f4a9072318526305d3ddf2d6bedfbf860ae93",
+      "installedAt": "2026-02-14T10:33:40.363Z",
+      "updatedAt": "2026-02-14T10:33:40.363Z"
     }
   },
   "lastSelectedAgents": [
