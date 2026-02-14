@@ -342,6 +342,15 @@
       "skillFolderHash": "b43f4a9072318526305d3ddf2d6bedfbf860ae93",
       "installedAt": "2026-02-14T10:33:40.363Z",
       "updatedAt": "2026-02-14T10:33:40.363Z"
+    },
+    "tailwind-css": {
+      "source": "PaulRBerg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "skillPath": "skills/tailwind-css/SKILL.md",
+      "skillFolderHash": "63e66dfa6910f5d77d3a49983d6c12a3bdfe3fe1",
+      "installedAt": "2026-02-14T12:13:48.060Z",
+      "updatedAt": "2026-02-14T12:13:48.060Z"
     }
   },
   "lastSelectedAgents": [
