@@ -351,6 +351,15 @@
       "skillFolderHash": "63e66dfa6910f5d77d3a49983d6c12a3bdfe3fe1",
       "installedAt": "2026-02-14T12:13:48.060Z",
       "updatedAt": "2026-02-14T12:13:48.060Z"
+    },
+    "supabase-postgres-best-practices": {
+      "source": "supabase/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/supabase/agent-skills.git",
+      "skillPath": "skills/supabase-postgres-best-practices/SKILL.md",
+      "skillFolderHash": "95fe6d29daaf88aa9bc3b505ca4defe19ceabf92",
+      "installedAt": "2026-02-15T11:55:25.702Z",
+      "updatedAt": "2026-02-15T11:55:25.702Z"
     }
   },
   "lastSelectedAgents": [
