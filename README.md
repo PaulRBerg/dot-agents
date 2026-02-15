@@ -52,11 +52,24 @@ mv skills/some-skill shelf/
 mv shelf/some-skill skills/
 ```
 
-## External Skills
+## 📦 Skill Sources
 
-Skills listed in `.skill-lock.json` are externally installed and managed. **Do not modify, refactor, or include these skills in any task.**
+Skills are installed from these repositories:
 
-To see the current list: `just list-external-skills`
+| Source | Description |
+| --- | --- |
+| [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills) | General-purpose skills (commit, code-review, yeet, cli-gh, etc.) |
+| [sablier-labs/agent-skills](https://github.com/sablier-labs/agent-skills) | Sablier & Web3 skills (web3-foundry, effect-ts, vitest, etc.) |
+| [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | Vercel/React skills (composition-patterns, react-best-practices, etc.) |
+| [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | Official Claude Code plugins (frontend-design, playground, etc.) |
+
+Install all skills from a source:
+
+```bash
+npx skills add PaulRBerg/agent-skills
+```
+
+All skills are externally installed and managed via `.skill-lock.json`. **Do not modify, refactor, or include these skills in any task.**
 
 ## License
 
