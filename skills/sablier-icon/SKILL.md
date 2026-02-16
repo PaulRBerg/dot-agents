@@ -160,15 +160,17 @@ Verify the exported file's dimensions match the expected aspect ratio.
 
 1. Generate the recolored SVG first
 2. Verify `rsvg-convert` and `magick` are available (same checks as PNG/JPG)
-3. Render intermediate PNGs at each favicon size using `rsvg-convert`
+3. Render intermediate PNGs at each favicon size using `rsvg-convert` (height-constrained to preserve aspect ratio), then center each on a square transparent canvas with `magick -extent`
 4. Combine into a single `.ico` with `magick`
 5. Clean up intermediate PNGs
 
 ```bash
-# Render PNGs at standard favicon sizes (square — use -w and -h to force square output)
-rsvg-convert -w 16 -h 16 "<input>.svg" -o "<output>-16.tmp.png"
-rsvg-convert -w 32 -h 32 "<input>.svg" -o "<output>-32.tmp.png"
-rsvg-convert -w 48 -h 48 "<input>.svg" -o "<output>-48.tmp.png"
+# Render PNGs preserving aspect ratio (height-constrained), then center on square canvas
+for size in 16 32 48; do
+  rsvg-convert -h "$size" "<input>.svg" -o "<output>-${size}-raw.tmp.png"
+  magick "<output>-${size}-raw.tmp.png" -background transparent -gravity center -extent "${size}x${size}" "<output>-${size}.tmp.png"
+  rm "<output>-${size}-raw.tmp.png"
+done
 
 # Combine into multi-resolution ICO
 magick "<output>-16.tmp.png" "<output>-32.tmp.png" "<output>-48.tmp.png" "<output>.ico"
