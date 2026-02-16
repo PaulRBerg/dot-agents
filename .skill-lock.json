@@ -231,9 +231,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
       "skillPath": "skills/sablier-icon/SKILL.md",
-      "skillFolderHash": "dc3fba65db1e7655d892aea4f87fa22fd357ddd8",
+      "skillFolderHash": "861d32a7637c3473331f4712c61904f296f59563",
       "installedAt": "2026-02-12T17:00:25.539Z",
-      "updatedAt": "2026-02-12T17:48:47.261Z"
+      "updatedAt": "2026-02-16T10:50:05.311Z"
     },
     "work": {
       "source": "PaulRBerg/agent-skills",

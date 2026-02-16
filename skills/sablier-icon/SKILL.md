@@ -1,17 +1,26 @@
 ---
 name: sablier-icon
-argument-hint: <color> [--format png|jpg]
-description: This skill should be used when the user asks to "recolor the Sablier icon", "Sablier icon in orange", "Sablier logo in primary color", "generate Sablier hourglass variant", "change Sablier icon color", or "export Sablier icon as PNG". Converts the Sablier white SVG icon to any color using brand palette names, hex values, or CSS color names, with optional PNG/JPG raster export.
+argument-hint: <color> [--flat] [--format png|jpg]
+description: This skill should be used when the user asks to "recolor the Sablier icon", "Sablier icon in orange", "Sablier logo in primary color", "generate Sablier hourglass variant", "change Sablier icon color", or "export Sablier icon as PNG". Generates a gradient or flat Sablier icon SVG in any color using brand palette names, hex values, or CSS color names, with optional PNG/JPG raster export.
 ---
 
-Recolor the Sablier icon SVG to a user-specified color and optionally export to PNG or JPG.
+Recolor the Sablier icon SVG to a user-specified color with an analogous gradient, and optionally export to PNG or JPG.
 
 ## Source
 
-The base icon is at `assets/white-icon.svg` (relative to this skill directory). It is a single-path SVG with
-`fill="white"` and `viewBox="0 0 386 480"` (aspect ratio ~0.804:1). To recolor, replace the `fill` attribute value
-with the target hex color. Always preserve the original viewBox and aspect ratio — never add or change `width`/`height`
-attributes on the SVG.
+The base icon is at `assets/icon.svg` (relative to this skill directory). It is a two-path SVG with `viewBox="0 0 189.9 236.73"`
+(aspect ratio ~0.802:1). Two CSS classes (`.cls-1`, `.cls-2`) reference two `<linearGradient>` elements in `<defs>`:
+
+- `<linearGradient id="linear-gradient">` — contains two `<stop>` elements:
+  - `offset="0"` → `stop-color="#f77423"` (top / darker)
+  - `offset="1"` → `stop-color="#fbce5b"` (bottom / lighter)
+- `<linearGradient id="linear-gradient-2">` — inherits stops from the first via `xlink:href="#linear-gradient"`
+
+To recolor, replace the two `stop-color` values inside `<linearGradient id="linear-gradient">`. Always preserve the original
+viewBox and aspect ratio — never add or change `width`/`height` attributes on the SVG.
+
+A flat variant is at `assets/icon-white.svg` — a single-path SVG with `fill="white"` and `viewBox="0 0 386 480"` (aspect
+ratio ~0.804:1). Used only when `--flat` is passed.
 
 ## Color Resolution
 
@@ -48,19 +57,67 @@ Source: [sablier-labs/branding](https://github.com/sablier-labs/branding)
 | white                 | `#ffffff` | Original icon color             |
 | black                 | `#000000` | Pure black (rarely used)        |
 
-When the user says "primary", use `#ff9c00`. When they say "secondary", use `#0063ff`.
+## Gradient Generation
+
+### Brand gradient pairs
+
+Use these exact hex pairs — no computation needed:
+
+| Alias            | Start (offset=0, top) | End (offset=1, bottom) |
+| ---------------- | --------------------- | ---------------------- |
+| primary / orange | `#f77423`             | `#fbce5b`              |
+| secondary / blue | `#003dff`             | `#00b7ff`              |
+
+When the user says "primary" or "orange", the output is identical to `icon.svg` (no stop-color changes needed).
+When the user says "secondary" or "blue", replace the two stop-colors with the blue pair.
+
+### Arbitrary colors — piecewise HSL algorithm
+
+For any color not in the brand gradient pairs above, generate an analogous two-stop gradient:
+
+1. Convert the resolved hex to HSL `(h, s%, l%)`
+2. Branch by saturation:
+   - **Achromatic** (`s < 10`): keep `s = 0` for both stops, vary only lightness
+     - Start: `hsl(h, 0%, max(l - 8, 10)%)`
+     - End: `hsl(h, 0%, min(l + 12, 90)%)`
+   - **Chromatic** (`s >= 10`): keep hue constant, adjust lightness and gently reduce end saturation
+     - Start: `hsl(h, s%, max(l - 8, 15)%)`
+     - End: `hsl(h, floor(s * 0.9)%, min(l + 12, 88)%)`
+3. Ensure `endL > startL` after clamps; if not, set `startL = endL - 10`
+4. Convert both HSL values back to 6-digit lowercase hex
 
 ## SVG Generation
 
-1. Read `assets/white-icon.svg`
-2. Replace `fill="white"` on the `<path>` element only — never touch `fill="none"` on the root `<svg>` element
-3. Verify exactly one replacement occurred. Zero means the SVG structure changed; more than one means multi-path — both
-   require investigation before proceeding
-4. Verify the output preserves `viewBox="0 0 386 480"` and contains no `width`/`height` attributes
-5. Write the result to the user's working directory as `sablier-icon-<color-name>.svg`
+### Gradient mode (default)
 
-For filenames: use the brand alias when matched by name (e.g. `primary`), otherwise strip the `#` prefix and lowercase
-the hex value (e.g. `#E52E52` → `e52e52`). If the color cannot be resolved, ask the user to provide a valid hex code.
+1. Read `assets/icon.svg`
+2. Resolve gradient start/end colors:
+   - If the color matches a brand gradient pair alias, use the exact hex pair
+   - Otherwise, apply the piecewise HSL algorithm
+3. Find the two `<stop>` elements inside `<linearGradient id="linear-gradient">` and replace their `stop-color` values:
+   - `offset="0"` → start hex
+   - `offset="1"` → end hex
+4. Structural checks:
+   - Exactly two `stop-color` replacements occurred
+   - `xlink:href="#linear-gradient"` on `linear-gradient-2` is still intact
+   - `viewBox="0 0 189.9 236.73"` preserved, no `width`/`height` attributes added
+5. Write to `sablier-icon-<color-name>.svg`
+
+### Flat mode (`--flat` flag)
+
+1. Read `assets/icon-white.svg`
+2. Resolve the color to a single hex value:
+   - If the color matches a brand gradient pair alias (`primary`, `secondary`), use the median palette hex (`#ff9c00`, `#0063ff`)
+   - Otherwise, use the resolved hex directly
+3. Replace `fill="white"` on the `<path>` element only — never touch `fill="none"` on the root `<svg>` element
+4. Verify exactly one replacement occurred
+5. Verify `viewBox="0 0 386 480"` preserved, no `width`/`height` attributes added
+6. Write to `sablier-icon-<color-name>.svg`
+
+### Filenames
+
+Use the brand alias when matched by name (e.g. `primary`), otherwise strip the `#` prefix and lowercase the hex value
+(e.g. `#E52E52` → `e52e52`). If the color cannot be resolved, ask the user to provide a valid hex code.
 
 ## PNG / JPG Export
 
@@ -70,22 +127,36 @@ If the user passes `--format png` or `--format jpg`:
 2. Verify `magick` is available: `command -v magick >/dev/null 2>&1 || { echo "Error: ImageMagick not found. Install with: brew install imagemagick"; exit 1; }`
 3. Use `magick` to convert:
 
+**Gradient mode** (from `icon.svg`, viewBox 189.9×236.73):
+
 ```bash
-# PNG (transparent background, 1024px height, preserves aspect ratio)
+# PNG (transparent background, 1024px height, auto-compute width from aspect ratio ≈822px)
+magick -background none "<input>.svg" -resize x1024 "<output>.png"
+
+# JPG (dark background since JPG has no transparency)
+magick -background "#14161f" "<input>.svg" -resize x1024 -flatten "<output>.jpg"
+```
+
+**Flat mode** (from `icon-white.svg`, viewBox 386×480):
+
+```bash
+# PNG (transparent background, explicit dimensions from 386:480 ratio)
 magick -background none "<input>.svg" -resize 824x1024 "<output>.png"
 
-# JPG (dark background since JPG has no transparency, preserves aspect ratio)
+# JPG (dark background)
 magick -background "#14161f" "<input>.svg" -resize 824x1024 -flatten "<output>.jpg"
 ```
 
-Prefer explicit pixel dimensions derived from the 386:480 viewBox ratio (e.g. 824x1024, 412x512) for predictable
-output. Verify the exported file's dimensions match the expected aspect ratio.
+Verify the exported file's dimensions match the expected aspect ratio.
 
 The output filename follows the same `sablier-icon-<color-name>.<ext>` pattern.
 
 ## Examples
 
-- `primary` → `sablier-icon-primary.svg` with `fill="#ff9c00"`
-- `secondary --format png` → `sablier-icon-secondary.svg` + `sablier-icon-secondary.png`
-- `#e52e52` → `sablier-icon-e52e52.svg` with `fill="#e52e52"`
+- `primary` → `sablier-icon-primary.svg` with brand orange gradient (identical to `icon.svg`)
+- `secondary` → `sablier-icon-secondary.svg` with blue gradient `#003dff` / `#00b7ff`
+- `#e52e52` → `sablier-icon-e52e52.svg` with red gradient (piecewise HSL algorithm)
+- `white` → `sablier-icon-white.svg` with achromatic subtle lightness gradient
+- `#00d395 --flat` → `sablier-icon-00d395.svg` with flat `fill="#00d395"`
 - `red --format jpg` → `sablier-icon-red.svg` + `sablier-icon-red.jpg`
+- `secondary --format png` → `sablier-icon-secondary.svg` + `sablier-icon-secondary.png` (blue gradient + raster export)
