@@ -1,10 +1,10 @@
 ---
 name: sablier-icon
-argument-hint: <color> [--flat] [--format png|jpg]
-description: This skill should be used when the user asks to "recolor the Sablier icon", "Sablier icon in orange", "Sablier logo in primary color", "generate Sablier hourglass variant", "change Sablier icon color", or "export Sablier icon as PNG". Generates a gradient or flat Sablier icon SVG in any color using brand palette names, hex values, or CSS color names, with optional PNG/JPG raster export.
+argument-hint: <color> [--flat] [--format png|jpg|ico] [--favicon]
+description: This skill should be used when the user asks to "recolor the Sablier icon", "Sablier icon in orange", "Sablier logo in primary color", "generate Sablier hourglass variant", "change Sablier icon color", "export Sablier icon as PNG", or "generate Sablier favicon". Generates a gradient or flat Sablier icon SVG in any color using brand palette names, hex values, or CSS color names, with optional PNG/JPG/ICO raster export.
 ---
 
-Recolor the Sablier icon SVG to a user-specified color with an analogous gradient, and optionally export to PNG or JPG.
+Recolor the Sablier icon SVG to a user-specified color with an analogous gradient, and optionally export to PNG, JPG, or ICO (favicon).
 
 ## Source
 
@@ -124,32 +124,62 @@ Use the brand alias when matched by name (e.g. `primary`), otherwise strip the `
 If the user passes `--format png` or `--format jpg`:
 
 1. Generate the recolored SVG first
-2. Verify `magick` is available: `command -v magick >/dev/null 2>&1 || { echo "Error: ImageMagick not found. Install with: brew install imagemagick"; exit 1; }`
-3. Use `magick` to convert:
+2. Verify `rsvg-convert` is available: `command -v rsvg-convert >/dev/null 2>&1 || { echo "Error: rsvg-convert not found. Install with: brew install librsvg"; exit 1; }`
+3. Use `rsvg-convert` for SVG→PNG (it correctly renders CSS gradients, unlike ImageMagick's SVG renderer which produces grayscale)
+4. For JPG, convert the PNG with `magick` (verify availability: `command -v magick >/dev/null 2>&1`)
 
 **Gradient mode** (from `icon.svg`, viewBox 189.9×236.73):
 
 ```bash
-# PNG (transparent background, 1024px height, auto-compute width from aspect ratio ≈822px)
-magick -background none "<input>.svg" -resize x1024 "<output>.png"
+# PNG (transparent background, 1024px height, width auto-computed from aspect ratio ≈822px)
+rsvg-convert -h 1024 "<input>.svg" -o "<output>.png"
 
-# JPG (dark background since JPG has no transparency)
-magick -background "#14161f" "<input>.svg" -resize x1024 -flatten "<output>.jpg"
+# JPG (dark background since JPG has no transparency) — render PNG first, then convert
+rsvg-convert -h 1024 "<input>.svg" -o "<output>.tmp.png"
+magick "<output>.tmp.png" -background "#14161f" -flatten "<output>.jpg"
+rm "<output>.tmp.png"
 ```
 
 **Flat mode** (from `icon-white.svg`, viewBox 386×480):
 
 ```bash
-# PNG (transparent background, explicit dimensions from 386:480 ratio)
-magick -background none "<input>.svg" -resize 824x1024 "<output>.png"
+# PNG (transparent background, explicit height, width auto-computed ≈824px)
+rsvg-convert -h 1024 "<input>.svg" -o "<output>.png"
 
 # JPG (dark background)
-magick -background "#14161f" "<input>.svg" -resize 824x1024 -flatten "<output>.jpg"
+rsvg-convert -h 1024 "<input>.svg" -o "<output>.tmp.png"
+magick "<output>.tmp.png" -background "#14161f" -flatten "<output>.jpg"
+rm "<output>.tmp.png"
 ```
 
 Verify the exported file's dimensions match the expected aspect ratio.
 
-The output filename follows the same `sablier-icon-<color-name>.<ext>` pattern.
+### ICO Export (`--format ico` or `--favicon`)
+
+`--favicon` is a shorthand for `--format ico`. Both produce a multi-resolution `.ico` file containing 16x16, 32x32, and 48x48 embedded PNGs — the standard sizes for `favicon.ico`.
+
+1. Generate the recolored SVG first
+2. Verify `rsvg-convert` and `magick` are available (same checks as PNG/JPG)
+3. Render intermediate PNGs at each favicon size using `rsvg-convert`
+4. Combine into a single `.ico` with `magick`
+5. Clean up intermediate PNGs
+
+```bash
+# Render PNGs at standard favicon sizes (square — use -w and -h to force square output)
+rsvg-convert -w 16 -h 16 "<input>.svg" -o "<output>-16.tmp.png"
+rsvg-convert -w 32 -h 32 "<input>.svg" -o "<output>-32.tmp.png"
+rsvg-convert -w 48 -h 48 "<input>.svg" -o "<output>-48.tmp.png"
+
+# Combine into multi-resolution ICO
+magick "<output>-16.tmp.png" "<output>-32.tmp.png" "<output>-48.tmp.png" "<output>.ico"
+
+# Clean up
+rm "<output>-16.tmp.png" "<output>-32.tmp.png" "<output>-48.tmp.png"
+```
+
+The output filename follows the `sablier-icon-<color-name>.ico` pattern — or `favicon.ico` if the user explicitly requests that name.
+
+The output filename follows the same `sablier-icon-<color-name>.<ext>` pattern for all other formats.
 
 ## Examples
 
@@ -160,3 +190,5 @@ The output filename follows the same `sablier-icon-<color-name>.<ext>` pattern.
 - `#00d395 --flat` → `sablier-icon-00d395.svg` with flat `fill="#00d395"`
 - `red --format jpg` → `sablier-icon-red.svg` + `sablier-icon-red.jpg`
 - `secondary --format png` → `sablier-icon-secondary.svg` + `sablier-icon-secondary.png` (blue gradient + raster export)
+- `primary --format ico` → `sablier-icon-primary.svg` + `sablier-icon-primary.ico` (multi-resolution 16/32/48px)
+- `primary --favicon` → same as `--format ico`
