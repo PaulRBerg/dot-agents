@@ -61,7 +61,6 @@ Skills are installed from these repositories:
 | [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills) | General-purpose skills (commit, code-review, yeet, cli-gh, etc.) |
 | [sablier-labs/agent-skills](https://github.com/sablier-labs/agent-skills) | Sablier & Web3 skills (web3-foundry, effect-ts, vitest, etc.) |
 | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | Vercel/React skills (composition-patterns, react-best-practices, etc.) |
-| [supabase/agent-skills](https://github.com/supabase/agent-skills) | Supabase & Postgres skills (supabase-postgres-best-practices, etc.) |
 | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | Official Claude Code plugins (frontend-design, playground, etc.) |
 
 Install all skills from a source:
