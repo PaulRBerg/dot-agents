@@ -325,15 +325,6 @@
       "installedAt": "2026-02-14T10:33:40.290Z",
       "updatedAt": "2026-02-14T10:33:40.290Z"
     },
-    "claude-automation-recommender": {
-      "source": "anthropics/claude-plugins-official",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/anthropics/claude-plugins-official.git",
-      "skillPath": "plugins/claude-code-setup/skills/claude-automation-recommender/SKILL.md",
-      "skillFolderHash": "b43f4a9072318526305d3ddf2d6bedfbf860ae93",
-      "installedAt": "2026-02-14T10:33:40.363Z",
-      "updatedAt": "2026-02-14T10:33:40.363Z"
-    },
     "tailwind-css": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
