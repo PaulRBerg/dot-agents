@@ -91,15 +91,6 @@
       "installedAt": "2026-02-06T13:12:29.772Z",
       "updatedAt": "2026-02-06T13:12:29.772Z"
     },
-    "sablier-protocol": {
-      "source": "sablier-labs/agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
-      "skillPath": "skills/sablier-protocol/SKILL.md",
-      "skillFolderHash": "2f724dae37ebb0b737d9c35bd44c94573196d0ce",
-      "installedAt": "2026-02-06T13:12:29.871Z",
-      "updatedAt": "2026-02-06T13:12:29.871Z"
-    },
     "sablier-writing": {
       "source": "sablier-labs/agent-skills",
       "sourceType": "github",
