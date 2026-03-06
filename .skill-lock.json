@@ -333,6 +333,24 @@
       "skillFolderHash": "77750a420fe44e26649cad77023973454bbf754c",
       "installedAt": "2026-03-06T16:28:56.192Z",
       "updatedAt": "2026-03-06T16:28:56.192Z"
+    },
+    "sablier-create-vesting": {
+      "source": "sablier-labs/sablier-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/sablier-skills.git",
+      "skillPath": "skills/sablier-create-vesting/SKILL.md",
+      "skillFolderHash": "021013f875cfa1dbf31fae6f59cdec27a69c69bd",
+      "installedAt": "2026-03-06T16:40:14.336Z",
+      "updatedAt": "2026-03-06T16:40:14.336Z"
+    },
+    "sablier-product-selection": {
+      "source": "sablier-labs/sablier-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/sablier-skills.git",
+      "skillPath": "skills/sablier-product-selection/SKILL.md",
+      "skillFolderHash": "65fba1b6720f80e2a3a652488c944e99532dfe36",
+      "installedAt": "2026-03-06T16:40:14.427Z",
+      "updatedAt": "2026-03-06T16:40:14.427Z"
     }
   },
   "lastSelectedAgents": [

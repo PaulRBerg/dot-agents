@@ -1,0 +1,173 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "calls",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "batch",
+    "outputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "results",
+        "type": "bytes[]"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "sender", "type": "address" },
+          { "internalType": "address", "name": "recipient", "type": "address" },
+          { "internalType": "uint128", "name": "depositAmount", "type": "uint128" },
+          { "internalType": "contract IERC20", "name": "token", "type": "address" },
+          { "internalType": "bool", "name": "cancelable", "type": "bool" },
+          { "internalType": "bool", "name": "transferable", "type": "bool" },
+          { "internalType": "string", "name": "shape", "type": "string" }
+        ],
+        "internalType": "struct Lockup.CreateWithDurations",
+        "name": "params",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          { "internalType": "uint128", "name": "start", "type": "uint128" },
+          { "internalType": "uint128", "name": "cliff", "type": "uint128" }
+        ],
+        "internalType": "struct LockupLinear.UnlockAmounts",
+        "name": "unlockAmounts",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          { "internalType": "uint40", "name": "cliff", "type": "uint40" },
+          { "internalType": "uint40", "name": "total", "type": "uint40" }
+        ],
+        "internalType": "struct LockupLinear.Durations",
+        "name": "durations",
+        "type": "tuple"
+      }
+    ],
+    "name": "createWithDurationsLL",
+    "outputs": [{ "internalType": "uint256", "name": "streamId", "type": "uint256" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "sender", "type": "address" },
+          { "internalType": "address", "name": "recipient", "type": "address" },
+          { "internalType": "uint128", "name": "depositAmount", "type": "uint128" },
+          { "internalType": "contract IERC20", "name": "token", "type": "address" },
+          { "internalType": "bool", "name": "cancelable", "type": "bool" },
+          { "internalType": "bool", "name": "transferable", "type": "bool" },
+          { "internalType": "string", "name": "shape", "type": "string" }
+        ],
+        "internalType": "struct Lockup.CreateWithDurations",
+        "name": "params",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          { "internalType": "uint128", "name": "amount", "type": "uint128" },
+          { "internalType": "uint40", "name": "duration", "type": "uint40" }
+        ],
+        "internalType": "struct LockupTranched.TrancheWithDuration[]",
+        "name": "tranchesWithDuration",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "createWithDurationsLT",
+    "outputs": [{ "internalType": "uint256", "name": "streamId", "type": "uint256" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "sender", "type": "address" },
+          { "internalType": "address", "name": "recipient", "type": "address" },
+          { "internalType": "uint128", "name": "depositAmount", "type": "uint128" },
+          { "internalType": "contract IERC20", "name": "token", "type": "address" },
+          { "internalType": "bool", "name": "cancelable", "type": "bool" },
+          { "internalType": "bool", "name": "transferable", "type": "bool" },
+          {
+            "components": [
+              { "internalType": "uint40", "name": "start", "type": "uint40" },
+              { "internalType": "uint40", "name": "end", "type": "uint40" }
+            ],
+            "internalType": "struct Lockup.Timestamps",
+            "name": "timestamps",
+            "type": "tuple"
+          },
+          { "internalType": "string", "name": "shape", "type": "string" }
+        ],
+        "internalType": "struct Lockup.CreateWithTimestamps",
+        "name": "params",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          { "internalType": "uint128", "name": "start", "type": "uint128" },
+          { "internalType": "uint128", "name": "cliff", "type": "uint128" }
+        ],
+        "internalType": "struct LockupLinear.UnlockAmounts",
+        "name": "unlockAmounts",
+        "type": "tuple"
+      },
+      { "internalType": "uint40", "name": "cliffTime", "type": "uint40" }
+    ],
+    "name": "createWithTimestampsLL",
+    "outputs": [{ "internalType": "uint256", "name": "streamId", "type": "uint256" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "sender", "type": "address" },
+          { "internalType": "address", "name": "recipient", "type": "address" },
+          { "internalType": "uint128", "name": "depositAmount", "type": "uint128" },
+          { "internalType": "contract IERC20", "name": "token", "type": "address" },
+          { "internalType": "bool", "name": "cancelable", "type": "bool" },
+          { "internalType": "bool", "name": "transferable", "type": "bool" },
+          {
+            "components": [
+              { "internalType": "uint40", "name": "start", "type": "uint40" },
+              { "internalType": "uint40", "name": "end", "type": "uint40" }
+            ],
+            "internalType": "struct Lockup.Timestamps",
+            "name": "timestamps",
+            "type": "tuple"
+          },
+          { "internalType": "string", "name": "shape", "type": "string" }
+        ],
+        "internalType": "struct Lockup.CreateWithTimestamps",
+        "name": "params",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          { "internalType": "uint128", "name": "amount", "type": "uint128" },
+          { "internalType": "uint40", "name": "timestamp", "type": "uint40" }
+        ],
+        "internalType": "struct LockupTranched.Tranche[]",
+        "name": "tranches",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "createWithTimestampsLT",
+    "outputs": [{ "internalType": "uint256", "name": "streamId", "type": "uint256" }],
+    "stateMutability": "payable",
+    "type": "function"
+  }
+]
