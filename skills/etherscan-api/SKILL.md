@@ -62,7 +62,7 @@ Etherscan supports EVM-compatible chains only. For the full list, see:
 https://docs.etherscan.io/etherscan-v2/getting-started/supported-chains
 ```
 
-For the complete list of supported chains and their IDs, see `./references/CHAINS.md`.
+For the complete list of supported chains and their IDs, see `./references/chains.md`.
 
 ## API Base URL
 
@@ -82,7 +82,7 @@ Query native ETH (or native token) balance for an address.
 
 | Parameter | Required | Default  | Description                                          |
 | --------- | -------- | -------- | ---------------------------------------------------- |
-| `chainid` | No       | `1`      | Chain ID (see CHAINS.md)                             |
+| `chainid` | No       | `1`      | Chain ID (see chains.md)                             |
 | `module`  | Yes      | -        | Set to `account`                                     |
 | `action`  | Yes      | -        | Set to `balance`                                     |
 | `address` | Yes      | -        | Wallet address (supports up to 20 comma-separated)   |
@@ -134,7 +134,7 @@ Query ERC-20 token balance for an address.
 
 | Parameter         | Required | Default  | Description                       |
 | ----------------- | -------- | -------- | --------------------------------- |
-| `chainid`         | No       | `1`      | Chain ID (see CHAINS.md)          |
+| `chainid`         | No       | `1`      | Chain ID (see chains.md)          |
 | `module`          | Yes      | -        | Set to `account`                  |
 | `action`          | Yes      | -        | Set to `tokenbalance`             |
 | `contractaddress` | Yes      | -        | ERC-20 token contract address     |
@@ -179,7 +179,7 @@ Specify the `chainid` parameter to query different blockchains.
 curl -s "https://api.etherscan.io/v2/api?chainid=137&module=account&action=balance&address=0x...&tag=latest&apikey=$ETHERSCAN_API_KEY"
 ```
 
-For the complete list of supported chains, see `./references/CHAINS.md`.
+For the complete list of supported chains, see `./references/chains.md`.
 
 ## Wei to Human-Readable Conversion
 
@@ -254,7 +254,7 @@ If rate limited, wait briefly and retry.
 
 ## Reference Files
 
-- **`./references/CHAINS.md`** - Complete list of supported chains with chain IDs
+- **`./references/chains.md`** - Complete list of supported chains with chain IDs
 
 ## Fallback Documentation
 

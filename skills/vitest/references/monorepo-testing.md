@@ -693,4 +693,3 @@ beforeEach(() => {
 
 - For detailed testing patterns - See `TESTING_PATTERNS.md`
 - For debugging strategies - See `TROUBLESHOOTING.md`
-- For Zustand store testing - Activate `zustand` skill

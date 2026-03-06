@@ -2,8 +2,6 @@
 
 Complete pattern library for Vitest testing in TypeScript React/Next.js projects.
 
-> **Note:** For Zustand store testing patterns, activate the `zustand` skill.
-
 ## Unit Testing Patterns
 
 ### Testing Pure Functions
@@ -838,4 +836,3 @@ test.concurrent("runs in parallel 2", async () => {
 
 - For monorepo-specific testing - See `MONOREPO_TESTING.md`
 - For debugging strategies - See `TROUBLESHOOTING.md`
-- For Zustand store testing - Activate `zustand` skill

@@ -96,18 +96,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
       "skillPath": "skills/sablier-writing/SKILL.md",
-      "skillFolderHash": "4fe3615230ca49d87b43e2e7e33dab6fb8b90530",
+      "skillFolderHash": "e7b8af9747af9fcc8e6d6d7b8a053e746ce33a96",
       "installedAt": "2026-02-06T13:12:29.947Z",
-      "updatedAt": "2026-02-06T13:12:29.947Z"
+      "updatedAt": "2026-03-06T16:49:16.835Z"
     },
     "vitest": {
       "source": "sablier-labs/agent-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
       "skillPath": "skills/vitest/SKILL.md",
-      "skillFolderHash": "3510a49b54a9247ed7c0903ade452c036883dc21",
+      "skillFolderHash": "759352a649b1139ecd6e22806758ed372dfcede0",
       "installedAt": "2026-02-06T13:12:30.031Z",
-      "updatedAt": "2026-02-06T13:12:30.031Z"
+      "updatedAt": "2026-03-06T16:49:20.441Z"
     },
     "vercel-composition-patterns": {
       "source": "vercel-labs/agent-skills",
@@ -123,9 +123,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
       "skillPath": "skills/react-best-practices/SKILL.md",
-      "skillFolderHash": "079b06a135401704ea94ab74c7c9d86c92ba259f",
+      "skillFolderHash": "",
       "installedAt": "2026-02-06T13:12:56.253Z",
-      "updatedAt": "2026-02-06T13:12:56.253Z"
+      "updatedAt": "2026-03-06T16:49:24.701Z"
     },
     "web-design-guidelines": {
       "source": "vercel-labs/agent-skills",
@@ -168,9 +168,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
       "skillPath": "skills/etherscan-api/SKILL.md",
-      "skillFolderHash": "3b3b6357ee2f707f762fa3dd53b9b18cfa503df5",
+      "skillFolderHash": "",
       "installedAt": "2026-02-11T08:48:39.792Z",
-      "updatedAt": "2026-02-12T17:00:25.439Z"
+      "updatedAt": "2026-03-06T16:49:28.304Z"
     },
     "web3-foundry": {
       "source": "sablier-labs/agent-skills",
@@ -186,9 +186,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/agent-skills.git",
       "skillPath": "skills/xstate-react/SKILL.md",
-      "skillFolderHash": "97d2bbaa8aa4c8c02a212ac5018ac6cef71157b2",
+      "skillFolderHash": "",
       "installedAt": "2026-02-11T08:48:39.897Z",
-      "updatedAt": "2026-02-11T08:48:39.897Z"
+      "updatedAt": "2026-03-06T16:49:32.181Z"
     },
     "code-polish": {
       "source": "PaulRBerg/agent-skills",
@@ -339,9 +339,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/sablier-skills.git",
       "skillPath": "skills/sablier-create-vesting/SKILL.md",
-      "skillFolderHash": "021013f875cfa1dbf31fae6f59cdec27a69c69bd",
+      "skillFolderHash": "",
       "installedAt": "2026-03-06T16:40:14.336Z",
-      "updatedAt": "2026-03-06T16:40:14.336Z"
+      "updatedAt": "2026-03-06T16:49:35.994Z"
     },
     "sablier-product-selection": {
       "source": "sablier-labs/sablier-skills",

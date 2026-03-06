@@ -153,7 +153,7 @@ afterEach(() => {
   vi.clearAllMocks();
   vi.restoreAllMocks();
 
-  // Reset stores (or use zustand skill)
+  // Reset stores
   useUserStore.getState().reset();
 
   // Reset globals
@@ -176,9 +176,7 @@ nlx vitest run path/to/problem.test.ts
 
 #### Store state persists between tests
 
-**For Zustand stores, activate the `zustand` skill.**
-
-**For other stores:**
+**For stores:**
 
 ```typescript
 import { afterEach, beforeEach } from "vitest";
@@ -985,4 +983,3 @@ act -j test
 
 - For testing patterns - See `TESTING_PATTERNS.md`
 - For monorepo strategies - See `MONOREPO_TESTING.md`
-- For Zustand store testing - Activate `zustand` skill

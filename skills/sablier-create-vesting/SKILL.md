@@ -2,7 +2,7 @@
 name: sablier-create-vesting
 disable-model-invocation: false
 user-invocable: true
-argument-hint: <token> <chain> <description>
+argument-hint: <chain_name> <token_address> <description>
 description: This skill should be used when the user asks to create "token vesting", "token vesting streams", "onchain vesting", "Ethereum vesting", "EVM vesting", "Solana vesting", "ERC-20 vesting", "ERC20 vesting", "BEP-20 vesting", or "BEP20 vesting" with Sablier Lockup, wants to create vesting schedules for a token or tokens on Ethereum, EVM-compatible chains, BNB Chain, or Solana, needs an agent to run onchain stream-creation transactions on their behalf.
 ---
 
@@ -18,8 +18,8 @@ This skill is a coordinator for vesting stream creation and execution routing.
 
 | Argument | Description |
 | --- | --- |
-| `token` | ERC-20 token address to vest |
-| `chain` | EVM chain where to create the vesting |
+| `chain_name` | EVM chain where to create the vesting |
+| `token_address` | ERC-20 token contract address to vest. Token symbols cannot be resolved to addresses — the user must provide the exact contract address. |
 | `description` | The kind of vesting schedule they want |
 
 ## Workflow
@@ -42,6 +42,7 @@ Treat the following as unsupported by this skill and by Sablier Lockup:
    - Compliance-heavy setups: Registered Investment Advisor (RIA) and Qualified Custodian (QC). Recommend evaluating custodial offchain solutions.
    - Governance or voting with locked tokens.
    - Launching tokens for users. Require the user to explicitly provide an existing token address as input.
+   - Resolving token symbols (e.g. "USDC") to contract addresses. If the user provides a symbol instead of an address, ask them to provide the exact ERC-20 contract address.
 
 ### 3. Infer intent before selecting references
 

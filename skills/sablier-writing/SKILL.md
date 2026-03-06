@@ -12,10 +12,10 @@ hype. This skill covers blog posts, case studies, and X/Twitter content.
 
 Load shared brand references from the skill's `references/` directory:
 
-1. **Read** `./references/BRAND_VOICE.md` — Sablier's voice and style
-2. **Read** `./references/COMPANY_PROFILE.md` — products, metrics, positioning
-3. **Read** `./references/ICP.md` — who the audience is
-4. **Reference** `./references/VOICE_EXAMPLES.md` — past content for consistency
+1. **Read** `./references/brand-voice.md` — Sablier's voice and style
+2. **Read** `./references/company-profile.md` — products, metrics, positioning
+3. **Read** `./references/icp.md` — who the audience is
+4. **Reference** `./references/voice-examples.md` — past content for consistency
 5. **Fetch docs if needed** — use `https://docs.sablier.com/llms.txt` for product details
 
 ## Content Types
@@ -24,7 +24,7 @@ Load shared brand references from the skill's `references/` directory:
 
 For long-form content: product announcements, educational articles, comparisons, technical deep dives.
 
-**Load detailed guidance:** `./references/BLOG_POSTS.md`
+**Load detailed guidance:** `./references/blog-posts.md`
 
 **Quick reference for post types:**
 
@@ -40,7 +40,7 @@ For long-form content: product announcements, educational articles, comparisons,
 
 For customer success stories documenting how organizations use Sablier.
 
-**Load detailed guidance:** `./references/CASE_STUDIES.md`
+**Load detailed guidance:** `./references/case-studies.md`
 
 **Standard structure:**
 
@@ -55,7 +55,7 @@ For customer success stories documenting how organizations use Sablier.
 
 For social media content: announcements, educational threads, social proof, hot takes.
 
-**Load detailed guidance:** `./references/X_TWITTER.md`
+**Load detailed guidance:** `./references/x-twitter.md`
 
 **Post type quick reference:**
 
@@ -131,15 +131,15 @@ All references are located in the `./references/` directory:
 
 ### Brand References
 
-- **`./references/BRAND_VOICE.md`** — Voice and style guidelines
-- **`./references/COMPANY_PROFILE.md`** — Products, metrics, positioning
-- **`./references/ICP.md`** — Ideal customer profile
-- **`./references/VOICE_EXAMPLES.md`** — Past content examples
+- **`./references/brand-voice.md`** — Voice and style guidelines
+- **`./references/company-profile.md`** — Products, metrics, positioning
+- **`./references/icp.md`** — Ideal customer profile
+- **`./references/voice-examples.md`** — Past content examples
 
 ### Content-Type Specific References
 
-- **`./references/BLOG_POSTS.md`** — Detailed blog post templates and guidelines
-- **`./references/CASE_STUDIES.md`** — Case study structure and examples
-- **`./references/X_TWITTER.md`** — X/Twitter post formats and examples
+- **`./references/blog-posts.md`** — Detailed blog post templates and guidelines
+- **`./references/case-studies.md`** — Case study structure and examples
+- **`./references/x-twitter.md`** — X/Twitter post formats and examples
 
 Load the appropriate content-type reference when writing that specific format.

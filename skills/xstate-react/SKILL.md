@@ -374,11 +374,8 @@ Use Context7 MCP with library ID "/statelyai/xstate" to fetch:
 - Testing strategies
 ```
 
-**See `./references/PATTERNS.md`** for common patterns including async operations, guards, parallel states, and
+**See `./references/patterns.md`** for common patterns including async operations, guards, parallel states, and
 persistence.
-
-**See `./references/EFFECT_TS_INTEGRATION.md`** for integrating Effect-ts with xState for composable, type-safe side
-effects.
 
 ## Quick Reference
 
