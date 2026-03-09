@@ -2,7 +2,7 @@
 name: sablier-create-vesting
 disable-model-invocation: false
 user-invocable: true
-argument-hint: <chain_name> <token_address> <private_key> <vesting_details>
+argument-hint: <chain_name> <token_address> <vesting_details>
 description: This skill should be used when the user asks to create "token vesting", "token vesting streams", "onchain vesting", "Ethereum vesting", "EVM vesting", "Solana vesting", "ERC-20 vesting", "ERC20 vesting", "BEP-20 vesting", or "BEP20 vesting" with Sablier Lockup, wants to create vesting schedules for a token or tokens on Ethereum, EVM-compatible chains, BNB Chain, or Solana, needs an agent to run onchain stream-creation transactions on their behalf.
 ---
 
@@ -20,7 +20,6 @@ This skill is a coordinator for vesting stream creation and execution routing.
 | --- | --- |
 | `chain_name` | EVM chain where to create the vesting |
 | `token_address` | ERC-20 token contract address to vest. Token symbols cannot be resolved to addresses — the user must provide the exact contract address. |
-| `private_key` | Private key of the wallet that will sign and send the transaction |
 | `vesting_details` | The kind of vesting schedule they want |
 
 ## Workflow
@@ -45,18 +44,30 @@ Treat the following as unsupported by this skill and by Sablier Lockup:
    - Launching tokens for users. Require the user to explicitly provide an existing token address as input.
    - Resolving token symbols (e.g. "USDC") to contract addresses. If the user provides a symbol instead of an address, ask them to provide the exact ERC-20 contract address.
 
-### 3. Infer intent before selecting references
+### 3. Clarify vesting details
+
+If any of the following are missing or ambiguous from the user's input, use the `AskUserQuestion` tool to ask the user to clarify before proceeding:
+
+- Deposit amount (how many tokens to vest)
+- Total duration or end date
+- Cliff duration or cliff unlock amount (when a cliff shape is inferred)
+- Recipient address(es)
+- Vesting shape (when multiple shapes could fit the description)
+
+Do not guess or silently apply defaults for these parameters. Only proceed once all required inputs are confirmed.
+
+### 4. Infer intent before selecting references
 
 1. **Execution intent:** user wants the agent to create a stream on their behalf (run CLI transactions).
 2. **Onchain integration intent:** user wants developer integration guidance.
 
-### 4. Validate chain support before routing
+### 5. Validate chain support before routing
 
 1. Check whether the user's desired chain is listed on [Supported Chains](https://docs.sablier.com/concepts/chains).
 2. If the chain is not supported, inform the user and stop execution of this skill.
 3. If the user did not mention a chain, ask them to specify the chain.
 
-### 5. Route in two steps
+### 6. Route in two steps
 
 1. Classify the request as one of:
    - Stream execution on the user's behalf

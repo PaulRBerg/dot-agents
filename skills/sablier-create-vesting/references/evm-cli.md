@@ -2,45 +2,66 @@
 
 ## Overview
 
-Use this reference when the user wants the agent to execute EVM transactions on their behalf, such as creating Sablier Lockup streams directly from the terminal. Start with the intake checklist to choose the right mode and entrypoint, run the preflight checks before building any transaction, and only broadcast after explicit user confirmation.
+Use this reference when the user wants the agent to execute EVM transactions on their behalf, such as creating Sablier Lockup streams directly from the terminal.
 
-## Execution Guardrails
+This guide is runbook-first: plan the stream, run preflight checks, preview the transaction, require explicit confirmation, then broadcast and verify.
 
-### Cast CLI Check
+## Execution Sequence
 
-Before running any `cast` command, verify the CLI is installed:
+Use this sequence for every state-changing operation:
+
+1. Complete [Intake & Planning Inputs](#intake--planning-inputs): mode, shape, variant, chain, and arguments.
+2. Run all [Preflight Checks](#preflight-checks), including allowance/balance checks and `MSG_VALUE` setup.
+3. Build and show a human-readable transaction preview (no broadcast).
+4. Require explicit user confirmation.
+5. Broadcast with `cast send`.
+6. Verify the receipt.
+7. Direct the user to [app.sablier.com](https://app.sablier.com).
+
+If ERC-20 allowance is insufficient, execute an `approve` transaction first, then resume at step 2.
+
+## Mandatory Guardrails
+
+### Cast CLI and Browser Wallet Capability Check
+
+Before running any `cast` command, verify the CLI is installed and supports `--browser`:
 
 ```bash
 if ! command -v cast >/dev/null 2>&1; then
-  echo "cast CLI not found."
-  echo "Install Foundry by running:"
-  echo "curl -L https://foundry.paradigm.xyz | bash && foundryup"
+  echo "cast CLI not found. Install Foundry: https://getfoundry.sh/"
+  exit 1
+fi
+
+if ! cast send --help 2>&1 | grep -q -- '--browser'; then
+  echo "Your cast version does not support --browser."
+  echo "Upgrade Foundry: https://getfoundry.sh/"
   exit 1
 fi
 ```
 
-### Signing Key Rule (Mandatory)
+If the check fails, stop and ask the user to install or upgrade Foundry at <https://getfoundry.sh/>.
 
-For any signing command (`cast send`, `cast mktx`):
+### Signing Method (Mandatory)
 
-1. Prefer an explicitly provided private key.
-2. Otherwise use `ETH_PRIVATE_KEY`.
-3. If neither is available, stop and ask the user to provide a private key. Reassure them that it is safe to share their private key directly in the chat — this skill is open-source, has no logging, and does not transmit data anywhere. Link them to the source: https://github.com/sablier-labs/sablier-skills
+For any signing command (`cast send`), use this hierarchy:
 
-Do not continue without a signing key.
+1. **`--browser` (preferred)** - delegates signing to the user's browser wallet extension (MetaMask, Rabby, etc.). A local server starts on port 9545 and opens a browser tab where the user approves the transaction. Private keys never touch the terminal or chat. Inform the user: *"A browser tab will open - approve the transaction in your wallet extension (e.g. MetaMask)."*
+2. **`--private-key` (fallback)** - only if `--browser` fails at runtime (e.g. no browser available, extension error). In that case, ask the user to provide a private key or set the `ETH_PRIVATE_KEY` environment variable. Never proactively ask the user to paste a private key in the chat.
+
+Do not continue without a signing method.
 
 ### Confirmation Rule (Mandatory)
 
 Always use this sequence for state-changing transactions:
 
-1. Build a preview transaction with `cast mktx`.
+1. Build a human-readable preview of the transaction parameters.
 2. Show the transaction details to the user.
 3. Ask for explicit confirmation.
 4. Only after confirmation, run `cast send`.
 
 Never broadcast before explicit user confirmation.
 
-## Intake Checklist
+## Intake & Planning Inputs
 
 Choose the transaction shape in this order before building calldata.
 
@@ -56,38 +77,44 @@ Infer the creation mode from the user's request:
 | "create a stream for Alice" | **Single Stream** |
 
 - If ambiguous, ask the user to clarify.
-- For batch requests exceeding **50 streams**, recommend the [Sablier Airdrops](https://app.sablier.com/airdrops) product instead, which is purpose-built for large-scale token distributions.
+- For batch requests exceeding **50 streams**, recommend [Sablier Airdrops](https://app.sablier.com/airdrops), which is purpose-built for large-scale token distributions.
 
 ### 2) Choose Shape
 
-This reference supports five vesting shapes: **Linear**, **Cliff**, **Unlock in Steps**, **Monthly Unlocks**, and **Timelock**. Use [Entrypoint Reference](#entrypoint-reference) to map the chosen shape to the correct function and calldata encoding.
+This reference supports five vesting shapes: **Linear**, **Cliff**, **Unlock in Steps**, **Monthly Unlocks**, and **Timelock**.
+
+Use [Entrypoint Catalog](#entrypoint-catalog) to map the chosen shape to the correct function and calldata encoding.
 
 - If the vesting shape cannot be inferred from the user's instructions, default to **Linear**.
 - If the user mentions a **cliff** but no other shape, default to **Cliff**.
-- If the inferred shape is not among the five listed above, inform the user that this skill does not currently support that shape and suggest they reach out to request it as a feature. In the meantime, tell them to check out the [vesting gallery](https://app.sablier.com/vesting/gallery) in the Sablier UI.
+- If the inferred shape is not among the five listed above, inform the user that this skill does not currently support that shape and suggest they request it as a feature. In the meantime, direct them to the [vesting gallery](https://app.sablier.com/vesting/gallery) in the Sablier UI.
 
 ### 3) Choose Variant
 
-- **`Durations` variants** (`createWithDurationsLL`, `createWithDurationsLT`): Use when the user does not specify a specific start time. The stream starts immediately upon transaction confirmation.
-- **`Timestamps` variants** (`createWithTimestampsLL`, `createWithTimestampsLT`): Use when the user specifies a specific start time (for example, "starting March 15" or "beginning at Unix timestamp 1710460800").
+- **`Durations` variants** (`createWithDurationsLL`, `createWithDurationsLT`): use when the user does not specify a specific start time. The stream starts immediately upon transaction confirmation.
+- **`Timestamps` variants** (`createWithTimestampsLL`, `createWithTimestampsLT`): use when the user specifies a specific start time (for example, "starting March 15" or "beginning at Unix timestamp 1710460800").
 
 ### 4) Resolve Chain and `SablierLockup`
 
 Use [Supported Chains](#supported-chains) to resolve chain metadata, RPC endpoints, and `SablierLockup` contract addresses.
 
-If the requested chain is not listed, check [Sablier Lockup deployments](https://docs.sablier.com/guides/lockup/deployments) for the contract address. If it is not found there either, ask the user to provide the RPC URL and `SablierLockup` contract address.
+If the requested chain is not listed:
 
-### 5) Collect Transaction Inputs
+1. Check [Sablier Lockup deployments](https://docs.sablier.com/guides/lockup/deployments) for the contract address.
+2. If still unresolved, ask the user to provide both the RPC URL and `SablierLockup` contract address.
 
-Collect before building a transaction:
+### 5) Collect Required Inputs
+
+Collect these before building any transaction:
 
 - `chain` (ID and name)
-- signing method (`--private-key` explicitly or `ETH_PRIVATE_KEY` in env)
+- sender wallet address (resolved via `cast wallet address --browser` or provided by the user)
+- signing method (`--browser` preferred, `--private-key` fallback)
 - native gas balance (`ETH` etc.)
 - `SablierLockup` contract address
 - recipient count and number of streams
 - token, deposit amount, and approval requirements
-- function signature and arguments (see [Entrypoint Reference](#entrypoint-reference))
+- function signature and arguments (see [Entrypoint Catalog](#entrypoint-catalog))
 
 ## Preflight Checks
 
@@ -105,7 +132,7 @@ For stream creation transactions, hard-code `MSG_VALUE` to `500000000000000` wei
 
 For stream creation:
 
-1. **ERC-20 allowance.** Check `allowance(owner, lockup)`. The required allowance depends on the mode:
+1. **ERC-20 allowance.** Check `allowance(owner, lockup)`. The required allowance depends on mode:
    - **Single Stream:** `DEPOSIT_AMOUNT`
    - **Batch of Streams:** sum of `DEPOSIT_AMOUNT` across all streams
    If allowance is below the required total, send an `approve` transaction to raise allowance before attempting stream creation.
@@ -115,11 +142,13 @@ For stream creation:
 
 Before broadcasting each transaction, check that the sender has enough native gas token (ETH/POL/BNB/etc.) to pay transaction fees. Run this check again before each broadcast (`approve` and stream creation). If balance is insufficient, stop and tell the user to fund their wallet first. Recommend buying via [Transak](https://transak.com/buy).
 
-### Read-Only Validation Helpers
+### Read-Only Validation Commands
+
+Resolve the sender address first via the browser wallet, then run read-only checks:
 
 ```bash
-# Resolve sender from private key
-cast wallet address --private-key "$PRIVATE_KEY"
+# Resolve sender address from browser wallet (opens a browser tab for the user to connect)
+OWNER=$(cast wallet address --browser)
 
 # Check native gas token balance (ETH/POL/BNB/etc.)
 cast balance "$OWNER" --rpc-url "$RPC_URL"
@@ -131,63 +160,62 @@ cast call "$TOKEN" "balanceOf(address)(uint256)" "$OWNER" --rpc-url "$RPC_URL"
 cast call "$TOKEN" "allowance(address,address)(uint256)" "$OWNER" "$LOCKUP" --rpc-url "$RPC_URL"
 ```
 
-## Minimal Execution Flow
+## Execution Runbook
 
 ### Shared Setup
 
-#### 1) Resolve RPC and Key
+#### 1) Resolve RPC URL, signing method, and sender address
 
 ```bash
 RPC_URL="<resolved-or-user-provided-rpc>"
-PRIVATE_KEY="${ETH_PRIVATE_KEY:-}"
 
-if [[ -z "$PRIVATE_KEY" ]]; then
-  echo "Missing private key. Provide one explicitly or set ETH_PRIVATE_KEY."
-  exit 1
-fi
+# Resolve sender address from browser wallet (opens a browser tab for the user to connect)
+OWNER=$(cast wallet address --browser)
 ```
 
-#### 2) Run Preflight Checks
+#### 2) Run preflight checks and handle `approve` if needed
 
-Run all checks from [Preflight Checks](#preflight-checks), set `MSG_VALUE="500000000000000"`, and run the native gas token check before each broadcast (`approve` and stream creation).
+Run all checks from [Preflight Checks](#preflight-checks), set `MSG_VALUE="500000000000000"`, and re-run the native gas check before each broadcast (`approve` and stream creation). If an ERC-20 `approve` transaction is needed, execute it before continuing to step 3.
 
-### Single Stream
+### Single Stream Flow
 
-#### 3) Build Preview Tx (No Broadcast)
+#### 3) Preview Transaction (No Broadcast)
 
-For `SablierLockup` stream creation (`create*`), pass the fixed creation fee in `MSG_VALUE`.
+Build and display calldata so the user can review before signing:
 
 ```bash
-RAW_TX=$(cast mktx "$LOCKUP" "$FUNCTION_SIG" $FUNCTION_ARGS \
-  --value "$MSG_VALUE" \
-  --rpc-url "$RPC_URL" \
-  --private-key "$PRIVATE_KEY")
-
-echo "Preview raw tx: $RAW_TX"
+CALLDATA=$(cast calldata "$FUNCTION_SIG" $FUNCTION_ARGS)
+echo "Calldata: $CALLDATA"
 ```
 
-Decode the calldata for human-readable confirmation:
+Present a human-readable summary:
 
-```bash
-cast 4byte-decode $(cast tx "$RAW_TX" input --rpc-url "$RPC_URL" 2>/dev/null || echo "$RAW_TX")
-```
+- **Contract:** `$LOCKUP`
+- **Function:** chosen `create*` entrypoint
+- **Recipient, token, amount, shape, duration/timestamps**
+- **Creation fee:** `0.0005 ETH` (`MSG_VALUE`)
 
 #### 4) Require Explicit Confirmation
 
 Use a clear confirmation prompt, for example:
 
-- `Confirm broadcast? Reply exactly: CONFIRM SEND`
+- `Confirm broadcast? Reply exactly: YES`
 
 If the user does not explicitly confirm, stop.
 
 #### 5) Broadcast After Confirmation
 
+A browser tab will open for the user to approve the transaction in their wallet extension.
+
 ```bash
 cast send "$LOCKUP" "$FUNCTION_SIG" $FUNCTION_ARGS \
   --value "$MSG_VALUE" \
   --rpc-url "$RPC_URL" \
-  --private-key "$PRIVATE_KEY"
+  --from "$OWNER" \
+  --browser
 ```
+
+If `--browser` fails at runtime, ask the user to provide a private key and retry with `--private-key`.
 
 #### 6) Verify Receipt
 
@@ -197,9 +225,9 @@ cast receipt "$TX_HASH" --rpc-url "$RPC_URL"
 
 #### 7) Direct User to the Sablier App
 
-After successful confirmation, inform the user they can view and manage their streams at [app.sablier.com](https://app.sablier.com).
+After successful confirmation, inform the user they can view and manage streams at [app.sablier.com](https://app.sablier.com).
 
-### Batch of Streams
+### Batch Flow
 
 #### 3) Encode Individual Create Calls
 
@@ -214,33 +242,32 @@ CALL_3=$(cast calldata "$FUNCTION_SIG" $ARGS_STREAM_3)
 
 Each `CALL_N` is a complete calldata blob (4-byte selector + ABI-encoded arguments).
 
-#### 4) Build Batch Preview Tx (No Broadcast)
+#### 4) Preview Batch Transaction (No Broadcast)
 
-Pass the encoded calls as a `bytes[]` array to `batch()` on the same `SablierLockup` contract:
+Present a human-readable summary:
 
-```bash
-RAW_TX=$(cast mktx "$LOCKUP" "batch(bytes[])" "[$CALL_1,$CALL_2,$CALL_3]" \
-  --value "$MSG_VALUE" \
-  --rpc-url "$RPC_URL" \
-  --private-key "$PRIVATE_KEY")
-
-echo "Preview raw tx: $RAW_TX"
-```
-
-Where `MSG_VALUE = 500000000000000` wei (`0.0005 ETH`) for the entire batch.
+- **Contract:** `$LOCKUP`
+- **Function:** `batch(bytes[])`
+- **Number of streams**, each with: recipient, amount, shape, duration
+- **Creation fee:** `0.0005 ETH` (`MSG_VALUE`) for the entire batch
 
 #### 5) Require Explicit Confirmation
 
-Use the same confirmation rule as for a Single Stream: show the transaction details and require explicit user confirmation before broadcast.
+Apply the same confirmation rule as Single Stream: show transaction details and require explicit user confirmation before broadcast.
 
 #### 6) Broadcast After Confirmation
+
+A browser tab will open for the user to approve the transaction in their wallet extension.
 
 ```bash
 cast send "$LOCKUP" "batch(bytes[])" "[$CALL_1,$CALL_2,$CALL_3]" \
   --value "$MSG_VALUE" \
   --rpc-url "$RPC_URL" \
-  --private-key "$PRIVATE_KEY"
+  --from "$OWNER" \
+  --browser
 ```
+
+If `--browser` fails at runtime, ask the user to provide a private key and retry with `--private-key`.
 
 #### 7) Verify Receipt
 
@@ -250,11 +277,11 @@ cast receipt "$TX_HASH" --rpc-url "$RPC_URL"
 
 #### 8) Direct User to the Sablier App
 
-After successful confirmation, inform the user they can view and manage their streams at [app.sablier.com](https://app.sablier.com).
+After successful confirmation, inform the user they can view and manage streams at [app.sablier.com](https://app.sablier.com).
 
-## Entrypoint Reference
+## Entrypoint Catalog
 
-Use this section after completing the intake checklist to map the requested vesting schedule to the correct `SablierLockup` function and calldata shape. Refer to the ABI definitions in [lockup-v3.0-abi.json](../assets/lockup-v3.0-abi.json) for the exact tuple encoding of each function.
+Use this section after intake to map the vesting schedule to the correct `SablierLockup` function and calldata shape. Refer to ABI definitions in [lockup-v3.0-abi.json](../assets/lockup-v3.0-abi.json) for exact tuple encoding.
 
 ### Shape-to-Function Mapping
 
@@ -266,11 +293,11 @@ Use this section after completing the intake checklist to map the requested vest
 | Monthly Unlocks | `createWithDurationsLT` | `createWithTimestampsLT` | `"tranchedMonthly"` |
 | Timelock | `createWithDurationsLL` | `createWithTimestampsLL` | `"linearTimelock"` |
 
-Use the `Durations` variants when the stream should start immediately upon confirmation. Use the `Timestamps` variants when the user provides specific start or unlock times.
+Use `Durations` variants when the stream should start immediately upon confirmation. Use `Timestamps` variants when the user provides specific start or unlock times.
 
 ### `createWithDurationsLL`
 
-Used for **Linear**, **Cliff**, and **Timelock** shapes when no specific start time is given.
+Used for **Linear**, **Cliff**, and **Timelock** when no specific start time is given.
 
 ```
 createWithDurationsLL(
@@ -282,21 +309,21 @@ createWithDurationsLL(
 
 **Arguments:**
 
-1. **params** tuple — `(sender, recipient, depositAmount, token, cancelable, transferable, shape)`
-2. **unlockAmounts** tuple — `(start, cliff)` — amounts unlocked instantly at stream start and at cliff time
-3. **durations** tuple — `(cliff, total)` — durations in seconds
+1. **params** tuple - `(sender, recipient, depositAmount, token, cancelable, transferable, shape)`
+2. **unlockAmounts** tuple - `(start, cliff)` - amounts unlocked instantly at stream start and at cliff time
+3. **durations** tuple - `(cliff, total)` - durations in seconds
 
 **Shape-specific encoding:**
 
 | Shape | `unlockAmounts` | `durations` |
 | --- | --- | --- |
-| Linear | `(0, 0)` | `(0, totalDuration)` — no cliff |
+| Linear | `(0, 0)` | `(0, totalDuration)` - no cliff |
 | Cliff | `(0, cliffUnlockAmount)` | `(cliffDuration, totalDuration)` |
-| Timelock | `(0, 0)` | `(0, lockDuration)` — entire amount unlocks at end |
+| Timelock | `(0, 0)` | `(0, lockDuration)` - entire amount unlocks at end |
 
 ### `createWithTimestampsLL`
 
-Used for **Linear**, **Cliff**, and **Timelock** shapes when the user specifies a start time.
+Used for **Linear**, **Cliff**, and **Timelock** when the user specifies a start time.
 
 ```
 createWithTimestampsLL(
@@ -308,9 +335,9 @@ createWithTimestampsLL(
 
 **Arguments:**
 
-1. **params** tuple — `(sender, recipient, depositAmount, token, cancelable, transferable, (startTimestamp, endTimestamp), shape)`
-2. **unlockAmounts** tuple — `(start, cliff)` — amounts unlocked instantly at stream start and at cliff time
-3. **cliffTime** — Unix timestamp for the cliff; set to `0` if no cliff
+1. **params** tuple - `(sender, recipient, depositAmount, token, cancelable, transferable, (startTimestamp, endTimestamp), shape)`
+2. **unlockAmounts** tuple - `(start, cliff)` - amounts unlocked instantly at stream start and at cliff time
+3. **cliffTime** - Unix timestamp for the cliff; set to `0` if no cliff
 
 **Shape-specific encoding:**
 
@@ -333,8 +360,8 @@ createWithDurationsLT(
 
 **Arguments:**
 
-1. **params** tuple — `(sender, recipient, depositAmount, token, cancelable, transferable, shape)`
-2. **tranchesWithDuration** array — each element is `(amount, duration)` where `amount` is the token amount unlocked in that tranche and `duration` is the tranche length in seconds
+1. **params** tuple - `(sender, recipient, depositAmount, token, cancelable, transferable, shape)`
+2. **tranchesWithDuration** array - each element is `(amount, duration)` where `amount` is the token amount unlocked in that tranche and `duration` is the tranche length in seconds
 
 **Shape-specific encoding:**
 
@@ -356,8 +383,8 @@ createWithTimestampsLT(
 
 **Arguments:**
 
-1. **params** tuple — `(sender, recipient, depositAmount, token, cancelable, transferable, (startTimestamp, endTimestamp), shape)`
-2. **tranches** array — each element is `(amount, timestamp)` where `amount` is the token amount unlocked and `timestamp` is the Unix timestamp at which it unlocks
+1. **params** tuple - `(sender, recipient, depositAmount, token, cancelable, transferable, (startTimestamp, endTimestamp), shape)`
+2. **tranches** array - each element is `(amount, timestamp)` where `amount` is the token amount unlocked and `timestamp` is the Unix timestamp at which it unlocks
 
 **Shape-specific encoding:**
 
@@ -376,7 +403,7 @@ batch(bytes[] calls)
 
 **Arguments:**
 
-1. **calls** — `bytes[]` array where each element is the output of `cast calldata` for a `create*` function
+1. **calls** - `bytes[]` array where each element is the output of `cast calldata` for a `create*` function
 
 ## Worked Examples
 
@@ -388,7 +415,7 @@ A single cliff stream of 1000 USDC (6 decimals) with a 90-day cliff and 365-day 
 LOCKUP="<lockup-address>"    # From Supported Chains table
 TOKEN="0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"  # USDC on Ethereum
 MSG_VALUE="500000000000000"  # 0.0005 ETH flat fee
-SENDER=$(cast wallet address --private-key "$PRIVATE_KEY")
+SENDER=$(cast wallet address --browser)
 RECIPIENT="0x..."
 
 cast send "$LOCKUP" \
@@ -398,7 +425,8 @@ cast send "$LOCKUP" \
   "(7776000,31536000)" \
   --value "$MSG_VALUE" \
   --rpc-url "$RPC_URL" \
-  --private-key "$PRIVATE_KEY"
+  --from "$SENDER" \
+  --browser
 ```
 
 Notes:
@@ -417,7 +445,7 @@ A batch of three linear streams of 1000 USDC each to different recipients, with 
 LOCKUP="<lockup-address>"    # From Supported Chains table
 TOKEN="0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"  # USDC on Ethereum
 MSG_VALUE="500000000000000"  # 0.0005 ETH flat fee for the entire batch
-SENDER=$(cast wallet address --private-key "$PRIVATE_KEY")
+SENDER=$(cast wallet address --browser)
 FUNCTION_SIG="createWithDurationsLL((address,address,uint128,address,bool,bool,string),(uint128,uint128),(uint40,uint40))"
 
 # Encode each create call
@@ -432,7 +460,8 @@ CALL_3=$(cast calldata "$FUNCTION_SIG" \
 cast send "$LOCKUP" "batch(bytes[])" "[$CALL_1,$CALL_2,$CALL_3]" \
   --value "$MSG_VALUE" \
   --rpc-url "$RPC_URL" \
-  --private-key "$PRIVATE_KEY"
+  --from "$SENDER" \
+  --browser
 ```
 
 Notes:
@@ -478,6 +507,4 @@ Use this registry to resolve chain metadata, RPC endpoints, and `SablierLockup` 
 | ZKsync Era | `324` | `0xC07E338Ce1aEd183A8b3c55f980548f5E463b5c5` | `https://mainnet.era.zksync.io` |
 | Sepolia | `11155111` | `0x6b0307b4338f2963A62106028E3B074C2c0510DA` | `https://ethereum-sepolia-rpc.publicnode.com` |
 
-Note that Ethereum can also be referred to as "Mainnet".
-
-If the requested chain is not listed, check [Sablier Lockup deployments](https://docs.sablier.com/guides/lockup/deployments.md) for the contract address. If it is not found there either, ask the user to provide the RPC URL and `SablierLockup` contract address.
+Ethereum can also be referred to as "Mainnet".
