@@ -321,18 +321,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/sablier-skills.git",
       "skillPath": "skills/sablier-create-vesting/SKILL.md",
-      "skillFolderHash": "7fa7131ef68667c68f20510176f88ea6a347f353",
+      "skillFolderHash": "",
       "installedAt": "2026-03-06T16:40:14.336Z",
-      "updatedAt": "2026-03-09T17:13:02.413Z"
+      "updatedAt": "2026-03-10T14:03:22.694Z"
     },
     "sablier-product-selection": {
       "source": "sablier-labs/sablier-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/sablier-skills.git",
       "skillPath": "skills/sablier-product-selection/SKILL.md",
-      "skillFolderHash": "65fba1b6720f80e2a3a652488c944e99532dfe36",
+      "skillFolderHash": "",
       "installedAt": "2026-03-06T16:40:14.427Z",
-      "updatedAt": "2026-03-06T19:13:17.741Z"
+      "updatedAt": "2026-03-10T14:03:22.803Z"
     },
     "sablier-protocol": {
       "source": "sablier-labs/sablier-skills",
@@ -351,6 +351,15 @@
       "skillFolderHash": "ba20eb1474ed8c2123f2a98e36f822b9bf369834",
       "installedAt": "2026-03-07T17:42:57.143Z",
       "updatedAt": "2026-03-07T17:42:57.143Z"
+    },
+    "sablier-create-open-ended-stream": {
+      "source": "sablier-labs/sablier-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/sablier-skills.git",
+      "skillPath": "skills/sablier-create-open-ended-stream/SKILL.md",
+      "skillFolderHash": "",
+      "installedAt": "2026-03-10T14:00:29.041Z",
+      "updatedAt": "2026-03-10T14:03:22.586Z"
     }
   },
   "lastSelectedAgents": [

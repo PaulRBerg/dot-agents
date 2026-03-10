@@ -169,5 +169,92 @@
     "outputs": [{ "internalType": "uint256", "name": "streamId", "type": "uint256" }],
     "stateMutability": "payable",
     "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "streamId", "type": "uint256" },
+      {
+        "components": [
+          { "internalType": "address", "name": "funder", "type": "address" },
+          { "internalType": "address", "name": "sender", "type": "address" },
+          { "internalType": "address", "name": "recipient", "type": "address" },
+          { "internalType": "uint128", "name": "depositAmount", "type": "uint128" },
+          { "internalType": "contract IERC20", "name": "token", "type": "address" },
+          { "internalType": "bool", "name": "cancelable", "type": "bool" },
+          { "internalType": "bool", "name": "transferable", "type": "bool" },
+          {
+            "components": [
+              { "internalType": "uint40", "name": "start", "type": "uint40" },
+              { "internalType": "uint40", "name": "end", "type": "uint40" }
+            ],
+            "internalType": "struct Lockup.Timestamps",
+            "name": "timestamps",
+            "type": "tuple"
+          },
+          { "internalType": "string", "name": "shape", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Lockup.CreateEventCommon",
+        "name": "commonParams",
+        "type": "tuple"
+      },
+      { "indexed": false, "internalType": "uint40", "name": "cliffTime", "type": "uint40" },
+      {
+        "components": [
+          { "internalType": "uint128", "name": "start", "type": "uint128" },
+          { "internalType": "uint128", "name": "cliff", "type": "uint128" }
+        ],
+        "indexed": false,
+        "internalType": "struct LockupLinear.UnlockAmounts",
+        "name": "unlockAmounts",
+        "type": "tuple"
+      }
+    ],
+    "name": "CreateLockupLinearStream",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "uint256", "name": "streamId", "type": "uint256" },
+      {
+        "components": [
+          { "internalType": "address", "name": "funder", "type": "address" },
+          { "internalType": "address", "name": "sender", "type": "address" },
+          { "internalType": "address", "name": "recipient", "type": "address" },
+          { "internalType": "uint128", "name": "depositAmount", "type": "uint128" },
+          { "internalType": "contract IERC20", "name": "token", "type": "address" },
+          { "internalType": "bool", "name": "cancelable", "type": "bool" },
+          { "internalType": "bool", "name": "transferable", "type": "bool" },
+          {
+            "components": [
+              { "internalType": "uint40", "name": "start", "type": "uint40" },
+              { "internalType": "uint40", "name": "end", "type": "uint40" }
+            ],
+            "internalType": "struct Lockup.Timestamps",
+            "name": "timestamps",
+            "type": "tuple"
+          },
+          { "internalType": "string", "name": "shape", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Lockup.CreateEventCommon",
+        "name": "commonParams",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          { "internalType": "uint128", "name": "amount", "type": "uint128" },
+          { "internalType": "uint40", "name": "timestamp", "type": "uint40" }
+        ],
+        "indexed": false,
+        "internalType": "struct LockupTranched.Tranche[]",
+        "name": "tranches",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "CreateLockupTranchedStream",
+    "type": "event"
   }
 ]
