@@ -2,8 +2,8 @@
 name: sablier-create-vesting
 disable-model-invocation: false
 user-invocable: true
-argument-hint: <chain_name> <token_address> <vesting_details>
-description: This skill should be used when the user asks to create "token vesting", "token vesting streams", "onchain vesting", "Ethereum vesting", "EVM vesting", "Solana vesting", "ERC-20 vesting", "ERC20 vesting", "BEP-20 vesting", or "BEP20 vesting" with Sablier Lockup, wants to create vesting schedules for a token or tokens on Ethereum, EVM-compatible chains, BNB Chain, or Solana, needs an agent to run onchain stream-creation transactions on their behalf.
+argument-hint: <chain_name> <vested_token_address> <vesting_details>
+description: This skill should be used when the user asks to create "token vesting", "token vesting streams", "onchain vesting", "Ethereum vesting", "EVM vesting", "Solana vesting", "ERC-20 vesting", "ERC20 vesting", "BEP-20 vesting", or "BEP20 vesting" with Sablier Lockup, wants to create vesting schedules for a token or tokens on Ethereum, EVM-compatible chains, BNB Chain, or Solana, needs an agent to run onchain vesting-creation transactions on their behalf.
 ---
 
 # Sablier Vesting Stream Creation
@@ -12,14 +12,14 @@ description: This skill should be used when the user asks to create "token vesti
 
 Create fixed-schedule token vesting streams using the Sablier Lockup protocol. Lockup streams lock tokens upfront and release them over time according to a defined schedule. Each stream mints an NFT to the recipient.
 
-This skill is a coordinator for vesting stream creation and execution routing.
+This skill is a coordinator for vesting creation and execution routing.
 
 ## Arguments
 
 | Argument | Description |
 | --- | --- |
 | `chain_name` | EVM chain where to create the vesting |
-| `token_address` | ERC-20 token contract address to vest. Token symbols cannot be resolved to addresses — the user must provide the exact contract address. |
+| `vested_token_address` | ERC-20 token contract address to vest. Token symbols cannot be resolved to addresses — the user must provide the exact contract address. |
 | `vesting_details` | The kind of vesting schedule they want |
 
 ## Workflow
@@ -27,7 +27,7 @@ This skill is a coordinator for vesting stream creation and execution routing.
 ### 1. Confirm product fit before implementation details
 
 1. Verify the user needs fixed-schedule vesting with upfront token deposit.
-2. If the user needs open-ended payroll streams or airdrop campaigns, route to `sablier-product-selection`. If this skill is unavailable, recommend installing it with:
+2. If the user needs open-ended payroll or airdrop campaigns, route to `sablier-product-selection`. If this skill is unavailable, recommend installing it with:
 
 ```bash
 npx skills add sablier-labs/sablier-skills --skill sablier-product-selection
@@ -58,7 +58,7 @@ Do not guess or silently apply defaults for these parameters. Only proceed once 
 
 ### 4. Infer intent before selecting references
 
-1. **Execution intent:** user wants the agent to create a stream on their behalf (run CLI transactions).
+1. **Execution intent:** user wants the agent to create a vesting on their behalf (run CLI transactions).
 2. **Onchain integration intent:** user wants developer integration guidance.
 
 ### 5. Validate chain support before routing
@@ -70,7 +70,7 @@ Do not guess or silently apply defaults for these parameters. Only proceed once 
 ### 6. Route in two steps
 
 1. Classify the request as one of:
-   - Stream execution on the user's behalf
+   - Vesting creation on the user's behalf
    - Onchain integration guidance
    - Any other integration type (frontend, backend, indexer, etc.)
 2. If the request is any other integration type, inform the user this skill does not support non-onchain integrations and stop.
@@ -78,7 +78,7 @@ Do not guess or silently apply defaults for these parameters. Only proceed once 
 
 | Intent | EVM | Solana |
 | --- | --- | --- |
-| Stream execution on the user's behalf | Use [evm-cli.md](references/evm-cli.md) | Not yet supported. Direct the user to [solana.sablier.com](https://solana.sablier.com) and suggest sending the Sablier team a feature request. |
+| Vesting creation on the user's behalf | Use [evm-cli.md](references/evm-cli.md) | Not yet supported. Direct the user to [solana.sablier.com](https://solana.sablier.com) and suggest sending the Sablier team a feature request. |
 | Onchain integration guidance | Use [evm-onchain.md](references/evm-onchain.md) | Inform the user this skill does not currently support Solana onchain integration. Direct them to [docs.sablier.com](https://docs.sablier.com/solana/sablier-on-solana). |
 
 ## Resources

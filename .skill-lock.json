@@ -321,9 +321,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/sablier-skills.git",
       "skillPath": "skills/sablier-create-vesting/SKILL.md",
-      "skillFolderHash": "3aec36f116ec66568b649f5399897c878ca14095",
+      "skillFolderHash": "7fa7131ef68667c68f20510176f88ea6a347f353",
       "installedAt": "2026-03-06T16:40:14.336Z",
-      "updatedAt": "2026-03-06T19:13:17.685Z"
+      "updatedAt": "2026-03-09T17:13:02.413Z"
     },
     "sablier-product-selection": {
       "source": "sablier-labs/sablier-skills",
