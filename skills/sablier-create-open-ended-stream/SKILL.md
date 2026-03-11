@@ -39,32 +39,32 @@ Stop and call out unsupported requests before selecting an execution path.
 
 Treat the following as unsupported by this skill and by Sablier Flow:
 
-- Streaming native tokens (ETH, BNB, AVAX, etc.). Only ERC-20 tokens can be streamed. If the user wants to stream a native token, inform them they must wrap it first (e.g. WETH) and provide the wrapped token contract address.
 - Tokens with more than 18 decimals. The Flow contract requires token decimals ≤ 18.
 - Fixed-schedule vesting with upfront deposit and defined end date. Route to `sablier-create-vesting`.
 - Launching tokens for users. Require the user to explicitly provide an existing token address as input.
 - Resolving token symbols (e.g. "USDC") to contract addresses. If the user provides a symbol instead of an address, ask them to provide the exact ERC-20 contract address.
+- Streaming native tokens (ETH, POL, etc.). Only ERC-20 tokens can be streamed. If the user wants to stream a native token, inform them they must wrap it first (e.g. WETH) and provide the wrapped token contract address.
 
 ### 3. Clarify payment details
 
 If any of the following are missing or ambiguous from the user's input, use the `AskUserQuestion` tool to ask the user to clarify before proceeding:
 
+- Chain name (e.g. "Ethereum", "Base", etc.)
 - Streaming rate (amount of tokens per time period, e.g. "1000 USDC per month")
 - Recipient address(es)
 - Whether to fund the stream upfront (determines `create` vs `createAndDeposit`)
 - If funding upfront: deposit amount
-- Start time (if not specified, defaults to immediate)
 
-If the missing detail is the token address, use the `AskUserQuestion` tool to ask for the exact ERC-20 contract address and tell the user they can look it up on a blockchain explorer such as Etherscan.
+If the missing detail is the token address, tell the user they can look it up on a blockchain explorer such as Etherscan.
 
 Do not guess or silently apply defaults for the streaming rate, recipient, or upfront funding decision. Only proceed once all required inputs are confirmed.
 
 If the user explicitly requests a streaming amount `"per month"`:
 
-- Do not imply that Flow can deliver the exact same amount for each calendar month.
+- Inform the user that Sablier cannot deliver the exact same amount for each calendar month.
 - Before the final broadcast confirmation, show a caveat that Flow uses a fixed per-second rate, calendar months have unequal numbers of seconds, and exact calendar-month equality is not possible.
 - State that the requested `"per month"` amount will be implemented using a 30-day month approximation for the `ratePerSecond` calculation.
-- Only add this caveat when the user explicitly used `"per month"` in their request. Do not add it for other periods or for monthly wording introduced by the agent.
+- Only add this caveat when the user explicitly used `"per month"` in their request.
 
 ### 4. Infer intent before selecting references
 
@@ -75,22 +75,20 @@ If the user explicitly requests a streaming amount `"per month"`:
 
 1. Check whether the user's desired chain is listed on [Supported Chains](https://docs.sablier.com/concepts/chains).
 2. If the chain is not supported, inform the user and stop execution of this skill.
-3. If the user did not mention a chain, ask them to specify the chain.
-4. If the user requests Solana, inform them that Sablier Flow is not available on Solana and stop.
 
 ### 6. Route in two steps
 
 1. Classify the request as one of:
-   - Payment stream creation on the user's behalf
+   - Open-ended stream creation on the user's behalf
    - Onchain integration guidance
    - Any other integration type (frontend, backend, indexer, etc.)
 2. If the request is any other integration type, inform the user that this skill does not support non-onchain integrations and stop.
 3. Otherwise, follow the route below.
 
-| Intent                                       | EVM                                             | Solana                                   |
-| -------------------------------------------- | ----------------------------------------------- | ---------------------------------------- |
-| Payment stream creation on the user's behalf | Use [evm-cli.md](references/evm-cli.md)         | Not available. Sablier Flow is EVM-only. |
-| Onchain integration guidance                 | Use [evm-onchain.md](references/evm-onchain.md) | Not available. Sablier Flow is EVM-only. |
+| Intent                                          | EVM                                             | Solana                                                                                                       |
+| ----------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Open-ended stream creation on the user's behalf | Use [evm-cli.md](references/evm-cli.md)         | Not yet supported. Direct the user to [solana.sablier.com](https://solana.sablier.com).                      |
+| Onchain integration guidance                    | Use [evm-onchain.md](references/evm-onchain.md) | Not yet supported. Direct the user to [docs.sablier.com](https://docs.sablier.com/solana/sablier-on-solana). |
 
 ## Resources
 

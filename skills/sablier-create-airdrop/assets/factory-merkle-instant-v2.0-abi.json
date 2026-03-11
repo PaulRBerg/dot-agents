@@ -1,0 +1,129 @@
+[
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "campaignName",
+            "type": "string"
+          },
+          {
+            "internalType": "uint40",
+            "name": "campaignStartTime",
+            "type": "uint40"
+          },
+          {
+            "internalType": "uint40",
+            "name": "expiration",
+            "type": "uint40"
+          },
+          {
+            "internalType": "address",
+            "name": "initialAdmin",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "ipfsCID",
+            "type": "string"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "merkleRoot",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "contract IERC20",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct MerkleInstant.ConstructorParams",
+        "name": "params",
+        "type": "tuple"
+      },
+      {
+        "internalType": "uint256",
+        "name": "aggregateAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "recipientCount",
+        "type": "uint256"
+      }
+    ],
+    "name": "createMerkleInstant",
+    "outputs": [
+      {
+        "internalType": "contract ISablierMerkleInstant",
+        "name": "merkleInstant",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "campaignCreator",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "campaignName",
+            "type": "string"
+          },
+          {
+            "internalType": "uint40",
+            "name": "campaignStartTime",
+            "type": "uint40"
+          },
+          {
+            "internalType": "uint40",
+            "name": "expiration",
+            "type": "uint40"
+          },
+          {
+            "internalType": "address",
+            "name": "initialAdmin",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "ipfsCID",
+            "type": "string"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "merkleRoot",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "contract IERC20",
+            "name": "token",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct MerkleInstant.ConstructorParams",
+        "name": "params",
+        "type": "tuple"
+      }
+    ],
+    "name": "computeMerkleInstant",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "merkleInstant",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

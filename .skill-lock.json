@@ -231,9 +231,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/cli-cast/SKILL.md",
-      "skillFolderHash": "936c57e06aa4b4af2e326c9a572573d387f80f51",
+      "skillFolderHash": "736f6f37fc3ce9dbb1bb5ed2a687a80ace6c7baf",
       "installedAt": "2026-02-12T18:24:09.412Z",
-      "updatedAt": "2026-03-06T16:28:55.006Z"
+      "updatedAt": "2026-03-11T10:44:00.358Z"
     },
     "yeet": {
       "source": "PaulRBerg/agent-skills",
@@ -321,18 +321,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/sablier-skills.git",
       "skillPath": "skills/sablier-create-vesting/SKILL.md",
-      "skillFolderHash": "",
+      "skillFolderHash": "b3dc2246c620937ea3ecbd26a7ebbef5792ed2cb",
       "installedAt": "2026-03-06T16:40:14.336Z",
-      "updatedAt": "2026-03-10T14:03:22.694Z"
+      "updatedAt": "2026-03-11T10:51:04.180Z"
     },
     "sablier-product-selection": {
       "source": "sablier-labs/sablier-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/sablier-skills.git",
       "skillPath": "skills/sablier-product-selection/SKILL.md",
-      "skillFolderHash": "",
+      "skillFolderHash": "f09a6e8365fccc8390fc5b6c2702fcb01d9a8e9d",
       "installedAt": "2026-03-06T16:40:14.427Z",
-      "updatedAt": "2026-03-10T14:03:22.803Z"
+      "updatedAt": "2026-03-11T10:51:04.247Z"
     },
     "sablier-protocol": {
       "source": "sablier-labs/sablier-skills",
@@ -341,7 +341,7 @@
       "skillPath": "skills/sablier-protocol/SKILL.md",
       "skillFolderHash": "2f724dae37ebb0b737d9c35bd44c94573196d0ce",
       "installedAt": "2026-03-06T19:13:17.796Z",
-      "updatedAt": "2026-03-06T19:13:17.796Z"
+      "updatedAt": "2026-03-11T10:51:04.300Z"
     },
     "excalidraw-diagram-generator": {
       "source": "github/awesome-copilot",
@@ -357,9 +357,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/sablier-labs/sablier-skills.git",
       "skillPath": "skills/sablier-create-open-ended-stream/SKILL.md",
-      "skillFolderHash": "",
+      "skillFolderHash": "008217db82800a81db3f32035be2ea3eba2965f0",
       "installedAt": "2026-03-10T14:00:29.041Z",
-      "updatedAt": "2026-03-10T14:03:22.586Z"
+      "updatedAt": "2026-03-11T10:51:04.103Z"
+    },
+    "sablier-create-airdrop": {
+      "source": "sablier-labs/sablier-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sablier-labs/sablier-skills.git",
+      "skillPath": "skills/sablier-create-airdrop/SKILL.md",
+      "skillFolderHash": "83f47116575633b7ca26d661b16f019819032e3a",
+      "installedAt": "2026-03-11T10:51:04.034Z",
+      "updatedAt": "2026-03-11T10:51:04.034Z"
     }
   },
   "lastSelectedAgents": [
