@@ -177,9 +177,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/cli-cast/SKILL.md",
-      "skillFolderHash": "736f6f37fc3ce9dbb1bb5ed2a687a80ace6c7baf",
+      "skillFolderHash": "",
       "installedAt": "2026-02-12T18:24:09.412Z",
-      "updatedAt": "2026-03-11T10:44:00.358Z"
+      "updatedAt": "2026-03-12T13:07:09.730Z"
     },
     "yeet": {
       "source": "PaulRBerg/agent-skills",
@@ -252,6 +252,15 @@
       "skillFolderHash": "77750a420fe44e26649cad77023973454bbf754c",
       "installedAt": "2026-03-06T16:28:56.192Z",
       "updatedAt": "2026-03-06T16:28:56.192Z"
+    },
+    "evm-chains": {
+      "source": "PaulRBerg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "skillPath": "skills/evm-chains/SKILL.md",
+      "skillFolderHash": "",
+      "installedAt": "2026-03-12T12:54:08.817Z",
+      "updatedAt": "2026-03-12T13:07:09.855Z"
     }
   },
   "lastSelectedAgents": [
