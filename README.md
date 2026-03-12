@@ -12,8 +12,8 @@ See the [official announcement](https://vercel.com/changelog/introducing-skills-
 
 ```
 ~/.agents/
-├── skills/     # Active skills (loaded by agents)
-└── shelf/      # Inactive skills (move to skills/ to activate)
+├── skills/      # Active skills (loaded by agents)
+└── shelf.json   # Inactive skill names (JSON array)
 ```
 
 > [!NOTE]
@@ -46,10 +46,10 @@ npx skills add owner/repo
 
 ```bash
 # Deactivate a skill
-mv skills/some-skill shelf/
+just sd some-skill
 
 # Activate a skill
-mv shelf/some-skill skills/
+just sa some-skill
 ```
 
 ## 📦 Skill Sources

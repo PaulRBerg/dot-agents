@@ -40,28 +40,37 @@ alias mw := mdformat-write
     ls -1 skills 2>/dev/null | sed 's/^/  {{ CYAN }}▸ /' | sed 's/$/{{ NORMAL }}/' | while read -r line; do echo -e "$line"; done || echo -e '  {{ YELLOW }}(none){{ NORMAL }}'
     echo ""
     echo -e '{{ BOLD }}{{ YELLOW }}○ Shelved skills:{{ NORMAL }}'
-    ls -1 shelf 2>/dev/null | sed 's/^/  {{ BLUE }}▹ /' | sed 's/$/{{ NORMAL }}/' | while read -r line; do echo -e "$line"; done || echo -e '  {{ YELLOW }}(none){{ NORMAL }}'
+    jq -r '.[]' shelf.json 2>/dev/null | sed 's/^/  {{ BLUE }}▹ /' | sed 's/$/{{ NORMAL }}/' | while read -r line; do echo -e "$line"; done || echo -e '  {{ YELLOW }}(none){{ NORMAL }}'
 
 alias sl := skill-list
 alias list := skill-list
 
-# Activate skills (move from shelf to skills)
+# Activate skills (re-install from source)
 [group("skills")]
-[script("bash")]
+[script("zsh", "-i")]
 skill-activate +names: _require-clean
+    set -euo pipefail
     for name in {{ names }}; do
-        mv "shelf/$name" "skills/$name"
+        source=$(jq -r --arg n "$name" '.skills[$n].source // empty' .skill-lock.json)
+        if [ -z "$source" ]; then
+            echo -e '{{ RED }}Error: no source found for '"$name"' in .skill-lock.json{{ NORMAL }}' >&2
+            exit 1
+        fi
+        jq --arg n "$name" '. - [$n]' shelf.json > shelf.json.tmp && mv shelf.json.tmp shelf.json
+        npx skills add "$source" --global --agent claude-code --skill "$name" --yes > /dev/null
         echo -e '{{ GREEN }}✅ Activated: {{ BOLD }}'"$name"'{{ NORMAL }}'
     done
 
 alias sa := skill-activate
 
-# Deactivate skills (move from skills to shelf)
+# Deactivate skills (add to shelf and remove directory)
 [group("skills")]
 [script("bash")]
 skill-deactivate +names: _require-clean
+    set -euo pipefail
     for name in {{ names }}; do
-        mv "skills/$name" "shelf/$name"
+        jq --arg n "$name" '. + [$n] | unique | sort' shelf.json > shelf.json.tmp && mv shelf.json.tmp shelf.json
+        rm -rf "skills/$name"
         echo -e '{{ YELLOW }}📦 Shelved: {{ BOLD }}'"$name"'{{ NORMAL }}'
     done
 
@@ -82,10 +91,9 @@ install-all repo="PaulRBerg/agent-skills": _require-clean
         > /dev/null
     echo -e '{{ GREEN }}✅ Installed all skills from {{ repo }}{{ NORMAL }}'
     removed=()
-    for entry in shelf/*; do
-        name=$(basename "$entry")
+    for name in $(jq -r '.[]' shelf.json 2>/dev/null); do
         if [ -d "skills/$name" ]; then
-            npx skills remove "$name" -y > /dev/null
+            rm -rf "skills/$name"
             removed+=("$name")
         fi
     done
@@ -105,6 +113,7 @@ reset-skills: _require-clean
     rm -rf ~/.codex/skills
     find ~/.claude/skills -mindepth 1 -maxdepth 1 ! -name '.system' -exec rm -rf {} +
     rm -f .skill-lock.json
+    echo '[]' > shelf.json
     echo ""
     echo "Skills purged. Run these commands to reinstall:"
     echo ""
