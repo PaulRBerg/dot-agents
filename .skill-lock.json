@@ -267,9 +267,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/git-squash/SKILL.md",
-      "skillFolderHash": "81716398d736a3820305a0b1272d99bb5045a603",
+      "skillFolderHash": "79a5d779ee3fc677ec9834566a82fa7caaa373a1",
       "installedAt": "2026-03-18T13:03:59.405Z",
-      "updatedAt": "2026-03-18T13:03:59.405Z"
+      "updatedAt": "2026-03-18T13:25:35.252Z"
+    },
+    "process-cleanup": {
+      "source": "PaulRBerg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "skillPath": "skills/process-cleanup/SKILL.md",
+      "skillFolderHash": "4c2e29ef8a0b3a4f7800d995d4765a1e6c603131",
+      "installedAt": "2026-03-18T15:11:03.764Z",
+      "updatedAt": "2026-03-18T15:11:03.764Z"
     }
   },
   "lastSelectedAgents": [
