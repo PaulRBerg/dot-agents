@@ -87,9 +87,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
       "skillPath": "skills/react-best-practices/SKILL.md",
-      "skillFolderHash": "",
+      "skillFolderHash": "a203aee7243640ceb56ce2c6c4ab286573df5e69",
       "installedAt": "2026-02-06T13:12:56.253Z",
-      "updatedAt": "2026-03-06T16:49:24.701Z"
+      "updatedAt": "2026-04-07T15:52:15.468Z"
     },
     "web-design-guidelines": {
       "source": "vercel-labs/agent-skills",
@@ -114,9 +114,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/cli-gh/SKILL.md",
-      "skillFolderHash": "56e0f9050e5a44bd27e1d45eed29578dc5ac78bd",
+      "skillFolderHash": "5243700f776e11f29dab26e65fabd913f8f0437a",
       "installedAt": "2026-02-09T11:09:37.380Z",
-      "updatedAt": "2026-03-06T16:28:55.194Z"
+      "updatedAt": "2026-04-10T09:42:49.312Z"
     },
     "cli-just": {
       "source": "PaulRBerg/agent-skills",
