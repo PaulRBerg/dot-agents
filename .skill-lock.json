@@ -62,7 +62,7 @@
       "skillPath": "skills/oracle-codex/SKILL.md",
       "skillFolderHash": "467b4f1a9cf4f52f86b03069ace97af687142455",
       "installedAt": "2026-02-06T13:11:40.194Z",
-      "updatedAt": "2026-03-06T16:28:56.728Z"
+      "updatedAt": "2026-04-21T11:19:39.131Z"
     },
     "vitest": {
       "source": "sablier-labs/agent-skills",
