@@ -177,9 +177,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/yeet/SKILL.md",
-      "skillFolderHash": "",
+      "skillFolderHash": "eb281f64cad9152ce9a9288e919a4d5b60858c70",
       "installedAt": "2026-02-13T12:59:07.069Z",
-      "updatedAt": "2026-04-07T11:54:16.136Z"
+      "updatedAt": "2026-04-22T09:20:11.496Z"
     },
     "delayed-command": {
       "source": "PaulRBerg/agent-skills",
