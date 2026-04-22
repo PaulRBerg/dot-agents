@@ -60,9 +60,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/oracle-codex/SKILL.md",
-      "skillFolderHash": "467b4f1a9cf4f52f86b03069ace97af687142455",
+      "skillFolderHash": "d463c575a35b614efa8b6098b7d66a076bc0bbcd",
       "installedAt": "2026-02-06T13:11:40.194Z",
-      "updatedAt": "2026-04-21T11:19:39.131Z"
+      "updatedAt": "2026-04-22T10:46:34.450Z"
     },
     "vitest": {
       "source": "sablier-labs/agent-skills",
