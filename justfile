@@ -6,7 +6,7 @@ set shell := ["bash", "-euo", "pipefail", "-c"]
 
 # Show available commands
 default:
-    @just --list
+    @just skill-list
 
 # Abort if the working tree has uncommitted changes
 [private]
