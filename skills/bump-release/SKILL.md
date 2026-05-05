@@ -1,6 +1,7 @@
 ---
 argument-hint: '[version] [--beta] [--dry-run]'
 disable-model-invocation: false
+effort: high
 name: bump-release
 user-invocable: true
 description: This skill should be used when the user asks to "bump release", "cut a release", "tag a release", "bump version", "create a new release", or mentions release versioning, changelog updates, or version tagging workflows.
@@ -50,7 +51,15 @@ Support for both regular and beta releases.
      - If current version has no beta suffix: Add `-beta.1` to the version
      - If current version already has beta suffix: Increment beta number (e.g., `-beta.1` → `-beta.2`)
      - If moving from beta to release: Remove beta suffix and use the base version
-7. **Confirm version** - When the version was inferred (no explicit `version` argument), use `AskUserQuestion` to confirm before proceeding:
+   - **When unsure** — If the changes are ambiguous (e.g., a new feature that may also break consumers, or a mix of fixes and features), use `AskUserQuestion` to let the user decide the semver level:
+
+     - header: "Version"
+     - question: "Changes include both `<summary>`. Which release level?"
+     - options: list the plausible semver levels with their resulting version (e.g., "1.3.0 (minor)", "2.0.0 (major)")
+     - multiSelect: false
+
+     Use the user's choice and skip step 7
+7. **Confirm version** - When the version was confidently inferred (no explicit `version` argument), use `AskUserQuestion` to confirm before proceeding:
 
    - header: "Version"
    - question: "Release `<current>` → `<inferred>`?"
