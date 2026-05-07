@@ -1,6 +1,6 @@
 ---
 name: coingecko-api
-description: This skill should be used when the user asks to "get crypto price", "check Bitcoin price", "query token price", "get market data", "check crypto market cap", "find trending coins", "get historical price data", "get OHLC data", "get candlestick data", "lookup token by contract address", "search for a coin", "get coin info", "get token logo", "find token icon", "get global crypto stats", "check Bitcoin dominance", or mentions CoinGecko API, cryptocurrency price queries, or crypto market data.
+description: This skill should be used when the user asks for crypto prices, market data, market cap, trending coins, historical or OHLC data, token lookup by contract address, coin search, token logos, global crypto stats, or mentions CoinGecko API.
 ---
 
 # CoinGecko API
