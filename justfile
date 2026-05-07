@@ -48,7 +48,7 @@ alias list := skill-list
 # Activate skills (re-install from source)
 [group("skills")]
 [script("zsh", "-i")]
-skill-activate +names: _require-clean
+skill-activate +names:
     set -euo pipefail
     for name in {{ names }}; do
         source=$(jq -r --arg n "$name" '.skills[$n].source // empty' .skill-lock.json)
@@ -66,7 +66,7 @@ alias sa := skill-activate
 # Deactivate skills (add to shelf and remove directory)
 [group("skills")]
 [script("bash")]
-skill-deactivate +names: _require-clean
+skill-deactivate +names:
     set -euo pipefail
     for name in {{ names }}; do
         jq --arg n "$name" '. + [$n] | unique | sort' shelf.json > shelf.json.tmp && mv shelf.json.tmp shelf.json
