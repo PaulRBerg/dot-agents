@@ -42,9 +42,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/commit/SKILL.md",
-      "skillFolderHash": "99f9fa064ff77dcd77e0c7f87044f517ccf6fbd3",
+      "skillFolderHash": "9af3cd20eeb597796a60d71f9058769337bd3edf",
       "installedAt": "2026-02-06T13:11:39.081Z",
-      "updatedAt": "2026-05-07T12:36:32.207Z"
+      "updatedAt": "2026-05-09T14:36:43.934Z"
     },
     "md-docs": {
       "source": "PaulRBerg/agent-skills",
@@ -177,9 +177,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/yeet/SKILL.md",
-      "skillFolderHash": "860c89293f318c4f65c8850badb7e06110f68f96",
+      "skillFolderHash": "234daf49312c6052ae4456c59b195ccb16bf912f",
       "installedAt": "2026-02-13T12:59:07.069Z",
-      "updatedAt": "2026-05-08T08:43:58.511Z"
+      "updatedAt": "2026-05-09T14:36:44.095Z"
     },
     "delayed-command": {
       "source": "PaulRBerg/agent-skills",
@@ -272,13 +272,13 @@
       "updatedAt": "2026-03-18T16:37:58.036Z"
     },
     "coingecko-api": {
-      "source": "PaulRberg/agent-skills",
+      "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/coingecko-api/SKILL.md",
-      "skillFolderHash": "fce610cb9e18071feccfc63893101adcfa2ab0a5",
+      "skillFolderHash": "f9f52d8fce410c0bac9e1b63823dc8717fef19e9",
       "installedAt": "2026-03-20T23:13:01.349Z",
-      "updatedAt": "2026-05-09T09:35:46.553Z"
+      "updatedAt": "2026-05-09T14:36:43.859Z"
     },
     "autoresearch": {
       "source": "PaulRBerg/agent-skills",
@@ -306,6 +306,15 @@
       "skillFolderHash": "58e10ecaddf41bf6d391dbf8ec29271ebd455c75",
       "installedAt": "2026-05-05T08:13:47.937Z",
       "updatedAt": "2026-05-07T10:22:20.214Z"
+    },
+    "debrief": {
+      "source": "PaulRBerg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "skillPath": "skills/debrief/SKILL.md",
+      "skillFolderHash": "c9322dc2fd7808faedcaf96af2bf24f185139582",
+      "installedAt": "2026-05-09T14:36:44.010Z",
+      "updatedAt": "2026-05-09T14:36:44.010Z"
     }
   },
   "lastSelectedAgents": [
