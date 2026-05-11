@@ -132,9 +132,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/etherscan-api/SKILL.md",
-      "skillFolderHash": "6b36b33aabe576342ee35d4d57b7b7ad4333f839",
+      "skillFolderHash": "f96060e0a5f91d4de37002367ba4172304228211",
       "installedAt": "2026-02-11T08:48:39.792Z",
-      "updatedAt": "2026-05-11T13:20:33.121Z"
+      "updatedAt": "2026-05-11T14:19:36.125Z"
     },
     "code-polish": {
       "source": "PaulRBerg/agent-skills",
