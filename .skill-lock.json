@@ -128,13 +128,13 @@
       "updatedAt": "2026-05-07T11:46:20.779Z"
     },
     "etherscan-api": {
-      "source": "PaulRberg/agent-skills",
+      "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/etherscan-api/SKILL.md",
-      "skillFolderHash": "a337864944c737f418eeb2a920ed85006b0f089e",
+      "skillFolderHash": "6b36b33aabe576342ee35d4d57b7b7ad4333f839",
       "installedAt": "2026-02-11T08:48:39.792Z",
-      "updatedAt": "2026-05-09T09:35:46.638Z"
+      "updatedAt": "2026-05-11T13:20:33.121Z"
     },
     "code-polish": {
       "source": "PaulRBerg/agent-skills",
@@ -312,9 +312,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/debrief/SKILL.md",
-      "skillFolderHash": "c9322dc2fd7808faedcaf96af2bf24f185139582",
+      "skillFolderHash": "34493b1b1d2a7c43fa25f476b94b9de2522c1797",
       "installedAt": "2026-05-09T14:36:44.010Z",
-      "updatedAt": "2026-05-09T14:36:44.010Z"
+      "updatedAt": "2026-05-11T08:57:51.604Z"
     }
   },
   "lastSelectedAgents": [
