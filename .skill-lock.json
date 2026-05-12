@@ -315,6 +315,24 @@
       "skillFolderHash": "34493b1b1d2a7c43fa25f476b94b9de2522c1797",
       "installedAt": "2026-05-09T14:36:44.010Z",
       "updatedAt": "2026-05-11T08:57:51.604Z"
+    },
+    "coingecko-cli": {
+      "source": "PaulRBerg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "skillPath": "skills/coingecko-cli/SKILL.md",
+      "skillFolderHash": "1e4e984857dd167a5aa4a9a02c7e6743847c06e3",
+      "installedAt": "2026-05-12T09:28:56.210Z",
+      "updatedAt": "2026-05-12T09:28:56.210Z"
+    },
+    "coingecko-historical": {
+      "source": "PaulRBerg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "skillPath": "skills/coingecko-historical/SKILL.md",
+      "skillFolderHash": "1b61f59ad1a24b424335562999f1b22ae8a638c0",
+      "installedAt": "2026-05-12T09:28:56.410Z",
+      "updatedAt": "2026-05-12T09:28:56.410Z"
     }
   },
   "lastSelectedAgents": [
