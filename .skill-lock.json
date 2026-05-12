@@ -132,9 +132,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/etherscan-api/SKILL.md",
-      "skillFolderHash": "f96060e0a5f91d4de37002367ba4172304228211",
+      "skillFolderHash": "4481570eae2a44594d387221d7c4ec846ae22dd5",
       "installedAt": "2026-02-11T08:48:39.792Z",
-      "updatedAt": "2026-05-11T14:19:36.125Z"
+      "updatedAt": "2026-05-12T12:09:52.608Z"
     },
     "code-polish": {
       "source": "PaulRBerg/agent-skills",
@@ -249,9 +249,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/evm-chains/SKILL.md",
-      "skillFolderHash": "c0f244a2ed60027acc5af43d4662c2f339adeb7c",
+      "skillFolderHash": "62a3cdd632645c8881459afed8de35416d3c5c94",
       "installedAt": "2026-03-12T12:54:08.817Z",
-      "updatedAt": "2026-05-07T11:46:21.383Z"
+      "updatedAt": "2026-05-12T12:11:13.300Z"
     },
     "git-squash": {
       "source": "PaulRBerg/agent-skills",
