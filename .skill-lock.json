@@ -123,9 +123,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/cli-just/SKILL.md",
-      "skillFolderHash": "bd92096648250ab77e36c0a35a7ffe8bff3abd01",
+      "skillFolderHash": "12b7179011efb5f16d6aa17cfb59824c2b756540",
       "installedAt": "2026-02-09T11:09:37.457Z",
-      "updatedAt": "2026-05-07T11:46:20.779Z"
+      "updatedAt": "2026-05-19T11:32:32.223Z"
     },
     "etherscan-api": {
       "source": "PaulRBerg/agent-skills",
@@ -314,7 +314,7 @@
       "skillPath": "skills/debrief/SKILL.md",
       "skillFolderHash": "34493b1b1d2a7c43fa25f476b94b9de2522c1797",
       "installedAt": "2026-05-09T14:36:44.010Z",
-      "updatedAt": "2026-05-11T08:57:51.604Z"
+      "updatedAt": "2026-05-15T08:10:16.068Z"
     },
     "coingecko-cli": {
       "source": "PaulRBerg/agent-skills",
