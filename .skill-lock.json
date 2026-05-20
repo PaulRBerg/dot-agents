@@ -177,9 +177,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/yeet/SKILL.md",
-      "skillFolderHash": "234daf49312c6052ae4456c59b195ccb16bf912f",
+      "skillFolderHash": "433ba54caa5cf8dc35acb33bc004d543caeee42e",
       "installedAt": "2026-02-13T12:59:07.069Z",
-      "updatedAt": "2026-05-09T14:36:44.095Z"
+      "updatedAt": "2026-05-14T13:19:51.681Z"
     },
     "delayed-command": {
       "source": "PaulRBerg/agent-skills",
@@ -333,6 +333,15 @@
       "skillFolderHash": "1b61f59ad1a24b424335562999f1b22ae8a638c0",
       "installedAt": "2026-05-12T09:28:56.410Z",
       "updatedAt": "2026-05-12T09:28:56.410Z"
+    },
+    "notion-cli": {
+      "source": "makenotion/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/makenotion/skills.git",
+      "skillPath": "skills/notion-cli/SKILL.md",
+      "skillFolderHash": "4360360f674f12699a66fffa1ab80174abbca93b",
+      "installedAt": "2026-05-20T11:39:08.681Z",
+      "updatedAt": "2026-05-20T11:39:08.681Z"
     }
   },
   "lastSelectedAgents": [
