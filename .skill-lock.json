@@ -51,9 +51,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/md-docs/SKILL.md",
-      "skillFolderHash": "ce8f98ebbc99d41b8e7c2064ef8f7dd803db01ec",
+      "skillFolderHash": "f1ccdcf28526bf4725b3df000b832e2945d3c6ee",
       "installedAt": "2026-02-06T13:11:39.854Z",
-      "updatedAt": "2026-05-09T11:29:47.843Z"
+      "updatedAt": "2026-05-20T15:22:46.055Z"
     },
     "oracle-codex": {
       "source": "PaulRBerg/agent-skills",
