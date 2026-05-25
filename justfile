@@ -63,14 +63,14 @@ skill-activate +names:
 
 alias sa := skill-activate
 
-# Deactivate skills (add to shelf and remove directory)
+# Deactivate skills (add to shelf and uninstall)
 [group("skills")]
 [script("bash")]
 skill-deactivate +names:
     set -euo pipefail
     for name in {{ names }}; do
         jq --arg n "$name" '. + [$n] | unique | sort' shelf.json > shelf.json.tmp && mv shelf.json.tmp shelf.json
-        rm -rf "skills/$name"
+        npx skills remove "$name" --global --agent claude-code --yes > /dev/null
         echo -e '{{ YELLOW }}📦 Shelved: {{ BOLD }}'"$name"'{{ NORMAL }}'
     done
 
@@ -93,7 +93,7 @@ install-all repo="PaulRBerg/agent-skills": _require-clean
     removed=()
     for name in $(jq -r '.[]' shelf.json 2>/dev/null); do
         if [ -d "skills/$name" ]; then
-            rm -rf "skills/$name"
+            npx skills remove "$name" --global --agent claude-code --yes > /dev/null
             removed+=("$name")
         fi
     done
@@ -109,9 +109,7 @@ alias ia := install-all
 [script("bash")]
 reset-skills: _require-clean
     set -euo pipefail
-    rm -rf ./skills
-    rm -rf ~/.codex/skills
-    find ~/.claude/skills -mindepth 1 -maxdepth 1 ! -name '.system' -exec rm -rf {} +
+    npx skills remove --all --global --yes > /dev/null
     rm -f .skill-lock.json
     echo '[]' > shelf.json
     echo ""
