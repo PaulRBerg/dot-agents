@@ -55,15 +55,6 @@
       "installedAt": "2026-02-06T13:11:39.854Z",
       "updatedAt": "2026-05-20T15:22:46.055Z"
     },
-    "oracle-codex": {
-      "source": "PaulRBerg/agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
-      "skillPath": "skills/oracle-codex/SKILL.md",
-      "skillFolderHash": "11aef568fbfc5d532981eac019007cc175bf3121",
-      "installedAt": "2026-02-06T13:11:40.194Z",
-      "updatedAt": "2026-05-07T10:22:20.626Z"
-    },
     "vitest": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
@@ -123,9 +114,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/cli-just/SKILL.md",
-      "skillFolderHash": "12b7179011efb5f16d6aa17cfb59824c2b756540",
+      "skillFolderHash": "c9a6a7c19cf1f206f7a7fec3e16265e4213bd435",
       "installedAt": "2026-02-09T11:09:37.457Z",
-      "updatedAt": "2026-05-19T11:32:32.223Z"
+      "updatedAt": "2026-05-25T10:30:36.416Z"
     },
     "etherscan-api": {
       "source": "PaulRBerg/agent-skills",
@@ -226,15 +217,6 @@
       "installedAt": "2026-02-14T12:13:48.060Z",
       "updatedAt": "2026-05-07T11:46:21.195Z"
     },
-    "playwright-skill": {
-      "source": "lackeyjb/playwright-skill",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/lackeyjb/playwright-skill.git",
-      "skillPath": "skills/playwright-skill/SKILL.md",
-      "skillFolderHash": "b2d559b68b4c3004840124862f30c6d371270646",
-      "installedAt": "2026-03-01T10:54:40.193Z",
-      "updatedAt": "2026-03-01T10:54:40.193Z"
-    },
     "effect-ts": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
@@ -297,15 +279,6 @@
       "skillFolderHash": "d65b989d2eea82e44850ce0a2e7e7a473e187048",
       "installedAt": "2026-04-16T13:34:08.916Z",
       "updatedAt": "2026-05-07T11:46:21.579Z"
-    },
-    "diagram-monochrome": {
-      "source": "PaulRBerg/agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
-      "skillPath": "skills/diagram-monochrome/SKILL.md",
-      "skillFolderHash": "58e10ecaddf41bf6d391dbf8ec29271ebd455c75",
-      "installedAt": "2026-05-05T08:13:47.937Z",
-      "updatedAt": "2026-05-07T10:22:20.214Z"
     },
     "debrief": {
       "source": "PaulRBerg/agent-skills",
