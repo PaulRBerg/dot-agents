@@ -199,15 +199,6 @@
       "installedAt": "2026-02-14T10:33:40.097Z",
       "updatedAt": "2026-05-22T16:31:29.357Z"
     },
-    "playground": {
-      "source": "anthropics/claude-plugins-official",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/anthropics/claude-plugins-official.git",
-      "skillPath": "plugins/playground/skills/playground/SKILL.md",
-      "skillFolderHash": "8b48d9161c33190447492f7d7d106cc140322772",
-      "installedAt": "2026-02-14T10:33:40.160Z",
-      "updatedAt": "2026-02-14T10:33:40.160Z"
-    },
     "tailwind-css": {
       "source": "PaulRBerg/agent-skills",
       "sourceType": "github",
@@ -227,13 +218,13 @@
       "updatedAt": "2026-05-07T11:46:21.284Z"
     },
     "evm-chains": {
-      "source": "PaulRBerg/agent-skills",
+      "source": "PaulRberg/agent-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/evm-chains/SKILL.md",
-      "skillFolderHash": "c115953a8dbb5c14dd95de738ffdd36126eb18dc",
+      "skillFolderHash": "6943e28d471a69f12ce151ef97f7254a9097ddf7",
       "installedAt": "2026-03-12T12:54:08.817Z",
-      "updatedAt": "2026-05-20T17:39:06.568Z"
+      "updatedAt": "2026-05-30T11:57:38.347Z"
     },
     "git-squash": {
       "source": "PaulRBerg/agent-skills",
@@ -315,6 +306,15 @@
       "skillFolderHash": "4360360f674f12699a66fffa1ab80174abbca93b",
       "installedAt": "2026-05-20T11:39:08.681Z",
       "updatedAt": "2026-05-20T11:39:08.681Z"
+    },
+    "playground": {
+      "source": "PaulRberg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
+      "skillPath": "skills/playground/SKILL.md",
+      "skillFolderHash": "e98516f3afba4700456010f516101c6677c5804b",
+      "installedAt": "2026-05-26T16:24:59.134Z",
+      "updatedAt": "2026-05-26T16:24:59.134Z"
     }
   },
   "lastSelectedAgents": [

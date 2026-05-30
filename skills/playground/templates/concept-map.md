@@ -22,13 +22,13 @@ Canvas-based playgrounds differ from the two-panel split. The interactive visual
 
 ## Control types for concept maps
 
-| Decision | Control | Example |
-|---|---|---|
-| Knowledge level per node | Click-to-cycle button in sidebar list | Know → Fuzzy → Unknown |
-| Connection type | Selector before drawing | calls, depends on, contains, reads from |
-| Node arrangement | Drag on canvas | spatial layout reflects mental model |
-| Which nodes to include | Toggle or checkbox per node | hide/show concepts |
-| Actions | Buttons | Auto-layout (force-directed), clear edges, reset |
+| Decision                 | Control                               | Example                                          |
+| ------------------------ | ------------------------------------- | ------------------------------------------------ |
+| Knowledge level per node | Click-to-cycle button in sidebar list | Know → Fuzzy → Unknown                           |
+| Connection type          | Selector before drawing               | calls, depends on, contains, reads from          |
+| Node arrangement         | Drag on canvas                        | spatial layout reflects mental model             |
+| Which nodes to include   | Toggle or checkbox per node           | hide/show concepts                               |
+| Actions                  | Buttons                               | Auto-layout (force-directed), clear edges, reset |
 
 ## Canvas rendering
 
@@ -59,6 +59,7 @@ Only include edges the user drew. Only mention concepts they marked as fuzzy or 
 ## Pre-populating with real data
 
 For codebases or domains, pre-populate with:
+
 - **Nodes:** 15-20 key concepts with real file paths and short descriptions
 - **Edges:** 20-30 pre-drawn relationships based on actual architecture
 - **Knowledge:** Default all to "Fuzzy" so the user adjusts from there

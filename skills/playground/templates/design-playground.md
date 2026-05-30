@@ -22,14 +22,14 @@ Use this template when the playground is about visual design decisions: componen
 
 ## Control types by decision
 
-| Decision | Control | Example |
-|---|---|---|
-| Sizes, spacing, radius | Slider | border-radius 0–24px |
-| On/off features | Toggle | show border, hover effect |
-| Choosing from a set | Dropdown | font-family, easing curve |
-| Colors | Hue + saturation + lightness sliders | shadow color, accent |
-| Layout structure | Clickable cards | sidebar-left / top-nav / no-nav |
-| Responsive behavior | Viewport-width slider | watch grid reflow at breakpoints |
+| Decision               | Control                              | Example                          |
+| ---------------------- | ------------------------------------ | -------------------------------- |
+| Sizes, spacing, radius | Slider                               | border-radius 0–24px             |
+| On/off features        | Toggle                               | show border, hover effect        |
+| Choosing from a set    | Dropdown                             | font-family, easing curve        |
+| Colors                 | Hue + saturation + lightness sliders | shadow color, accent             |
+| Layout structure       | Clickable cards                      | sidebar-left / top-nav / no-nav  |
+| Responsive behavior    | Viewport-width slider                | watch grid reflow at breakpoints |
 
 ## Preview rendering
 

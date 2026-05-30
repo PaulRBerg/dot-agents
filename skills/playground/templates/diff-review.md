@@ -23,12 +23,12 @@ Diff review playgrounds display git diffs with syntax highlighting. Users click 
 
 ## Control types for diff review
 
-| Feature | Control | Behavior |
-|---|---|---|
-| Line commenting | Click any diff line | Opens textarea below the line |
-| Comment indicator | Badge on commented lines | Shows which lines have feedback |
-| Save/Cancel | Buttons in comment box | Persist or discard comment |
-| Copy prompt | Button in prompt panel | Copies all comments to clipboard |
+| Feature           | Control                  | Behavior                         |
+| ----------------- | ------------------------ | -------------------------------- |
+| Line commenting   | Click any diff line      | Opens textarea below the line    |
+| Comment indicator | Badge on commented lines | Shows which lines have feedback  |
+| Save/Cancel       | Buttons in comment box   | Persist or discard comment       |
+| Copy prompt       | Button in prompt panel   | Copies all comments to clipboard |
 
 ## Diff rendering
 
@@ -54,12 +54,12 @@ const diffData = [
 
 ## Line type styling
 
-| Type | Background | Text Color | Prefix |
-|---|---|---|---|
-| `context` | transparent | default | ` ` (space) |
-| `addition` | green tint (#dafbe1 light / rgba(46,160,67,0.15) dark) | green (#1a7f37 light / #7ee787 dark) | `+` |
-| `deletion` | red tint (#ffebe9 light / rgba(248,81,73,0.15) dark) | red (#cf222e light / #f85149 dark) | `-` |
-| `hunk-header` | blue tint (#ddf4ff light) | blue (#0969da light) | `@@` |
+| Type          | Background                                             | Text Color                           | Prefix      |
+| ------------- | ------------------------------------------------------ | ------------------------------------ | ----------- |
+| `context`     | transparent                                            | default                              | ` ` (space) |
+| `addition`    | green tint (#dafbe1 light / rgba(46,160,67,0.15) dark) | green (#1a7f37 light / #7ee787 dark) | `+`         |
+| `deletion`    | red tint (#ffebe9 light / rgba(248,81,73,0.15) dark)   | red (#cf222e light / #f85149 dark)   | `-`         |
+| `hunk-header` | blue tint (#ddf4ff light)                              | blue (#0969da light)                 | `@@`        |
 
 ## Comment system
 
@@ -147,20 +147,20 @@ To create a diff viewer for a specific commit:
 
 ## Theme support
 
-Support both light and dark modes:
+Default to light mode; offer dark mode as an opt-in toggle:
 
 ```css
-/* Light mode */
+/* Light mode (default) */
 body { background: #f6f8fa; color: #1f2328; }
 .file-card { background: #ffffff; border: 1px solid #d0d7de; }
 .diff-line.addition { background: #dafbe1; }
 .diff-line.deletion { background: #ffebe9; }
 
-/* Dark mode */
-body { background: #0d1117; color: #c9d1d9; }
-.file-card { background: #161b22; border: 1px solid #30363d; }
-.diff-line.addition { background: rgba(46, 160, 67, 0.15); }
-.diff-line.deletion { background: rgba(248, 81, 73, 0.15); }
+/* Dark mode (opt-in, e.g. body.dark or @media (prefers-color-scheme: dark)) */
+body.dark { background: #0d1117; color: #c9d1d9; }
+body.dark .file-card { background: #161b22; border: 1px solid #30363d; }
+body.dark .diff-line.addition { background: rgba(46, 160, 67, 0.15); }
+body.dark .diff-line.deletion { background: rgba(248, 81, 73, 0.15); }
 ```
 
 ## Interactive features

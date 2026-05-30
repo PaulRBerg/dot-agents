@@ -24,13 +24,13 @@ Code map playgrounds use an SVG canvas for the architecture diagram. Users click
 
 ## Control types for code maps
 
-| Decision | Control | Example |
-|---|---|---|
-| System view | Preset buttons | Full System, Chat Flow, Data Flow, Agent System |
-| Visible layers | Checkboxes | Client, Server, SDK, Data, External |
-| Connection types | Checkboxes with color indicators | Data Flow (blue), Tool Calls (green), Events (red) |
-| Component feedback | Click-to-comment modal | Opens modal with textarea for feedback |
-| Zoom level | +/−/reset buttons | Scale SVG for detail |
+| Decision           | Control                          | Example                                            |
+| ------------------ | -------------------------------- | -------------------------------------------------- |
+| System view        | Preset buttons                   | Full System, Chat Flow, Data Flow, Agent System    |
+| Visible layers     | Checkboxes                       | Client, Server, SDK, Data, External                |
+| Connection types   | Checkboxes with color indicators | Data Flow (blue), Tool Calls (green), Events (red) |
+| Component feedback | Click-to-comment modal           | Opens modal with textarea for feedback             |
+| Zoom level         | +/−/reset buttons                | Scale SVG for detail                               |
 
 ## Canvas rendering
 
@@ -67,13 +67,13 @@ function renderDiagram() {
 
 Define 3-5 connection types with distinct visual styles:
 
-| Type | Color | Style | Use for |
-|---|---|---|---|
-| `data-flow` | Blue (#3b82f6) | Solid line | Request/response, data passing |
-| `tool-call` | Green (#10b981) | Dashed (6,3) | Function calls, API invocations |
-| `event` | Red (#ef4444) | Short dash (4,4) | Async events, pub/sub |
-| `skill-invoke` | Orange (#f97316) | Long dash (8,4) | Plugin/skill activation |
-| `dependency` | Gray (#6b7280) | Dotted | Import/require relationships |
+| Type           | Color            | Style            | Use for                         |
+| -------------- | ---------------- | ---------------- | ------------------------------- |
+| `data-flow`    | Blue (#3b82f6)   | Solid line       | Request/response, data passing  |
+| `tool-call`    | Green (#10b981)  | Dashed (6,3)     | Function calls, API invocations |
+| `event`        | Red (#ef4444)    | Short dash (4,4) | Async events, pub/sub           |
+| `skill-invoke` | Orange (#f97316) | Long dash (8,4)  | Plugin/skill activation         |
+| `dependency`   | Gray (#6b7280)   | Dotted           | Import/require relationships    |
 
 Use SVG markers for arrowheads:
 
@@ -138,14 +138,14 @@ Organize nodes in horizontal bands by layer, with consistent spacing.
 
 ## Layer color palette (light theme)
 
-| Layer | Node fill | Description |
-|---|---|---|
-| Client/UI | #dbeafe (blue-100) | React components, hooks, pages |
-| Server/API | #fef3c7 (amber-100) | Express routes, middleware, handlers |
-| SDK/Core | #f3e8ff (purple-100) | Core libraries, SDK wrappers |
-| Agent/Logic | #dcfce7 (green-100) | Business logic, agents, processors |
-| Data | #fce7f3 (pink-100) | Database, cache, storage |
-| External | #fbcfe8 (pink-200) | Third-party services, APIs |
+| Layer       | Node fill            | Description                          |
+| ----------- | -------------------- | ------------------------------------ |
+| Client/UI   | #dbeafe (blue-100)   | React components, hooks, pages       |
+| Server/API  | #fef3c7 (amber-100)  | Express routes, middleware, handlers |
+| SDK/Core    | #f3e8ff (purple-100) | Core libraries, SDK wrappers         |
+| Agent/Logic | #dcfce7 (green-100)  | Business logic, agents, processors   |
+| Data        | #fce7f3 (pink-100)   | Database, cache, storage             |
+| External    | #fbcfe8 (pink-200)   | Third-party services, APIs           |
 
 ## Example topics
 

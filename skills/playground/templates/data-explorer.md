@@ -23,14 +23,14 @@ Use this template when the playground is about data queries, APIs, pipelines, or
 
 ## Control types by decision
 
-| Decision | Control | Example |
-|---|---|---|
-| Select from available items | Clickable cards/chips | table names, columns, HTTP methods |
-| Add filter/condition rows | Add button → row of dropdowns + input | WHERE column op value |
-| Join type or aggregation | Dropdown per row | INNER/LEFT/RIGHT, COUNT/SUM/AVG |
-| Limit/offset | Slider | result count 1–500 |
-| Ordering | Dropdown + ASC/DESC toggle | order by column |
-| On/off features | Toggle | show descriptions, include header |
+| Decision                    | Control                               | Example                            |
+| --------------------------- | ------------------------------------- | ---------------------------------- |
+| Select from available items | Clickable cards/chips                 | table names, columns, HTTP methods |
+| Add filter/condition rows   | Add button → row of dropdowns + input | WHERE column op value              |
+| Join type or aggregation    | Dropdown per row                      | INNER/LEFT/RIGHT, COUNT/SUM/AVG    |
+| Limit/offset                | Slider                                | result count 1–500                 |
+| Ordering                    | Dropdown + ASC/DESC toggle            | order by column                    |
+| On/off features             | Toggle                                | show descriptions, include header  |
 
 ## Preview rendering
 

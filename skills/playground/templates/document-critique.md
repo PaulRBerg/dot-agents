@@ -22,12 +22,14 @@ Use this template when the playground helps review and critique documents: SKILL
 ## Key components
 
 ### Document panel (left)
+
 - Display full document with line numbers
 - Highlight lines with suggestions using a colored left border
 - Color-code by status: pending (amber), approved (green), rejected (red with opacity)
 - Click a suggestion card to scroll to the relevant line
 
 ### Suggestions panel (right)
+
 - Filter tabs: All / Pending / Approved / Rejected
 - Stats in header showing counts for each status
 - Each suggestion card shows:
@@ -37,6 +39,7 @@ Use this template when the playground helps review and critique documents: SKILL
   - Optional textarea for user comments
 
 ### Prompt output (bottom)
+
 - Generates a prompt only from approved suggestions and user comments
 - Groups by: Approved Improvements, Additional Feedback, Rejected (for context)
 - Copy button with "Copied!" feedback
@@ -83,7 +86,7 @@ const suggestion = state.suggestions.find(s => {
 
 Handle markdown-style formatting inline:
 
-```javascript
+````javascript
 // Skip ``` lines, wrap content in code-block-wrapper
 if (line.startsWith('```')) {
   inCodeBlock = !inCodeBlock;
@@ -97,7 +100,7 @@ if (line.startsWith('## ')) renderedLine = `<h2>...</h2>`;
 // Inline formatting (outside code blocks)
 renderedLine = renderedLine.replace(/`([^`]+)`/g, '<code>$1</code>');
 renderedLine = renderedLine.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-```
+````
 
 ## Prompt output generation
 
