@@ -222,9 +222,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/evm-chains/SKILL.md",
-      "skillFolderHash": "eb92ff8ecca00f1d625ddf456aa76f6ae1034bbe",
+      "skillFolderHash": "7bb4d7f419cee6f608488bb3bf978b8625eef958",
       "installedAt": "2026-03-12T12:54:08.817Z",
-      "updatedAt": "2026-06-01T12:24:16.262Z"
+      "updatedAt": "2026-06-01T12:49:53.924Z"
     },
     "git-squash": {
       "source": "PaulRBerg/agent-skills",
