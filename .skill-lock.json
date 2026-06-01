@@ -55,15 +55,6 @@
       "installedAt": "2026-02-06T13:11:39.854Z",
       "updatedAt": "2026-05-20T15:22:46.055Z"
     },
-    "vitest": {
-      "source": "PaulRBerg/agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
-      "skillPath": "skills/vitest/SKILL.md",
-      "skillFolderHash": "2d1915dd422fea1add60431352b16825b414f67e",
-      "installedAt": "2026-02-06T13:12:30.031Z",
-      "updatedAt": "2026-05-07T11:46:21.103Z"
-    },
     "vercel-composition-patterns": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",

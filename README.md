@@ -12,8 +12,7 @@ See the [official announcement](https://vercel.com/changelog/introducing-skills-
 
 ```
 ~/.agents/
-├── skills/      # Active skills (loaded by agents)
-└── shelf.json   # Inactive skill names (JSON array)
+└── skills/      # Skills loaded by agents
 ```
 
 > [!NOTE]
@@ -42,16 +41,6 @@ npx skills add owner/repo
 > The GitHub repository must contain a `skills/` directory with skill definitions.
 > See [skill discovery](https://github.com/vercel-labs/add-skill?tab=readme-ov-file#skill-discovery) for supported directory structures.
 
-**Activate/deactivate skills:**
-
-```bash
-# Deactivate a skill
-just sd some-skill
-
-# Activate a skill
-just sa some-skill
-```
-
 ## 📦 Skill Sources
 
 Skills are installed from these repositories:
@@ -59,7 +48,7 @@ Skills are installed from these repositories:
 | Source | Description |
 | --- | --- |
 | [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills) | General-purpose skills (commit, code-review, yeet, cli-gh, etc.) |
-| [sablier-labs/agent-skills](https://github.com/sablier-labs/agent-skills) | Sablier & Web3 skills (web3-foundry, effect-ts, vitest, etc.) |
+| [sablier-labs/agent-skills](https://github.com/sablier-labs/agent-skills) | Sablier & Web3 skills |
 | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | Vercel/React skills (composition-patterns, react-best-practices, etc.) |
 | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | Official Claude Code plugins (frontend-design, playground, etc.) |
 

@@ -33,50 +33,39 @@ alias mw := mdformat-write
 #                                    SKILLS                                    #
 # ---------------------------------------------------------------------------- #
 
-# List skills (active and shelved)
+# List skills
 [group("skills")]
 @skill-list:
-    echo -e '{{ BOLD }}{{ GREEN }}● Active skills:{{ NORMAL }}'
+    echo -e '{{ BOLD }}{{ GREEN }}● Skills:{{ NORMAL }}'
     ls -1 skills 2>/dev/null | sed 's/^/  {{ CYAN }}▸ /' | sed 's/$/{{ NORMAL }}/' | while read -r line; do echo -e "$line"; done || echo -e '  {{ YELLOW }}(none){{ NORMAL }}'
-    echo ""
-    echo -e '{{ BOLD }}{{ YELLOW }}○ Shelved skills:{{ NORMAL }}'
-    jq -r '.[]' shelf.json 2>/dev/null | sed 's/^/  {{ BLUE }}▹ /' | sed 's/$/{{ NORMAL }}/' | while read -r line; do echo -e "$line"; done || echo -e '  {{ YELLOW }}(none){{ NORMAL }}'
 
 alias sl := skill-list
 alias list := skill-list
 
-# Activate skills (re-install from source)
+# Update installed skills from their sources
 [group("skills")]
 [script("zsh", "-i")]
-skill-activate +names:
+skill-update:
     set -euo pipefail
-    for name in {{ names }}; do
+    typeset -a updated
+    for dir in skills/*(/N); do
+        name=${dir:t}
         source=$(jq -r --arg n "$name" '.skills[$n].source // empty' .skill-lock.json)
-        if [ -z "$source" ]; then
+        if [[ -z "$source" ]]; then
             echo -e '{{ RED }}Error: no source found for '"$name"' in .skill-lock.json{{ NORMAL }}' >&2
             exit 1
         fi
-        jq --arg n "$name" '. - [$n]' shelf.json > shelf.json.tmp && mv shelf.json.tmp shelf.json
         npx skills add "$source" --global --agent claude-code --skill "$name" --yes > /dev/null
-        echo -e '{{ GREEN }}✅ Activated: {{ BOLD }}'"$name"'{{ NORMAL }}'
+        updated+=("$name")
+        echo -e '{{ GREEN }}✅ Updated: {{ BOLD }}'"$name"'{{ NORMAL }}'
     done
+    if [[ ${#updated[@]} -eq 0 ]]; then
+        echo -e '{{ YELLOW }}No skills found to update{{ NORMAL }}'
+    fi
 
-alias sa := skill-activate
+alias su := skill-update
 
-# Deactivate skills (add to shelf and uninstall)
-[group("skills")]
-[script("bash")]
-skill-deactivate +names:
-    set -euo pipefail
-    for name in {{ names }}; do
-        jq --arg n "$name" '. + [$n] | unique | sort' shelf.json > shelf.json.tmp && mv shelf.json.tmp shelf.json
-        npx skills remove "$name" --global --agent claude-code --yes > /dev/null
-        echo -e '{{ YELLOW }}📦 Shelved: {{ BOLD }}'"$name"'{{ NORMAL }}'
-    done
-
-alias sd := skill-deactivate
-
-# Install skills from a repo, removing any that are shelved
+# Install skills from a repo
 [group("skills")]
 [script("zsh", "-i")]
 install-all repo="PaulRBerg/agent-skills": _require-clean
@@ -90,16 +79,6 @@ install-all repo="PaulRBerg/agent-skills": _require-clean
         --yes \
         > /dev/null
     echo -e '{{ GREEN }}✅ Installed all skills from {{ repo }}{{ NORMAL }}'
-    removed=()
-    for name in $(jq -r '.[]' shelf.json 2>/dev/null); do
-        if [ -d "skills/$name" ]; then
-            npx skills remove "$name" --global --agent claude-code --yes > /dev/null
-            removed+=("$name")
-        fi
-    done
-    if [ ${#removed[@]} -gt 0 ]; then
-        echo -e '{{ YELLOW }}📦 Removed shelved skills: {{ BOLD }}'"${removed[*]}"'{{ NORMAL }}'
-    fi
 
 alias ia := install-all
 
@@ -111,7 +90,6 @@ reset-skills: _require-clean
     set -euo pipefail
     npx skills remove --all --global --yes > /dev/null
     rm -f .skill-lock.json
-    echo '[]' > shelf.json
     echo ""
     echo "Skills purged. Run these commands to reinstall:"
     echo ""
