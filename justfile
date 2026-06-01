@@ -42,26 +42,10 @@ alias mw := mdformat-write
 alias sl := skill-list
 alias list := skill-list
 
-# Update installed skills from their sources
+# Update all installed skills from their sources
 [group("skills")]
-[script("zsh", "-i")]
-skill-update:
-    set -euo pipefail
-    typeset -a updated
-    for dir in skills/*(/N); do
-        name=${dir:t}
-        source=$(jq -r --arg n "$name" '.skills[$n].source // empty' .skill-lock.json)
-        if [[ -z "$source" ]]; then
-            echo -e '{{ RED }}Error: no source found for '"$name"' in .skill-lock.json{{ NORMAL }}' >&2
-            exit 1
-        fi
-        npx skills add "$source" --global --agent claude-code --skill "$name" --yes > /dev/null
-        updated+=("$name")
-        echo -e '{{ GREEN }}✅ Updated: {{ BOLD }}'"$name"'{{ NORMAL }}'
-    done
-    if [[ ${#updated[@]} -eq 0 ]]; then
-        echo -e '{{ YELLOW }}No skills found to update{{ NORMAL }}'
-    fi
+@skill-update: _require-clean
+    npx skills update --global --yes
 
 alias su := skill-update
 
