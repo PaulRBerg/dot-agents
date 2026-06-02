@@ -182,13 +182,13 @@
       "updatedAt": "2026-05-07T11:46:21.579Z"
     },
     "debrief": {
-      "source": "PaulRBerg/agent-skills",
+      "source": "PaulRberg/agent-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/debrief/SKILL.md",
-      "skillFolderHash": "34493b1b1d2a7c43fa25f476b94b9de2522c1797",
+      "skillFolderHash": "74896ccfa70bebaeb0af3070e21311d89ed3e821",
       "installedAt": "2026-05-09T14:36:44.010Z",
-      "updatedAt": "2026-05-15T08:10:16.068Z"
+      "updatedAt": "2026-06-02T11:25:00.882Z"
     },
     "coingecko-cli": {
       "source": "PaulRBerg/agent-skills",
@@ -224,7 +224,7 @@
       "skillPath": "skills/playground/SKILL.md",
       "skillFolderHash": "e98516f3afba4700456010f516101c6677c5804b",
       "installedAt": "2026-05-26T16:24:59.134Z",
-      "updatedAt": "2026-05-26T16:24:59.134Z"
+      "updatedAt": "2026-06-02T11:25:00.963Z"
     },
     "obscura": {
       "source": "h4ckf0r0day/obscura",
