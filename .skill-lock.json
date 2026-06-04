@@ -29,13 +29,13 @@
       "updatedAt": "2026-05-07T10:22:19.958Z"
     },
     "commit": {
-      "source": "PaulRBerg/agent-skills",
+      "source": "PaulRberg/agent-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/commit/SKILL.md",
-      "skillFolderHash": "9af3cd20eeb597796a60d71f9058769337bd3edf",
+      "skillFolderHash": "024cf5b5801655a5f85fdc6723efa585270506f5",
       "installedAt": "2026-02-06T13:11:39.081Z",
-      "updatedAt": "2026-05-09T14:36:43.934Z"
+      "updatedAt": "2026-06-04T13:36:46.767Z"
     },
     "md-docs": {
       "source": "PaulRBerg/agent-skills",
@@ -110,13 +110,13 @@
       "updatedAt": "2026-05-07T11:46:20.620Z"
     },
     "yeet": {
-      "source": "PaulRBerg/agent-skills",
+      "source": "PaulRberg/agent-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/yeet/SKILL.md",
-      "skillFolderHash": "433ba54caa5cf8dc35acb33bc004d543caeee42e",
+      "skillFolderHash": "ea07a8df55b06900f7f9ee4ab75531abc45bbc26",
       "installedAt": "2026-02-13T12:59:07.069Z",
-      "updatedAt": "2026-05-14T13:19:51.681Z"
+      "updatedAt": "2026-06-04T13:36:46.817Z"
     },
     "tailwind-css": {
       "source": "PaulRBerg/agent-skills",
@@ -141,9 +141,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/evm-chains/SKILL.md",
-      "skillFolderHash": "9022448c2fce176ab3d5fb4f9ab9cd46b5c7c045",
+      "skillFolderHash": "8bcbf2a545988686007448566df44661fd6af096",
       "installedAt": "2026-03-12T12:54:08.817Z",
-      "updatedAt": "2026-06-02T17:40:05.608Z"
+      "updatedAt": "2026-06-03T15:47:59.190Z"
     },
     "git-squash": {
       "source": "PaulRBerg/agent-skills",
@@ -225,6 +225,15 @@
       "skillFolderHash": "a77fce4c75d70660f2fb741c8fcbe230cae08477",
       "installedAt": "2026-05-30T14:05:58.357Z",
       "updatedAt": "2026-05-30T14:05:58.357Z"
+    },
+    "summarize": {
+      "source": "openclaw/openclaw",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/openclaw/openclaw.git",
+      "skillPath": "skills/summarize/SKILL.md",
+      "skillFolderHash": "1fbc6f703b852072d57496300bd2a078309e9c7d",
+      "installedAt": "2026-06-03T06:38:20.070Z",
+      "updatedAt": "2026-06-03T06:38:20.070Z"
     }
   },
   "lastSelectedAgents": [
