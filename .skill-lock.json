@@ -114,9 +114,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/yeet/SKILL.md",
-      "skillFolderHash": "ea07a8df55b06900f7f9ee4ab75531abc45bbc26",
+      "skillFolderHash": "613213321fb257a4eb3daa2b77b8ffc24b7b2539",
       "installedAt": "2026-02-13T12:59:07.069Z",
-      "updatedAt": "2026-06-04T13:36:46.817Z"
+      "updatedAt": "2026-06-05T13:49:53.699Z"
     },
     "tailwind-css": {
       "source": "PaulRBerg/agent-skills",
