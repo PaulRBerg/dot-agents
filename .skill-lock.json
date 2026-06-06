@@ -33,9 +33,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/commit/SKILL.md",
-      "skillFolderHash": "024cf5b5801655a5f85fdc6723efa585270506f5",
+      "skillFolderHash": "9d79a2b4d6439120bf1dd4622c11768c0a8dae82",
       "installedAt": "2026-02-06T13:11:39.081Z",
-      "updatedAt": "2026-06-04T13:36:46.767Z"
+      "updatedAt": "2026-06-06T14:15:19.339Z"
     },
     "md-docs": {
       "source": "PaulRBerg/agent-skills",
