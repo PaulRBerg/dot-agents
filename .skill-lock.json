@@ -33,9 +33,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/commit/SKILL.md",
-      "skillFolderHash": "9d79a2b4d6439120bf1dd4622c11768c0a8dae82",
+      "skillFolderHash": "7b115bd5e84aed9893ca003df7d8d48408964b84",
       "installedAt": "2026-02-06T13:11:39.081Z",
-      "updatedAt": "2026-06-06T14:15:19.339Z"
+      "updatedAt": "2026-06-08T14:06:12.823Z"
     },
     "md-docs": {
       "source": "PaulRBerg/agent-skills",
@@ -177,9 +177,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/debrief/SKILL.md",
-      "skillFolderHash": "74896ccfa70bebaeb0af3070e21311d89ed3e821",
+      "skillFolderHash": "2661c3d663965d653236b18a7aca9545185b157a",
       "installedAt": "2026-05-09T14:36:44.010Z",
-      "updatedAt": "2026-06-02T11:25:00.882Z"
+      "updatedAt": "2026-06-08T13:20:55.403Z"
     },
     "coingecko-cli": {
       "source": "PaulRBerg/agent-skills",
