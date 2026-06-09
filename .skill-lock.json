@@ -69,9 +69,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
       "skillPath": "skills/cli-just/SKILL.md",
-      "skillFolderHash": "4e4b3a51b69a5f6f4b06e2e44b0674ddeb9069b5",
+      "skillFolderHash": "c131bf58f578aedf98f7ced5bbd7794f1ab68902",
       "installedAt": "2026-02-09T11:09:37.457Z",
-      "updatedAt": "2026-06-09T14:22:40.334Z"
+      "updatedAt": "2026-06-09T19:39:28.904Z"
     },
     "code-polish": {
       "source": "PaulRBerg/agent-skills",
