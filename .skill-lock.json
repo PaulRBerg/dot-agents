@@ -252,6 +252,15 @@
       "skillFolderHash": "f5fb1cdb7993b2feee8367e983e9d4d58d2eedd4",
       "installedAt": "2026-06-06T10:44:32.024Z",
       "updatedAt": "2026-06-06T10:44:32.024Z"
+    },
+    "todo-archive": {
+      "source": "PaulRberg/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
+      "skillPath": "skills/todo-archive/SKILL.md",
+      "skillFolderHash": "6b26bb58f73e4ebd1e68e9a3f314fbb7f3792f4b",
+      "installedAt": "2026-06-09T14:21:41.114Z",
+      "updatedAt": "2026-06-09T14:21:41.114Z"
     }
   },
   "lastSelectedAgents": [
