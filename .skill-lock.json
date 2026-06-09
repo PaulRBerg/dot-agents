@@ -83,13 +83,13 @@
       "updatedAt": "2026-06-09T11:16:03.223Z"
     },
     "bump-deps": {
-      "source": "PaulRBerg/agent-skills",
+      "source": "PaulRberg/agent-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/bump-deps/SKILL.md",
-      "skillFolderHash": "7aa638ff1d8bb13521fdbfd7a3759716fe91d671",
+      "skillFolderHash": "8adf1a230af277441af4d9c7b773909d6f2768bc",
       "installedAt": "2026-02-12T14:58:27.760Z",
-      "updatedAt": "2026-06-09T11:16:02.900Z"
+      "updatedAt": "2026-06-09T12:48:26.318Z"
     },
     "work": {
       "source": "PaulRBerg/agent-skills",
@@ -164,13 +164,13 @@
       "updatedAt": "2026-06-09T11:16:02.835Z"
     },
     "create-skill": {
-      "source": "PaulRBerg/agent-skills",
+      "source": "PaulRberg/agent-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/create-skill/SKILL.md",
-      "skillFolderHash": "8fc206f21873ee7054bfb2aef4a6fbb690bb87c4",
+      "skillFolderHash": "2feef3745f8a4b5081a0acb12954f27934923e6b",
       "installedAt": "2026-04-16T13:34:08.916Z",
-      "updatedAt": "2026-06-09T11:16:03.604Z"
+      "updatedAt": "2026-06-09T12:48:26.544Z"
     },
     "debrief": {
       "source": "PaulRBerg/agent-skills",
