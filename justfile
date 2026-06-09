@@ -42,10 +42,57 @@ alias mw := mdformat-write
 alias sl := skill-list
 alias list := skill-list
 
+# Recreate Claude Code skill links via the skills CLI
+[group("skills")]
+[script("bash")]
+skill-sync-claude:
+    set -euo pipefail
+    lock=".skill-lock.json"
+    claude_skills_dir="$HOME/.claude/skills"
+
+    mkdir -p "$claude_skills_dir"
+    find "$claude_skills_dir" -maxdepth 1 -type l ! -exec test -e {} \; -delete
+    [[ -f "$lock" ]] || { echo "No $lock found"; exit 0; }
+
+    jq -r '
+      .skills
+      | to_entries
+      | map({
+          name: .key,
+          source: (if .value.sourceType == "github" then .value.source else .value.sourceUrl end),
+          ref: (.value.ref // "")
+        })
+      | group_by([.source, .ref])
+      | .[]
+      | [.[0].source, .[0].ref, (map(.name) | join(" "))] | @tsv
+    ' "$lock" | while IFS=$'\t' read -r source ref skills; do
+        needed=()
+        for skill in $skills; do
+            [[ -f "skills/$skill/SKILL.md" ]] || continue
+
+            link="$claude_skills_dir/$skill"
+            [[ -L "$link" && "$(readlink "$link")" == "../../.agents/skills/$skill" ]] && continue
+
+            needed+=("$skill")
+        done
+        ((${#needed[@]})) || continue
+
+        install_source="$source"
+        [[ -n "$ref" ]] && install_source="$install_source#$ref"
+
+        extra=()
+        [[ "$source" == openclaw/* ]] && extra+=(--dangerously-accept-openclaw-risks)
+
+        npx skills add "$install_source" --global --agent claude-code codex --skill "${needed[@]}" --yes "${extra[@]}"
+    done
+
+alias ssc := skill-sync-claude
+
 # Update all installed skills from their sources
 [group("skills")]
 @skill-update: _require-clean
     npx skills update --global --yes
+    just skill-sync-claude
 
 alias su := skill-update
 
@@ -60,7 +107,7 @@ install-all repo="PaulRBerg/agent-skills": _require-clean
     trap 'rm -f "$output_file"' EXIT
     if ! npx skills add '{{ repo }}' \
         --global \
-        --agent claude-code \
+        --agent claude-code codex \
         --skill '*' \
         --yes \
         > "$output_file" 2>&1; then
@@ -78,6 +125,7 @@ alias ia := install-all
 reset-skills: _require-clean
     set -euo pipefail
     npx skills remove --all --global --yes > /dev/null
+    just skill-sync-claude
     rm -f .skill-lock.json
     echo ""
     echo "Skills purged. Run these commands to reinstall:"
