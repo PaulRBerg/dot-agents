@@ -45,7 +45,7 @@ alias list := skill-list
 # Recreate Claude Code skill links via the skills CLI
 [group("skills")]
 [script("bash")]
-skill-sync-claude:
+sync-claude:
     set -euo pipefail
     lock=".skill-lock.json"
     claude_skills_dir="$HOME/.claude/skills"
@@ -86,13 +86,13 @@ skill-sync-claude:
         npx skills add "$install_source" --global --agent claude-code codex --skill "${needed[@]}" --yes "${extra[@]}"
     done
 
-alias ssc := skill-sync-claude
+alias ssc := sync-claude
 
 # Update all installed skills from their sources
 [group("skills")]
 @skill-update: _require-clean
     npx skills update --global --yes
-    just skill-sync-claude
+    just sync-claude
 
 alias su := skill-update
 
@@ -125,7 +125,7 @@ alias ia := install-all
 reset-skills: _require-clean
     set -euo pipefail
     npx skills remove --all --global --yes > /dev/null
-    just skill-sync-claude
+    just sync-claude
     rm -f .skill-lock.json
     echo ""
     echo "Skills purged. Run these commands to reinstall:"
