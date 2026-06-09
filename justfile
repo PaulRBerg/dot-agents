@@ -56,13 +56,18 @@ install-all repo="PaulRBerg/agent-skills": _require-clean
     set -euo pipefail
     # TODO: replace "> /dev/null" with "--quiet" when available
     # https://github.com/vercel-labs/skills/issues/331
-    npx skills add {{ repo }} \
+    output_file="$(mktemp)"
+    trap 'rm -f "$output_file"' EXIT
+    if ! npx skills add '{{ repo }}' \
         --global \
         --agent claude-code \
         --skill '*' \
         --yes \
-        > /dev/null
-    echo -e '{{ GREEN }}✅ Installed all skills from {{ repo }}{{ NORMAL }}'
+        > "$output_file" 2>&1; then
+        cat "$output_file" >&2
+        exit 1
+    fi
+    printf '{{ GREEN }}%s{{ NORMAL }}\n' '✅ Installed all skills from {{ repo }}'
 
 alias ia := install-all
 
