@@ -128,13 +128,13 @@
       "updatedAt": "2026-06-09T14:22:41.196Z"
     },
     "effect-ts": {
-      "source": "PaulRBerg/agent-skills",
+      "source": "PaulRberg/agent-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
+      "sourceUrl": "https://github.com/PaulRberg/agent-skills.git",
       "skillPath": "skills/effect-ts/SKILL.md",
-      "skillFolderHash": "e2b05e2685b6eed5c8aa07625aba966da5def0eb",
+      "skillFolderHash": "1416afc51294dd3302a7c6931e0576deb6973d2e",
       "installedAt": "2026-03-06T16:28:56.192Z",
-      "updatedAt": "2026-06-09T14:22:40.891Z"
+      "updatedAt": "2026-06-09T18:02:02.660Z"
     },
     "evm-chains": {
       "source": "PaulRberg/agent-skills",
