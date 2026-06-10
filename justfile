@@ -98,7 +98,7 @@ alias su := skill-update
 
 # Install skills from a repo
 [group("skills")]
-[script("zsh", "-i")]
+[script("bash")]
 install-all repo="PaulRBerg/agent-skills": _require-clean
     set -euo pipefail
     # TODO: replace "> /dev/null" with "--quiet" when available
