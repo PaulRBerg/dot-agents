@@ -101,19 +101,14 @@ alias su := skill-update
 [script("bash")]
 install-all repo="PaulRBerg/agent-skills": _require-clean
     set -euo pipefail
-    # TODO: replace "> /dev/null" with "--quiet" when available
-    # https://github.com/vercel-labs/skills/issues/331
-    output_file="$(mktemp)"
-    trap 'rm -f "$output_file"' EXIT
-    if ! npx skills add '{{ repo }}' \
+    gum spin \
+        --title 'Installing skills from {{ repo }}...' \
+        --show-error \
+        -- npx skills add '{{ repo }}' \
         --global \
         --agent claude-code codex \
         --skill '*' \
-        --yes \
-        > "$output_file" 2>&1; then
-        cat "$output_file" >&2
-        exit 1
-    fi
+        --yes
     printf '{{ GREEN }}%s{{ NORMAL }}\n' '✅ Installed all skills from {{ repo }}'
 
 alias ia := install-all
