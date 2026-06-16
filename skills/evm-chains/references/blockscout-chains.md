@@ -1,6 +1,6 @@
 # Target Chains & Chainscout
 
-Blockscout and Chainscout index many EVM networks, but this skill only uses them for chains in `SKILL.md` [Target Mainnets](../SKILL.md#target-mainnets). Do not use Chainscout to expand scope. If a requested chain is not in the target table, ask the user to file a feature request in <https://github.com/PaulRBerg/agent-skills>.
+Blockscout and Chainscout index many EVM networks, but this skill only uses them for chains in `./references/target-mainnets.json`. Do not use Chainscout to expand scope. If a requested chain is not in that JSON file, ask the user to file a feature request in <https://github.com/PaulRBerg/agent-skills>.
 
 ## Chainscout API
 
@@ -30,36 +30,37 @@ Single-chain response shape:
 - `blockscout` — Blockscout-operated; candidate for the unified PRO host (`api.blockscout.com/{chain_id}/...`). Still confirm with a live call — not every hosted target chain is fronted by the PRO host.
 - anything else — community-operated. Per-instance only; use `explorers[].url` directly (no key).
 
-Use `./scripts/resolve-chain.sh <chain_id>` to extract these fields as `key=value` lines. The helper refuses non-target chain IDs and rejects Chainscout responses whose name does not match the target chain. For **name -> `chain_id`**, use the target table in `SKILL.md` first.
+Use `./scripts/resolve-chain.sh <chain_id>` to extract these fields as `key=value` lines. The helper refuses non-target chain IDs and rejects Chainscout responses whose name does not match the target chain. For **name -> `chain_id`**, use `./references/target-mainnets.json` and `./references/chain-aliases.json` first.
 
 ## Target Chains Observed in Chainscout
 
-Observed on 2026-06-14. Presence here does not override the target table's canonical explorer/RPC metadata.
+Observed on 2026-06-14. Presence here does not override the canonical explorer/RPC metadata in `./references/target-mainnets.json`.
 
-| Chain         | `chain_id` | Native | Hosted by  | Instance URL                          | Notes                                             |
-| ------------- | ---------- | ------ | ---------- | ------------------------------------- | ------------------------------------------------- |
-| Arbitrum      | `42161`    | ETH    | blockscout | https://arbitrum.blockscout.com/      |                                                   |
-| Arbitrum Nova | `42170`    | ETH    | blockscout | https://arbitrum-nova.blockscout.com/ | Canonical explorer (Arbiscan Nova decommissioned) |
-| Base          | `8453`     | ETH    | blockscout | https://base.blockscout.com/          |                                                   |
-| Celo          | `42220`    | CELO   | blockscout | https://celo.blockscout.com/          |                                                   |
-| Ethereum      | `1`        | ETH    | blockscout | https://eth.blockscout.com/           |                                                   |
-| Fantom        | `250`      | FTM    | self       | https://ftmscout.com/                 |                                                   |
-| Gnosis        | `100`      | XDAI   | blockscout | https://gnosis.blockscout.com/        |                                                   |
-| HyperEVM      | `999`      | HYPE   | self       | https://www.hyperscan.com/            | Chainscout marks `isTestnet=true`                 |
-| Lightlink     | `1890`     | ETH    | blockscout | https://phoenix.lightlink.io/         |                                                   |
-| Linea         | `59144`    | ETH    | self       | https://explorer.linea.build/         |                                                   |
-| Mode          | `34443`    | ETH    | blockscout | https://explorer.mode.network/        |                                                   |
-| Morph         | `2818`     | ETH    | self       | https://explorer.morphl2.io/          |                                                   |
-| Optimism      | `10`       | ETH    | blockscout | https://explorer.optimism.io/         |                                                   |
-| Polygon       | `137`      | POL    | blockscout | https://polygon.blockscout.com/       |                                                   |
-| Scroll        | `534352`   | ETH    | blockscout | https://scroll.blockscout.com         |                                                   |
-| Superseed     | `5330`     | ETH    | self       | https://explorer.superseed.xyz/       |                                                   |
-| Unichain      | `130`      | ETH    | blockscout | https://unichain.blockscout.com       |                                                   |
-| ZKsync Era    | `324`      | ETH    | blockscout | https://zksync.blockscout.com/        |                                                   |
+| Chain         | `chain_id` | Native | Hosted by  | Instance URL                                     | Notes                                             |
+| ------------- | ---------- | ------ | ---------- | ------------------------------------------------ | ------------------------------------------------- |
+| Arbitrum      | `42161`    | ETH    | blockscout | https://arbitrum.blockscout.com/                 |                                                   |
+| Arbitrum Nova | `42170`    | ETH    | blockscout | https://arbitrum-nova.blockscout.com/            | Canonical explorer (Arbiscan Nova decommissioned) |
+| Base          | `8453`     | ETH    | blockscout | https://base.blockscout.com/                     |                                                   |
+| Celo          | `42220`    | CELO   | blockscout | https://celo.blockscout.com/                     |                                                   |
+| Ethereum      | `1`        | ETH    | blockscout | https://eth.blockscout.com/                      |                                                   |
+| Fantom        | `250`      | FTM    | self       | https://ftmscout.com/                            |                                                   |
+| Gnosis        | `100`      | XDAI   | blockscout | https://gnosis.blockscout.com/                   |                                                   |
+| HyperEVM      | `999`      | HYPE   | self       | https://www.hyperscan.com/                       | Chainscout marks `isTestnet=true`                 |
+| Lightlink     | `1890`     | ETH    | blockscout | https://phoenix.lightlink.io/                    |                                                   |
+| Linea         | `59144`    | ETH    | self       | https://explorer.linea.build/                    |                                                   |
+| Mode          | `34443`    | ETH    | blockscout | https://explorer.mode.network/                   |                                                   |
+| Morph         | `2818`     | ETH    | self       | https://explorer.morphl2.io/                     |                                                   |
+| Optimism      | `10`       | ETH    | blockscout | https://explorer.optimism.io/                    |                                                   |
+| Polygon       | `137`      | POL    | blockscout | https://polygon.blockscout.com/                  |                                                   |
+| Scroll        | `534352`   | ETH    | blockscout | https://scroll.blockscout.com                    |                                                   |
+| Superseed     | `5330`     | ETH    | self       | https://explorer.superseed.xyz/                  |                                                   |
+| Unichain      | `130`      | ETH    | blockscout | https://unichain.blockscout.com                  |                                                   |
+| World Chain   | `480`      | ETH    | alchemy    | https://worldchain-mainnet.explorer.alchemy.com/ | Alchemy-hosted instance; prefer Etherscan V2      |
+| ZKsync Era    | `324`      | ETH    | blockscout | https://zksync.blockscout.com/                   |                                                   |
 
 ## Target Chains Absent or Unsafe in Chainscout
 
-Use Etherscan or the target table's public RPC/explorer for these.
+Use Etherscan or the public RPC/explorer in `./references/target-mainnets.json` for these.
 
 | Chain     | `chain_id` | Notes                                             |
 | --------- | ---------- | ------------------------------------------------- |

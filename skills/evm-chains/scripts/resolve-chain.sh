@@ -14,7 +14,7 @@
 #   rollup_type=<string|>
 #
 # No API key required. Source: https://chains.blockscout.com/
-# Scope is intentionally limited to skills/evm-chains/SKILL.md Target Mainnets.
+# Scope is intentionally limited to skills/evm-chains/references/target-mainnets.json.
 
 set -eu
 
@@ -38,6 +38,7 @@ target_name_pattern() {
     146) printf '%s\n' 'Sonic' ;;
     250) printf '%s\n' 'Fantom' ;;
     324) printf '%s\n' 'ZKsync' ;;
+    480) printf '%s\n' 'World' ;;
     999) printf '%s\n' 'HyperEVM|Hyper' ;;
     1116) printf '%s\n' 'Core' ;;
     1890) printf '%s\n' 'Lightlink|LightLink' ;;

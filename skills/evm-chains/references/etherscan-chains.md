@@ -3,27 +3,28 @@
 Source: <https://docs.etherscan.io/supported-chains>
 Live list: <https://api.etherscan.io/v2/chainlist> (returns the provider's authoritative `chainid` set)
 
-Verified against the live `chainlist` endpoint on 2026-06-14 (64 provider chains). This file intentionally lists only chains from the `SKILL.md` target list; provider-supported chains outside that list are out of scope for this skill.
+Verified against the live `chainlist` endpoint on 2026-06-14 (64 provider chains). This file intentionally lists only chains from `./references/target-mainnets.json`; provider-supported chains outside that list are out of scope for this skill.
 
 ## Target Mainnets (Free Tier Available)
 
-| Chain     | Chain ID | Notes         |
-| --------- | -------- | ------------- |
-| Abstract  | `2741`   |               |
-| Arbitrum  | `42161`  |               |
-| Berachain | `80094`  |               |
-| Blast     | `81457`  |               |
-| Celo      | `42220`  |               |
-| Ethereum  | `1`      | Default chain |
-| Gnosis    | `100`    |               |
-| HyperEVM  | `999`    |               |
-| Linea     | `59144`  |               |
-| Monad     | `143`    |               |
-| Polygon   | `137`    |               |
-| Sei       | `1329`   |               |
-| Sonic     | `146`    |               |
-| Unichain  | `130`    |               |
-| XDC       | `50`     |               |
+| Chain       | Chain ID | Notes         |
+| ----------- | -------- | ------------- |
+| Abstract    | `2741`   |               |
+| Arbitrum    | `42161`  |               |
+| Berachain   | `80094`  |               |
+| Blast       | `81457`  |               |
+| Celo        | `42220`  |               |
+| Ethereum    | `1`      | Default chain |
+| Gnosis      | `100`    |               |
+| HyperEVM    | `999`    |               |
+| Linea       | `59144`  |               |
+| Monad       | `143`    |               |
+| Polygon     | `137`    |               |
+| Sei         | `1329`   |               |
+| Sonic       | `146`    |               |
+| Unichain    | `130`    |               |
+| World Chain | `480`    |               |
+| XDC         | `50`     |               |
 
 ## Target Mainnets (Paid Plan Required)
 
@@ -38,7 +39,7 @@ The following target chains require a paid Etherscan plan for data endpoints (ba
 
 ## Target Mainnets Not on Etherscan V2
 
-Route these target chains to Blockscout when available, then to the target table's public RPC if needed. Do not query Etherscan V2 for them.
+Route these target chains to Blockscout when available, then to the `primaryPublicRpc` from `./references/target-mainnets.json` if needed. Do not query Etherscan V2 for them.
 
 | Chain         | Chain ID  | Notes                                                                          |
 | ------------- | --------- | ------------------------------------------------------------------------------ |
