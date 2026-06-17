@@ -37,15 +37,6 @@
       "installedAt": "2026-02-06T13:11:39.081Z",
       "updatedAt": "2026-06-09T20:22:31.500Z"
     },
-    "md-docs": {
-      "source": "PaulRBerg/agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/PaulRBerg/agent-skills.git",
-      "skillPath": "skills/md-docs/SKILL.md",
-      "skillFolderHash": "9b47a4a4509b5755c36a63d1fcf6c92b5dbb503b",
-      "installedAt": "2026-02-06T13:11:39.854Z",
-      "updatedAt": "2026-06-09T20:22:31.824Z"
-    },
     "find-skills": {
       "source": "vercel-labs/skills",
       "sourceType": "github",
