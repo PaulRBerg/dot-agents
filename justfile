@@ -97,6 +97,7 @@ alias ssc := sync-claude
 alias su := skill-update
 
 # Install skills from a repo
+# Stale upstream skill pruning is tracked upstream: https://github.com/vercel-labs/skills/issues/415
 [group("skills")]
 [script("bash")]
 install-all repo="PaulRBerg/agent-skills": _require-clean
