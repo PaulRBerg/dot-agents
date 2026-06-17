@@ -83,7 +83,7 @@ sync-claude:
         extra=()
         [[ "$source" == openclaw/* ]] && extra+=(--dangerously-accept-openclaw-risks)
 
-        npx skills add "$install_source" --global --agent claude-code codex --skill "${needed[@]}" --yes "${extra[@]}"
+        bunx skills add "$install_source" --global --agent claude-code codex --skill "${needed[@]}" --yes "${extra[@]}"
     done
 
 alias ssc := sync-claude
@@ -91,7 +91,7 @@ alias ssc := sync-claude
 # Update all installed skills from their sources
 [group("skills")]
 @skill-update: _require-clean
-    npx skills update --global --yes
+    bunx skills update --global --yes
     just sync-claude
 
 alias su := skill-update
@@ -105,7 +105,7 @@ install-all repo="PaulRBerg/agent-skills": _require-clean
     gum spin \
         --title 'Installing skills from {{ repo }}...' \
         --show-error \
-        -- npx skills add '{{ repo }}' \
+        -- bunx skills add '{{ repo }}' \
         --global \
         --agent claude-code codex \
         --skill '*' \
@@ -120,14 +120,14 @@ alias ia := install-all
 [script("bash")]
 reset-skills: _require-clean
     set -euo pipefail
-    npx skills remove --all --global --yes > /dev/null
+    bunx skills remove --all --global --yes > /dev/null
     just sync-claude
     rm -f .skill-lock.json
     echo ""
     echo "Skills purged. Run these commands to reinstall:"
     echo ""
-    echo "  npx skills add PaulRBerg/agent-skills"
-    echo "  npx skills add sablier-labs/agent-skills"
-    echo "  npx skills add vercel-labs/agent-skills"
+    echo "  bunx skills add PaulRBerg/agent-skills"
+    echo "  bunx skills add sablier-labs/agent-skills"
+    echo "  bunx skills add vercel-labs/agent-skills"
 
 alias rs := reset-skills

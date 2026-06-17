@@ -34,7 +34,7 @@ This way, all your agents share the same skill library.
 **Install a skill:**
 
 ```bash
-npx skills add owner/repo
+bunx skills add owner/repo
 ```
 
 > [!NOTE]
@@ -45,17 +45,17 @@ npx skills add owner/repo
 
 Skills are installed from these repositories:
 
-| Source | Description |
-| --- | --- |
-| [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills) | General-purpose skills (commit, code-review, yeet, cli-gh, etc.) |
-| [sablier-labs/agent-skills](https://github.com/sablier-labs/agent-skills) | Sablier & Web3 skills |
-| [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | Vercel/React skills (composition-patterns, react-best-practices, etc.) |
-| [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | Official Claude Code plugins (frontend-design, playground, etc.) |
+| Source                                                                                      | Description                                                            |
+| ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills)                         | General-purpose skills (commit, code-review, yeet, cli-gh, etc.)       |
+| [sablier-labs/agent-skills](https://github.com/sablier-labs/agent-skills)                   | Sablier & Web3 skills                                                  |
+| [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)                     | Vercel/React skills (composition-patterns, react-best-practices, etc.) |
+| [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | Official Claude Code plugins (frontend-design, playground, etc.)       |
 
 Install all skills from a source:
 
 ```bash
-npx skills add PaulRBerg/agent-skills
+bunx skills add PaulRBerg/agent-skills
 ```
 
 All skills are externally installed and managed via `.skill-lock.json`. **Do not modify, refactor, or include these skills in any task.** When skills are added or removed, cross-check this table to keep it in sync.
