@@ -10,14 +10,14 @@ description: 'Use for simplifying recently changed code: clean up, refactor for 
 
 ## Objective
 
-Simplify code while preserving behavior, public contracts, and side effects. Favor explicit code and local clarity over clever or compressed constructs.
+Simplify code while preserving behavior, public contracts, and side effects. Run a full simplification pass by default: apply high-confidence simplifications that materially improve comprehension or reduce defect risk, including naming/intent cleanup when safe.
 
 ## Arguments
 
 - Paths, patterns, a commit/range, or a scope phrase: used in Scope Resolution step 2.
 - `--no-report`: Skip the full user-facing report and return terse working notes for the caller.
 - `--no-verify`: Skip verification because a parent orchestrator will verify the final result separately.
-- Default: verify touched behavior and present the full report.
+- Default: perform the full simplification pass, verify touched behavior, and present the full report.
 
 ## Scope Resolution
 
@@ -30,15 +30,20 @@ Resolve scope once, then treat the result as fixed for the rest of the run.
    - tracked: `git diff --name-only --diff-filter=ACMR`
    - untracked: `git ls-files --others --exclude-standard`
    - combine both lists and de-duplicate.
-5. Exclude generated/low-signal files unless explicitly requested: lockfiles, minified bundles, build outputs, vendored code.
+5. Exclude generated, vendored, bulk, and low-signal files from manual simplification unless explicitly requested: lockfiles, minified bundles, build outputs, generated outputs, vendored code, and large data snapshots. When excluded files are relevant to correctness, emit an optional fenced code block tagged `excluded-scope`, one repo-relative path or glob per line, and cover them through verification or invariant checks.
 6. If scope resolves to zero files, report that and stop.
 7. Emit the scope as a fenced code block tagged `resolved-scope`, one repo-relative path per line. The block is authoritative: do not re-run scope commands or revisit exclusions afterward.
 
 ## Operating Rules
 
+- State assumptions before editing. If multiple interpretations would change the simplification or verification strategy, present them and stop for direction.
 - Preserve runtime behavior exactly. Keep inputs, outputs, side effects, and error behavior stable.
 - Prefer project conventions over personal preferences. Infer conventions from existing code, linters, formatters, and tests.
-- Make small, reversible edits. Avoid broad rewrites when targeted simplifications solve the problem.
+- Make small, reversible edits. Every changed line should trace to the user's request, requested cleanup, or cleanup caused by your own edits.
+- Write the minimum code that solves the requested problem. Do not add features, single-use abstractions, speculative flexibility, or configurability the user did not request.
+- Clean up only your own mess: remove imports, variables, functions, and files made unused by your changes; mention pre-existing dead code in Residual Risks instead of deleting it.
+- Run naming-only refactors only when they create a concrete clarity or safety gain and can be safely verified.
+- For generated, vendored, bulk, or low-signal files, simplify the generator, schema, or contract when possible and validate outputs with invariant checks instead of hand-editing every generated row or file.
 - Call out uncertainty immediately when behavior may change.
 
 ## Workflow
@@ -46,6 +51,7 @@ Resolve scope once, then treat the result as fixed for the rest of the run.
 ### 1) Determine Scope
 
 - Apply the Scope Resolution section.
+- Treat any `excluded-scope` block as outside manual simplification but inside verification planning.
 
 ### 2) Build a Behavior Baseline
 
@@ -56,8 +62,18 @@ Resolve scope once, then treat the result as fixed for the rest of the run.
   - persistence/network behavior
   - user-facing messages and error semantics where externally relied on
 - Note available verification commands (lint, tests, typecheck).
+- Define success criteria before editing. For multi-step work, state a brief plan where each step names its verification check.
 
-### 3) Apply Simplification Passes (in this order)
+### 3) Triage Simplification Opportunities
+
+- Default to no edit unless the simplification is high-confidence and materially improves comprehension, removes current-change cleanup, or reduces defect risk.
+- Prefer local, behavior-preserving edits over broad rewrites.
+- Skip no-op passes. If the scoped code is already clear enough, report that rather than churning it.
+- Rename identifiers or split helpers only when there is a concrete clarity or safety gain and a safe verification path. Never reshape APIs solely for taste.
+
+### 4) Apply Simplification Passes
+
+Apply the full checklist in this order:
 
 1. Control flow:
    - Flatten deep nesting with guard clauses and early returns.
@@ -75,18 +91,18 @@ Resolve scope once, then treat the result as fixed for the rest of the run.
    - Add or tighten type annotations when they improve readability and safety without forcing broad churn.
    - Preserve external interfaces unless asked to change them.
 
-### 4) Enforce Safety Constraints
+### 5) Enforce Safety Constraints
 
 - Do not convert sync APIs to async (or reverse) unless explicitly requested.
 - Do not alter error propagation strategy unless behavior remains equivalent and verified.
 - Do not remove logging, telemetry, guards, or retries that encode operational intent.
 - Do not collapse domain-specific steps into generic helpers that hide intent.
 
-### 5) Verify
+### 6) Verify
 
 Skip when `--no-verify` is set. Otherwise verify per the Verification section below.
 
-### 6) Report
+### 7) Report
 
 Produce the Report section below.
 
@@ -105,6 +121,8 @@ Produce the Report section below.
 - Do not introduce framework-wide patterns while simplifying a small local change.
 - Do not replace understandable duplication with opaque utility layers.
 - Do not bundle unrelated cleanups into one patch.
+- Do not add error handling for impossible scenarios.
+- Do not preserve code volume for its own sake; if a simpler equivalent approach exists, use it or explain why it does not satisfy the request.
 
 ## Verification
 
@@ -113,8 +131,9 @@ Run the narrowest checks that validate touched behavior:
 - formatter/lint on touched files
 - targeted tests for touched modules
 - typecheck when relevant
+- invariant checks for any relevant `excluded-scope` outputs
 
-Run broader checks only when risk warrants it. Name every skipped check and why.
+Run broader checks only when risk warrants it, especially when simplification touches shared contracts. Name every skipped check and why.
 
 ## Report
 
@@ -124,7 +143,7 @@ Use these section headings, in this order. Omit sections that do not apply — d
 
 ### Scope
 
-Files and regions changed.
+Files and regions changed, plus any `excluded-scope` entries with the validation strategy used for them.
 
 ### Simplifications
 
@@ -143,6 +162,7 @@ One line per risk: `Assumed <assumption>; if wrong, <what breaks>; check via <co
 Stop and ask for direction when:
 
 - simplification requires changing public API/contracts.
+- requirements are unclear or competing interpretations would produce materially different edits.
 - behavior parity cannot be confidently verified.
 - the code appears intentionally complex due to domain constraints.
 - the requested scope implies a larger redesign rather than simplification.
