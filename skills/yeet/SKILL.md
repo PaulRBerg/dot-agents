@@ -13,11 +13,7 @@ Facilitate GitHub-based open source contribution workflows including pull reques
 
 ## Prerequisites
 
-Verify GitHub CLI authentication before any workflow:
-
-```bash
-gh auth status
-```
+Use the first required read-only `gh` command in each workflow as authentication validation. Prefer `scripts/yeet-context.sh` when the workflow needs repository, template, discussion, label, or issue/PR thread context.
 
 For pull request workflows, also verify:
 
@@ -42,7 +38,6 @@ Each workflow is fully documented in its reference file. Load the appropriate re
 | Claude Code Issue | "Claude Code issue", "report bug in CC"                | `references/issue-claude-code.md` |
 | Codex CLI Issue   | "Codex issue", "report bug in Codex"                   | `references/issue-codex-cli.md`   |
 | Sablier Issue     | "Sablier issue", "sablier-labs issue"                  | `references/issue-sablier.md`     |
-| Biome Issue       | "Biome issue", "biomejs issue"                         | `references/issue-biome.md`       |
 | Comment on Issue  | "comment on issue", "reply on issue", "post a comment" | `references/comment-issue.md`     |
 | Create Discussion | "create discussion", "start discussion"                | `references/create-discussion.md` |
 
