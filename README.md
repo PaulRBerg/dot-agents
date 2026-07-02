@@ -58,7 +58,7 @@ Install all skills from a source:
 bunx skills add PaulRBerg/agent-skills
 ```
 
-All skills are externally installed and managed via `.skill-lock.json`. **Do not modify, refactor, or include these skills in any task.** When skills are added or removed, cross-check this table to keep it in sync.
+Most skills are installed from these repositories via `bunx skills add`; a few are first-party (authored directly in this repo). **Do not modify, refactor, or include externally-sourced skills in any task.** When skills are added or removed, cross-check this table to keep it in sync.
 
 ## License
 
