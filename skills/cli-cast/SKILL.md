@@ -2,23 +2,10 @@
 disable-model-invocation: false
 name: cli-cast
 user-invocable: false
-description: 'Use for Foundry cast/on-chain actions: send tx, call contract, sign message, cast send/call/wallet, encode/decode ABI/calldata, or RPC interactions. For read-only balances/history, prefer evm-atlas.'
+description: 'Use for Foundry cast/on-chain actions: send tx, call contract, sign message, encode/decode ABI/calldata, or RPC interactions. For read-only balances/history, prefer evm-atlas.'
 ---
 
 # Foundry Cast CLI
-
-## Overview
-
-Expert guidance for Foundry's `cast` CLI — the Swiss Army knife for interacting with EVM-compatible blockchains from the command line. Use this skill for signing transactions, sending them to chain RPCs, reading on-chain state, encoding/decoding ABI data, and managing wallets.
-
-**Key capabilities:**
-
-- Send transactions and call contracts via RPC
-- Sign messages and typed data
-- Encode and decode ABI calldata
-- Query balances, transaction receipts, and block data
-- Resolve ENS names and addresses
-- Manage keystores and wallet operations
 
 ## RPC Configuration
 

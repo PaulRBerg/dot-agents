@@ -2,23 +2,10 @@
 disable-model-invocation: false
 name: coingecko-cli
 user-invocable: false
-description: 'Use for CoinGecko/cg CLI crypto market data: prices, market cap, trending coins, top gainers/losers, coin search, historical data, or OHLC.'
+description: 'Use for CoinGecko/cg CLI crypto market data: prices, market cap, trending coins, top gainers/losers, coin search, or historical/OHLC data.'
 ---
 
 # CoinGecko CLI
-
-## Overview
-
-Query cryptocurrency market data using the official CoinGecko CLI (`cg`). The CLI wraps the CoinGecko V3 API with structured JSON output, a dry-run mode, and a self-describing command catalog — designed to be driven by agents.
-
-**Key capabilities:**
-
-- Current prices by coin ID or symbol (`cg price`)
-- Top coins by market cap with filters and CSV export (`cg markets`)
-- Coin search with fuzzy matching (`cg search`)
-- Trending coins, NFTs, and categories (`cg trending`)
-- Historical price snapshots, time series, and OHLC (`cg history`)
-- Top gainers/losers over configurable durations (`cg top-gainers-losers`, paid)
 
 **Out of scope** — `cg` does not support contract-address price lookups, global market stats (total market cap, BTC/ETH dominance), NFT detail endpoints, GeckoTerminal on-chain DEX queries, or token logo metadata. Fall back to `WebFetch` against [docs.coingecko.com/llms.txt](https://docs.coingecko.com/llms.txt) for those.
 
