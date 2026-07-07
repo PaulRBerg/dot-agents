@@ -73,9 +73,7 @@ Explorer URL presence, Etherscan-style paths, or an Etherscan-stack explorer nam
 
 **OP Mainnet pre-regenesis history is not available through current explorer/RPC routes.** For OP Mainnet (`10`) queries before the final regenesis on `2021-11-11`, read `./references/optimism-pre-2021-11-11.md` before using Etherscan, Blockscout, or public RPC results.
 
-**Ronin (`app.roninchain.com`) does not follow the Etherscan path scheme.** Verify against the explorer UI before constructing a Ronin link.
-
-**Ronin (`2020`) collides with a non-target Chainscout registry entry.** Do not use Chainscout metadata for Ronin; use Ronin's listed explorer/RPC or another target-aware source.
+**Ronin has two explorer surfaces.** The target explorer URL stays `https://app.roninchain.com`, which does not follow the Etherscan path scheme. Chainscout may return `https://explorer.roninchain.com/` for Blockscout-style data; do not use that as the canonical explorer link base.
 
 ## Target Mainnets
 

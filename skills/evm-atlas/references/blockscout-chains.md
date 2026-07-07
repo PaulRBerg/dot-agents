@@ -54,6 +54,7 @@ Observed on 2026-06-14. Presence here does not override the canonical explorer/R
 | Morph         | `2818`     | ETH    | self       | https://explorer.morphl2.io/                     |                                                   |
 | Optimism      | `10`       | ETH    | blockscout | https://explorer.optimism.io/                    |                                                   |
 | Polygon       | `137`      | POL    | blockscout | https://polygon.blockscout.com/                  |                                                   |
+| Ronin         | `2020`     | RON    | conduit    | https://explorer.roninchain.com/                 | Secondary explorer; canonical target explorer remains app.roninchain.com |
 | Scroll        | `534352`   | ETH    | blockscout | https://scroll.blockscout.com                    |                                                   |
 | Superseed     | `5330`     | ETH    | self       | https://explorer.superseed.xyz/                  |                                                   |
 | Unichain      | `130`      | ETH    | blockscout | https://unichain.blockscout.com                  |                                                   |
@@ -75,7 +76,6 @@ Use Etherscan or the public RPC/explorer in `./references/target-mainnets.json` 
 | Core Dao  | `1116`     | Not returned by Chainscout                        |
 | IoTeX     | `4689`     | Not returned by Chainscout                        |
 | Monad     | `143`      | Not returned by Chainscout                        |
-| Ronin     | `2020`     | Chainscout returns a different network for `2020` |
 | Sei       | `1329`     | Not returned by Chainscout                        |
 | Sonic     | `146`      | Not returned by Chainscout                        |
 | Sophon    | `50104`    | Not returned by Chainscout                        |

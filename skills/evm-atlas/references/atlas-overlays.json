@@ -304,8 +304,10 @@
       "routeMesh": true,
       "etherscan": { "support": "unsupported" },
       "blockscout": {
-        "status": "unsafe",
-        "notes": "Chainscout returns a different network for `2020`"
+        "status": "observed",
+        "hostedBy": "conduit",
+        "instanceUrl": "https://explorer.roninchain.com/",
+        "notes": "Chainscout returned Ronin Mainnet on 2026-07-07; keep app.roninchain.com as canonical explorer base"
       }
     },
     "scroll": {
