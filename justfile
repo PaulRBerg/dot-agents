@@ -42,57 +42,10 @@ alias mw := mdformat-write
 alias sl := skill-list
 alias list := skill-list
 
-# Recreate Claude Code skill links via the skills CLI
-[group("skills")]
-[script("bash")]
-sync-claude:
-    set -euo pipefail
-    lock=".skill-lock.json"
-    claude_skills_dir="$HOME/.claude/skills"
-
-    mkdir -p "$claude_skills_dir"
-    find "$claude_skills_dir" -maxdepth 1 -type l ! -exec test -e {} \; -delete
-    [[ -f "$lock" ]] || { echo "No $lock found"; exit 0; }
-
-    jq -r '
-      .skills
-      | to_entries
-      | map({
-          name: .key,
-          source: (if .value.sourceType == "github" then .value.source else .value.sourceUrl end),
-          ref: (.value.ref // "")
-        })
-      | group_by([.source, .ref])
-      | .[]
-      | [.[0].source, .[0].ref, (map(.name) | join(" "))] | @tsv
-    ' "$lock" | while IFS=$'\t' read -r source ref skills; do
-        needed=()
-        for skill in $skills; do
-            [[ -f "skills/$skill/SKILL.md" ]] || continue
-
-            link="$claude_skills_dir/$skill"
-            [[ -L "$link" && "$(readlink "$link")" == "../../.agents/skills/$skill" ]] && continue
-
-            needed+=("$skill")
-        done
-        ((${#needed[@]})) || continue
-
-        install_source="$source"
-        [[ -n "$ref" ]] && install_source="$install_source#$ref"
-
-        extra=()
-        [[ "$source" == openclaw/* ]] && extra+=(--dangerously-accept-openclaw-risks)
-
-        bunx skills add "$install_source" --global --agent claude-code codex --skill "${needed[@]}" --yes "${extra[@]}"
-    done
-
-alias ssc := sync-claude
-
 # Update all installed skills from their sources
 [group("skills")]
 @skill-update: _require-clean
     bunx skills update --global --yes
-    just sync-claude
 
 alias su := skill-update
 
@@ -102,15 +55,161 @@ alias su := skill-update
 [script("bash")]
 install-all repo="PaulRBerg/agent-skills": _require-clean
     set -euo pipefail
+    repo='{{ repo }}'
+    claude_skills_dir="$HOME/.claude/skills"
+    canonical_skills_dir="$HOME/.agents/skills"
+    codex_skills_dir="$HOME/.codex/skills"
+
+    for command_name in bunx gum yq; do
+        command -v "$command_name" >/dev/null 2>&1 || {
+            echo "Error: required command not found: $command_name" >&2
+            exit 1
+        }
+    done
+
+    stage_dir="$(mktemp -d "${TMPDIR:-/tmp}/skills-install.XXXXXX")"
+    staged_claude_dir="$stage_dir/claude"
+    staged_state_dir="$stage_dir/state"
+    cleanup() {
+        rm -rf "$stage_dir"
+    }
+    trap cleanup EXIT
+
     gum spin \
-        --title 'Installing skills from {{ repo }}...' \
+        --title "Resolving skill targets from $repo..." \
         --show-error \
-        -- bunx skills add '{{ repo }}' \
+        -- env CLAUDE_CONFIG_DIR="$staged_claude_dir" XDG_STATE_HOME="$staged_state_dir" \
+        bunx skills add "$repo" \
         --global \
-        --agent claude-code codex \
+        --agent claude-code \
         --skill '*' \
         --yes
-    printf '{{ GREEN }}%s{{ NORMAL }}\n' '✅ Installed all skills from {{ repo }}'
+
+    skill_files=("$staged_claude_dir"/skills/*/SKILL.md)
+    [[ -f "${skill_files[0]}" ]] || {
+        echo "Error: no skills discovered in $repo" >&2
+        exit 1
+    }
+
+    shared=()
+    claude_only=()
+    codex_only=()
+    restricted=()
+
+    for skill_file in "${skill_files[@]}"; do
+        skill_name="$(basename "$(dirname "$skill_file")")"
+        targets="$(yq --front-matter=extract -r '.metadata."install-targets" // "claude-code codex"' "$skill_file")"
+
+        case "$targets" in
+        "claude-code codex")
+            shared+=("$skill_name")
+            ;;
+        "claude-code")
+            claude_only+=("$skill_name")
+            restricted+=("$skill_name")
+            ;;
+        "codex")
+            codex_only+=("$skill_name")
+            restricted+=("$skill_name")
+            ;;
+        *)
+            echo "Error: $skill_name has invalid metadata.install-targets: $targets" >&2
+            exit 1
+            ;;
+        esac
+    done
+
+    mkdir -p "$claude_skills_dir"
+    find "$claude_skills_dir" -maxdepth 1 -type l ! -exec test -e {} \; -delete
+
+    if ((${#restricted[@]})); then
+        gum spin \
+            --title "Removing stale restricted skill installations..." \
+            --show-error \
+            -- bunx skills remove \
+            --global \
+            --skill "${restricted[@]}" \
+            --yes
+    fi
+
+    if ((${#shared[@]})); then
+        gum spin \
+            --title "Installing ${#shared[@]} shared skills..." \
+            --show-error \
+            -- bunx skills add "$repo" \
+            --global \
+            --agent claude-code codex \
+            --skill "${shared[@]}" \
+            --yes
+    fi
+
+    if ((${#claude_only[@]})); then
+        gum spin \
+            --title "Installing ${#claude_only[@]} Claude-only skills..." \
+            --show-error \
+            -- bunx skills add "$repo" \
+            --global \
+            --agent claude-code \
+            --skill "${claude_only[@]}" \
+            --yes
+    fi
+
+    if ((${#codex_only[@]})); then
+        gum spin \
+            --title "Installing ${#codex_only[@]} Codex-only skills..." \
+            --show-error \
+            -- bunx skills add "$repo" \
+            --global \
+            --agent codex \
+            --skill "${codex_only[@]}" \
+            --yes
+    fi
+
+    for skill_name in "${shared[@]}"; do
+        [[ -f "$canonical_skills_dir/$skill_name/SKILL.md" ]] || {
+            echo "Error: shared skill missing from universal install: $skill_name" >&2
+            exit 1
+        }
+        [[ -f "$claude_skills_dir/$skill_name/SKILL.md" ]] || {
+            echo "Error: shared skill missing from Claude Code: $skill_name" >&2
+            exit 1
+        }
+    done
+
+    for skill_name in "${claude_only[@]}"; do
+        [[ -f "$claude_skills_dir/$skill_name/SKILL.md" && ! -L "$claude_skills_dir/$skill_name" ]] || {
+            echo "Error: Claude-only skill is not a direct Claude install: $skill_name" >&2
+            exit 1
+        }
+        [[ ! -e "$canonical_skills_dir/$skill_name" && ! -L "$canonical_skills_dir/$skill_name" ]] || {
+            echo "Error: Claude-only skill leaked into the universal install: $skill_name" >&2
+            exit 1
+        }
+        [[ ! -e "$codex_skills_dir/$skill_name" && ! -L "$codex_skills_dir/$skill_name" ]] || {
+            echo "Error: Claude-only skill leaked into Codex: $skill_name" >&2
+            exit 1
+        }
+    done
+
+    for skill_name in "${codex_only[@]}"; do
+        [[ -f "$canonical_skills_dir/$skill_name/SKILL.md" || -f "$codex_skills_dir/$skill_name/SKILL.md" ]] || {
+            echo "Error: Codex-only skill missing from Codex: $skill_name" >&2
+            exit 1
+        }
+        [[ ! -e "$claude_skills_dir/$skill_name" && ! -L "$claude_skills_dir/$skill_name" ]] || {
+            echo "Error: Codex-only skill leaked into Claude Code: $skill_name" >&2
+            exit 1
+        }
+    done
+
+    dangling_link="$(find "$claude_skills_dir" -maxdepth 1 -type l ! -exec test -e {} \; -print -quit)"
+    [[ -z "$dangling_link" ]] || {
+        echo "Error: dangling Claude skill link remains: $dangling_link" >&2
+        exit 1
+    }
+
+    printf '{{ GREEN }}%s{{ NORMAL }}\n' \
+        "✅ Installed ${#shared[@]} shared, ${#claude_only[@]} Claude-only, and ${#codex_only[@]} Codex-only skills from $repo"
 
 alias ia := install-all
 
@@ -121,8 +220,6 @@ alias ia := install-all
 reset-skills: _require-clean
     set -euo pipefail
     bunx skills remove --all --global --yes > /dev/null
-    just sync-claude
-    rm -f .skill-lock.json
     echo ""
     echo "Skills purged. Run these commands to reinstall:"
     echo ""
