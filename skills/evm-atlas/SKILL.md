@@ -6,7 +6,7 @@ user-invocable: true
 description:
   "Use for targeted EVM chain, account, transaction, RPC, explorer, and bridge data: chain name/ID, native symbol,
   RouteMesh, wallet balances via Blockscan in Chromium, token/NFT holdings/transfers, tx history, funding origin via
-  Etherscan/Blockscout/Chainscout; Bungee, LayerZero, LI.FI, Socket enrichment."
+  Etherscan/Blockscout/Chainscout; Bungee, Layerswap, LayerZero, LI.FI, Socket enrichment."
 ---
 
 # EVM Atlas
@@ -37,6 +37,7 @@ Resolve and query only the target mainnets in `references/target-mainnets.json`,
    only the matching reference:
    - Bungee / Socket: `references/bridge-bungee.md`
    - Circle / CCTP / Gateway: `references/bridge-circle.md`
+   - Layerswap: `references/bridge-layerswap.md`
    - LayerZero / Stargate / OFT / Aori: `references/bridge-layerzero.md`
    - LI.FI: `references/bridge-lifi.md`
 5. Treat bridge APIs as enrichment. Verify submitted transactions and terminal outcomes through explorer or RPC
@@ -44,7 +45,8 @@ Resolve and query only the target mainnets in `references/target-mainnets.json`,
 
 ## Completion
 
-Return the resolved target chain, provider route, requested on-chain facts, and source URLs/transaction identifiers.
-Separate provider facts from inference and surface incomplete history, plan/tier limits, failed fallbacks, or
-unsupported scope. Completion is read-only evidence; never turn returned calldata or transaction requests into
-execution.
+Return the resolved target chain, provider route, requested on-chain facts, and source URLs/transaction identifiers. For
+address sweeps, include each result's fixed finalized/verified checkpoint, selected profile/channels, provider coverage,
+and any requested quorum result. Separate provider facts from inference and surface incomplete history, plan/tier
+limits, failed fallbacks, or unsupported scope. Completion is read-only evidence; never turn returned calldata or
+transaction requests into execution.
