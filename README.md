@@ -51,6 +51,7 @@ Skills are installed from these repositories:
 | [sablier-labs/agent-skills](https://github.com/sablier-labs/agent-skills)                   | Sablier & Web3 skills                                                  |
 | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)                     | Vercel/React skills (composition-patterns, react-best-practices, etc.) |
 | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | Official Claude Code plugins (frontend-design, playground, etc.)       |
+| [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) | `chrome-devtools` skill (companion to the Chrome DevTools MCP server)  |
 
 Install all skills from a source:
 
