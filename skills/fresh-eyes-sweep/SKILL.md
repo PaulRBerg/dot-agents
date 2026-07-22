@@ -22,18 +22,29 @@ for and a full pass turns up nothing new. A verified no-op is a valid result —
    instructions they depend on.
 3. Map every tracked and non-ignored file in scope. Classify generated, vendored, minified, binary, and bulk-data
    artifacts; validate those through their generator, schema, or invariants instead of line-by-line reading.
-4. Discover the repository's checks: build, test, lint, typecheck, format, and codegen verification.
-5. Record existing worktree changes before touching anything. Pre-existing edits stay untouched: never revert, absorb,
+4. Inspect recent Git history and diffs, especially commits from today and yesterday, to identify the newest changes and
+   the callers, dependencies, tests, configuration, and documentation they may affect.
+5. Discover the repository's checks: build, test, lint, typecheck, format, and codegen verification.
+6. Record existing worktree changes before touching anything. Pre-existing edits stay untouched: never revert, absorb,
    or commit them, and never report them as findings.
-6. Create a coverage ledger in a scratch file listing every mapped file with a status: `pending`, `inspected`, `fixed`,
+7. Create a coverage ledger in a scratch file listing every mapped file with a status: `pending`, `inspected`, `fixed`,
    `reported`, or `excluded` with the reason. Keep it current; never claim coverage the ledger does not show.
 
 ## Inspect
+
+Prioritize slices containing the newest changes because they are the most likely to contain newly introduced bugs,
+omissions, inconsistencies, or duplication. Recency determines inspection order, never scope: older and untouched code
+can expose integration faults or pre-existing mistakes, and every mapped file must still be accounted for.
 
 Work through the ledger in coherent slices — a package, subsystem, or directory with its tests, configuration, and
 documentation together — so cross-file relationships are visible. Delegate independent slices to parallel read-only
 subagents when the environment supports them, and keep inspecting while they run; findings return to the main context,
 which owns all edits.
+
+After mapping, send `### 🔎 Sweep mapped — <files> files · <slices> slices`. On long runs, update only after coherent
+slices settle, using `[<10 cells>] <accounted>/<mapped> files` from the ledger plus fixed/reported/excluded counts. Use
+`floor(10 * accounted / mapped + 0.5)` filled `█` cells and fill the remainder with empty `░` cells; omit the bar when
+no files were mapped. The bar represents ledger accounting, not inspection coverage; never estimate progress.
 
 Trace important control, data, and error paths end to end rather than skimming file by file. Hunt for evidenced
 mistakes: bugs, omissions, invalid assumptions, unhandled edge cases, security and reliability failures, cross-file
@@ -56,7 +67,10 @@ against tool output from this session; anything not verified is reported as unve
 
 ## Report
 
-Lead with the outcome: what was fixed, what was found but not fixed, or that the sweep was clean. Then give changed
-files, the exact validation commands with their results, unresolved findings with evidence and blocker, ledger
-exclusions with reasons, and residual risk. Completion requires every mapped file accounted for in the ledger, every
-finding fixed and verified or reported with evidence, and every relevant check passing or its failure explained.
+Lead with
+`### ✅ Sweep ledger complete — <accounted>/<mapped> files accounted (<inspected> inspected, <excluded> excluded)` when
+every file is accounted for, or a truthful `### ⛔ Sweep incomplete` otherwise. Give a fixed/reported/excluded/checks
+summary table, then `### 📦 Fixed`, `### 🧪 Verification`, `### ⛔ Unresolved`, and `### ⚠️ Residual risk`, omitting
+empty sections. Do not expose the scratch ledger, pre-existing changes, or private/bulk data. Keep paths, commands,
+diagnostics, and exact output excerpts undecorated. Completion requires every mapped file accounted for in the ledger,
+every finding fixed and verified or reported with evidence, and every relevant check passing or its failure explained.

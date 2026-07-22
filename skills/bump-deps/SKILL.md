@@ -42,7 +42,30 @@ batch.
    repository's package manager updates its lockfile.
 
 6. Inspect the manifest and lockfile diff. Run the narrowest package-manager or repository checks that exercise updated
-   dependencies, with extra attention to approved major migrations.
+   dependencies, with extra attention to approved major migrations. Also run whatever lint command the repository
+   exposes (package script, task runner recipe, or equivalent) — dependency bumps can introduce new lint violations even
+   when tests and the build stay green (e.g. an updated linter or plugin adding rules, or a typing change surfacing
+   stricter checks).
+
+7. Fix newly flagged lint errors, but judge each one before changing code: a bump can introduce a rule the user may not
+   want enabled at all, not just a violation to fix. If a new error's fix is unclear, or fixing it would fight the
+   rule's intent rather than follow it, stop with `### ⚠️ Dependency lint decision required`. Show the rule, affected
+   locations, likely effects, and the explicit `fix`, `suppress`, or `disable` choices in one table instead of guessing.
+
+## User-Facing Output
+
+Present plans as `### 📦 Dependency plan` with counts and a compact table:
+
+| ID  | Plan value | Decision | Package | Current → target | Type | Notes |
+| --- | ---------- | -------- | ------- | ---------------- | ---- | ----- |
+
+Use the plan's exact `apply`, `review-major`, `review`, and `skip-fixed` values alongside plain-language decisions.
+Assign stable IDs to rows needing a choice so the user can answer once. Use `### 🔎 Dry run — no files written` for a
+preview and `### ✅ No selected updates` for a no-op.
+
+Finish applied work with `### 🏁 Dependencies updated`, a tree of changed manifests/lockfiles, `### 🧪 Verification`,
+and `### ⚠️ Remaining review` only when non-empty. Keep helper JSON, package/version strings, commands, and diagnostics
+exact and undecorated.
 
 ## Invariants
 
