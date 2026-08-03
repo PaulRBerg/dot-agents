@@ -61,6 +61,20 @@ bunx skills add PaulRBerg/agent-skills
 
 Most skills are installed from these repositories via `bunx skills add`; a few are first-party (authored directly in this repo). **Do not modify, refactor, or include externally-sourced skills in any task.** When skills are added or removed, cross-check this table to keep it in sync.
 
+## Instructions
+
+`AGENTS.md` is the canonical source for PRB's global agent instructions (`CLAUDE.md` in this repo is a symlink
+to it). On commit, a Husky + lint-staged pre-commit hook (`.lintstagedrc.js`) regenerates and auto-commits
+synced copies in sibling repos — each using an isolated git index so it doesn't disturb concurrent work there:
+
+- `~/.codex/AGENTS.md` — flattened via `just build` in `~/.codex` (which flattens `AGENTS_symlink.md`, a
+  symlink to this repo's `AGENTS.md`, then appends Codex-specific `context/AGENTS_EXTRA.md`), committed by
+  `helpers/commit_codex_agents.sh`.
+- `~/.claude/CLAUDE.md` — a flattened copy with no extra content, committed by
+  `helpers/commit_claude_repo.sh`.
+
+Edit `AGENTS.md` here; never hand-edit the generated copies in `~/.codex` or `~/.claude`.
+
 ## License
 
 MIT

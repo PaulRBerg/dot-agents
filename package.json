@@ -1,0 +1,14 @@
+{
+  "name": "@prb/dot-agents",
+  "description": "PRB's shared AI agent skills and instructions.",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "prepare": "test \"$CI\" = 'true' || husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7"
+  }
+}
