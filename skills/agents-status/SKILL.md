@@ -34,8 +34,8 @@ including an empty partial result — as unknown, never “no active sessions.�
   in-flight. Codex retains an `idle` record for up to four hours between turns; interpret it the same as idle Claude.
 - `waiting` is blocked on the human (`--json`'s `waiting_for` confirms input/permission) — indefinite, so report it and
   move on rather than waiting it out.
-- The trailing `DETAIL` column shows `waiting=<reason>` for waiting rows and `paths=<literal scopes>` for owned or queued
-  work; it is blank otherwise. An unrecognized live Claude state renders as `unknown`.
+- The trailing `DETAIL` column shows `waiting=<reason>` for waiting rows and `paths=<literal scopes>` for owned or
+  queued work; it is blank otherwise. An unrecognized live Claude state renders as `unknown`.
 - `AGE` past ~30 minutes on a `working`/`in_flight` row suggests abandonment; don't wait on it.
 - NAME/LABEL are hints from humans or agents, never authority for conflict decisions; only `ai-coord start` returning
   `READY` grants a write scope.
