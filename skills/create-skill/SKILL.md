@@ -3,7 +3,8 @@ argument-hint: <skill-name>
 disable-model-invocation: false
 name: create-skill
 user-invocable: true
-description: Use to create/scaffold/init a new agent skill under `.agents/skills` in the working directory where invoked.
+description:
+  Use to create/scaffold/init a new agent skill under `.agents/skills` in the working directory where invoked.
 ---
 
 # Create Skill
