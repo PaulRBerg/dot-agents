@@ -6,7 +6,7 @@ description: Helps users discover and install agent skills when they ask questio
 
 # Find Skills
 
-This skill is coordination-exempt: skip the ai-coord gate (`git status` / `agents-status` / `ai-coord start`) for this skill's own work.
+This skill is coordination-exempt: skip the ai-coord gate (`git status` / `ai-coord status` / `ai-coord start`) for this skill's own work.
 
 This skill helps you discover and install skills from the open agent skills ecosystem.
 
