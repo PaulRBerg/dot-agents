@@ -1,14 +1,16 @@
 ---
 agent: Plan
 argument-hint: "[path ...]"
+coordination: exempt
 context: fork
 name: audit-stale-comments
 user-invocable: true
-description:
-  Audit JavaScript, TypeScript, and Go comments for verified stale, orphaned, misleading, or redundant claims.
+description: Audit JavaScript, TypeScript, and Go comments for verified stale, orphaned, misleading, or redundant claims.
 ---
 
 # Audit Stale Comments
+
+This skill is coordination-exempt: skip the ai-coord gate (`git status` / `agents-status` / `ai-coord start`) for this skill's own work.
 
 Audit source comments against the code they describe. Report only confirmed mismatches and noise; do not edit files
 unless the user separately asks for fixes.

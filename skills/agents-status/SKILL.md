@@ -1,13 +1,15 @@
 ---
 compatibility: Requires the ai-coord CLI.
+coordination: exempt
 disable-model-invocation: false
 name: agents-status
 user-invocable: true
-description:
-  Report active Codex and Claude Code sessions in the current repository by default, with optional machine-wide detail.
+description: Report active Codex and Claude Code sessions in the current repository by default, with optional machine-wide detail.
 ---
 
 # Agents Status
+
+This skill is coordination-exempt: skip the ai-coord gate (`git status` / `agents-status` / `ai-coord start`) for this skill's own work.
 
 Report the current session inventory with one call, then stop. Use the default repository scope unless the user asks for
 `all`, `global`, or `machine-wide` status:
