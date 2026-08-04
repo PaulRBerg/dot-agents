@@ -16,7 +16,8 @@ claude_repo="$HOME/.claude"
 
 [[ -d "$claude_repo/.git" ]] || exit 0
 
-uv run python "$HOME/.codex/helpers/flatten.py" --dry-run AGENTS.md >"$claude_repo/CLAUDE.md"
+uv run python "$HOME/.codex/helpers/flatten.py" --dry-run AGENTS.md |
+  (cd "$claude_repo" && bunx --no-install prettier --stdin-filepath CLAUDE.md) >"$claude_repo/CLAUDE.md"
 
 # Hooks inherit repository-local variables from the calling Git process, and
 # `git -C` does not replace values such as GIT_INDEX_FILE for a foreign repo.
