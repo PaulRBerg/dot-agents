@@ -1,0 +1,181 @@
+---
+argument-hint: "[task]"
+compatibility:
+  Requires Plan mode in Claude Code with Git, /bin/bash, Python 3, and an authenticated Codex CLI with dangerous bypass
+  support, or Plan mode in Codex CLI with native subagents enabled.
+disable-model-invocation: true
+metadata:
+  install-targets: claude-code codex
+name: codex-handoff
+user-invocable: true
+description:
+  Orchestrate read-only planning research and one to five Codex agents to implement approved plans from Claude Code or
+  Codex CLI.
+---
+
+# Codex Handoff
+
+If these instructions are already present in the conversation from a slash or dollar invocation, follow them directly;
+do not invoke this skill again through a skill tool.
+
+Follow the shared contract below, select exactly one host adapter, and use that adapter for every host-specific action.
+
+## Host Selection
+
+Inspect the callable orchestration tools, not environment variables, process ancestry, or a user-supplied host name:
+
+- When `spawn_agent`, `wait_agent`, `send_message`, and `followup_task` are available, read
+  `references/codex-cli-host.md` completely and use only that adapter.
+- Otherwise, when Claude Code's Agent and Bash tools are available, read `references/claude-code-host.md` completely and
+  use only that adapter.
+- If neither surface is available, stop with a compatibility error. Native Codex multi-agent support is mandatory on the
+  Codex host; never fall back to a nested Codex CLI process.
+
+Never load both adapters or combine their launch, progress, retry, permission, or result-transport mechanics. The
+selected adapter may specialize host mechanics and manifest configuration, but it cannot weaken this shared contract.
+
+## Contract
+
+- Run only after the user explicitly invokes this skill in Plan mode. If Plan mode is not active, ask the user to switch
+  and stop.
+- The parent agent owns decisions, the final implementation plan, and orchestration. For complex tasks, delegate
+  investigation to read-only Codex research agents before writing the plan.
+- Research agents gather evidence and report findings. They never edit files, make design decisions, or return plans of
+  their own.
+- Each implementation agent implements its assigned part of the approved plan. It may inspect, edit, and validate, but
+  must not redesign the solution or return another plan.
+- Use the smallest effective implementation team. One implementation agent remains valid; use additional agents only
+  when decomposition materially improves latency, correctness, or verification. Never exceed five implementation agents
+  across the handoff.
+- Use at most three research agents with stable IDs `R1` through `R3`. Count them separately from the five
+  implementation agents.
+- Keep the parent agent's implementation work to orchestration, integrity checks, failure handling, and the conditional
+  polish pass.
+
+Use `$ARGUMENTS` as the task when present; otherwise use the active user request.
+
+## Research Phase
+
+Trigger research when scope is uncertain, the task crosses multiple or unfamiliar subsystems, or the plan depends on
+evidence that would be materially slower for the parent to gather serially. Zero research agents remains the default.
+The parent alone decides from the task and repository evidence whether research runs; never ask the user to opt in or
+name agents. Either launch the research wave immediately or proceed straight to planning.
+
+When triggered, assign up to three agents stable IDs `R1` through `R3` and launch them immediately during Plan mode
+through the selected adapter's read-only mechanism. Give each agent a self-contained prompt containing:
+
+- the open questions and exact investigation scope;
+- relevant repository constraints and known concurrent-work boundaries;
+- a strict read-only authority boundary;
+- the stopping rule that it must return evidence rather than a plan or design; and
+- exact result fields: `status`, `findings`, `open_questions`, `evidence`, and `blockers`.
+
+When every required research agent settles, fold its findings and evidence into the implementation plan. Surface open
+questions or blockers through the host's user-question mechanism only when they change scope or approach. Do not
+reconcile the working tree because research agents change nothing; any reported edit is a contract violation.
+
+## Plan Phase
+
+Produce a decision-complete plan with this section and the selected adapter's exact manifest table:
+
+```markdown
+## Codex Handoff
+
+- Research: `<none | R1..Rn — key findings used>`
+- Strategy: `<sequential|parallel|hybrid>`
+- Agents: `<1-5>` — `<why this is the smallest effective count>`
+- Validation owner: `<agent-id|parent>` — `<aggregate checks it runs once>`
+
+<host-adapter manifest table>
+
+- Code polish: `<required|not required>` — `<reason>`
+```
+
+Choose the execution shape from repository evidence and the approved work:
+
+- Use sequential agents when one agent depends on another, write scopes overlap, or a later agent owns integration or
+  aggregate validation.
+- Use parallel agents only for independent work with explicitly disjoint write scopes. Agents may inspect shared
+  context, but must not write outside their assigned scope.
+- Use hybrid execution for dependency-ordered waves: run independent agents within a wave in parallel, reconcile the
+  entire wave, then start its dependents.
+
+A wave finishes with its slowest agent. Keep the highest-tier agent's scope minimal and move deferrable validation to
+the validation owner. If parallel work does not collectively prove the overall plan, reserve a later sequential agent
+for integration and aggregate validation. Use stable agent IDs and explicit dependencies across the whole handoff.
+
+Assign aggregate validation to exactly one owner. Package-wide or repository-wide checks run once: by the integration
+agent when one exists, otherwise by the parent during post-wave reconciliation. Every other agent runs only the
+narrowest checks that prove its own edits, such as file-scoped formatting, lint, or typecheck plus targeted tests.
+Duplicate aggregate runs across a wave are wasted wall-clock time, not extra assurance.
+
+Require `$code-polish` for nonlocal invariants, concurrency or state machines, migrations or parsing, auth or security,
+retry or error semantics, and public API or data-contract changes. File count alone is not a trigger.
+
+Do not launch implementation agents until the user approves the plan and the host leaves Plan mode. Read-only research
+is the only pre-approval exception.
+
+## Implementation Prompt Contract
+
+Build a self-contained, outcome-first prompt for every implementation agent. Include:
+
+1. The approved overall outcome plus the agent's implementation brief, dependencies, and completion evidence.
+2. Its exact write scope, relevant repository constraints, known dirty-work boundaries, and prerequisite agent results.
+3. Its validation assignment: scoped checks it must run and, unless it owns validation, aggregate checks it must not run
+   because the validation owner runs them once.
+4. This authority boundary: inspect, edit only within the assigned scope, and validate locally; do not commit, push,
+   deploy, make external writes, or broaden scope, even when repository or host instructions favor committing finished
+   work promptly. Committing stays with the parent after reconciliation.
+5. The selected adapter's delegation and coordination context, including why the parent session and disjoint siblings
+   are not conflicting work and what unrelated exact-scope claim would justify returning `blocked`.
+6. This stopping rule: implement the approved plan exactly; if it is infeasible or requires redesign, return `blocked`
+   with evidence instead of proposing a replacement plan.
+7. A requirement to return every result field: `status` (`completed` or `blocked`), `summary`, `changed_files` listing
+   only files actually touched, `verification` listing every command and outcome, `residual_risks`, and `blockers`.
+
+Add the selected adapter's command, permission, transport, and host-tool constraints without restating this contract.
+
+## Execution and Reconciliation
+
+Launch agents through the selected adapter in the approved strategy and dependency waves. Do not add agents or change
+models, efforts, scopes, or validation ownership after approval merely because a worker is slow or quiet.
+
+For each completed agent:
+
+- require every shared result field and treat `changed_files` as its authoritative post-pass scope;
+- confirm reported files exist or were intentionally deleted, stay within scope, and carry verification evidence
+  matching the assignment; and
+- pass relevant completed results to dependent agents.
+
+After every implementation wave, reconcile all results with the approved manifest and visible working tree without
+folding in unrelated concurrent changes. When the parent owns validation, run the assigned aggregate checks once during
+this reconciliation. Attribute aggregate-check failures before blocking: a failure confined to files outside every
+agent's scope is unrelated concurrent work, so confirm the handoff's files still pass and continue. Unexpected
+out-of-scope edits, same-wave overlap, or a failure attributable to the handoff are blockers; do not start dependents or
+polish, and do not silently take over implementation.
+
+## Failure Classification
+
+- Treat returned `status: blocked` as a plan problem. Let already-started independent agents finish, gate dependents,
+  report the evidence, and let the user decide. Never silently take over or relaunch on a larger model.
+- Treat a tool or infrastructure failure as retryable only when adapter-specific evidence supports that classification.
+  Inspect partial edits first, then use the adapter's same-agent mechanism for exactly one verify-and-continue attempt.
+  This continuation is not a new agent against the five-agent limit. A second infrastructure failure blocks that agent
+  and its dependents.
+- Never classify an ordinary timeout, a returned blocker, silence, or task-level validation failure as infrastructure
+  failure. Continue only work proven independent.
+
+## Completion
+
+- After every required agent completes, deduplicate the union of reported `changed_files` and confirm the combined
+  verification evidence proves the approved plan.
+- When the plan marked polish as required, invoke `$code-polish` once with exactly that union and its default
+  simplify-then-review mode. Skip polish if any required agent failed; do not recompute or broaden scope.
+- If approved work changes repositories on this machine other than the repository where the handoff began, invoke
+  `$commit` from each additional repository after its work, validation, and required polish complete. Scope each
+  invocation to files changed there; do not commit incomplete, blocked, unexpected, or out-of-scope changes. Push only
+  when the user explicitly requested it.
+- Finish with the selected adapter's completion report. It must include the strategy, wave and agent counts, each
+  agent's requested configuration, status, and summary, plus combined changed files, verification, polish when run,
+  automatic cross-repository commit hashes when any, blockers, and residual risks. Write `none` for applicable empty
+  values and never expose machine result payloads.
