@@ -73,32 +73,31 @@ complexity.
 Before starting any task that will write, check the repo state with `git status`. Dirty uncommitted changes are likely
 another agent's in-flight work: reason through whether your task would collide with it (same files or modules,
 overlapping refactors, shared codegen outputs). A clean tree does not guarantee no conflict — active sessions may not
-have written yet.
-Run `ai-coord status` to see active AI agent session counts, working directories, and session names/labels (a hint at
-intent, never authority) in the current repository, plus its Notes block for out-of-scope findings other sessions left
-behind; use `ai-coord status --all` only when cross-repository coordination matters. Read its output as reported — do
-not inspect transcripts or query providers directly. Before the first edit, acquire
-literal repository-relative file or directory scopes with `ai-coord start '<label>' '<path>'...`. Only a `READY` result
+have written yet. Run `ai-coord status` to see active AI agent session counts, working directories, and session
+names/labels (a hint at intent, never authority) in the current repository, plus its Notes block for out-of-scope
+findings other sessions left behind; use `ai-coord status --all` only when cross-repository coordination matters. Read
+its output as reported — do not inspect transcripts or query providers directly. Before the first edit, acquire literal
+repository-relative file or directory scopes with `ai-coord start '<label>' '<path>'...`. Only a `READY` result
 authorizes editing; `INTENT` is pathless and does not. `UNKNOWN coverage` means ownership cannot be established;
 `UNKNOWN dirty-settling:...` is a short self-resolving hold (at most ~90 seconds), so keep waiting via the existing
 wait/waker mechanics and never escalate dirt to the user. `BLOCKED` means the work is queued behind an intersecting
-claim. Release active, queued, or
-intent-only work with `ai-coord done` as soon as that work is complete. The goal is smarter parallelization of agents on
-the same `main` branch.
+claim. Release active, queued, or intent-only work with `ai-coord done` as soon as that work is complete. The goal is
+smarter parallelization of agents on the same `main` branch.
 
 #### Exemptions
 
 - Plan mode: skip the coordination gate while planning, because planning is read-only. The plan must still list the
   exact `ai-coord start` scopes, and the gate applies at the first edit after plan approval. The ExitPlanMode hook
-  records the approved plan's H1 as pathless intent automatically; no agent action is needed.
+  records the approved plan's H1 as pathless intent automatically; no agent action is needed. The plan must also include
+  a "Wait out conflicting agents" section that applies the waiting approach below before the first edit after plan
+  approval.
 - Read-only or research tasks: skip the gate entirely; run no `ai-coord` commands.
-- Skills that declare `coordination: exempt` in their `SKILL.md` frontmatter: skip the gate for the skill's own work.
-  If the work escalates beyond the skill's declared write behavior, the gate applies again.
+- Skills that declare `coordination: exempt` in their `SKILL.md` frontmatter: skip the gate for the skill's own work. If
+  the work escalates beyond the skill's declared write behavior, the gate applies again.
 - Subagents: coordination is session-scoped, not agent-scoped. A parent session's claim covers all work it delegates to
   subagents; subagents must NEVER run `ai-coord` lifecycle commands (`start`, `wait`, or `done`). With inherited
   identity, those commands would act as the parent and can collide with the parent's own claim. Hooks record subagents
   as read-only delegates under the parent session automatically.
-
 - A presence line or status output saying coverage is incomplete means the inventory may be missing live sessions. Run
   or re-run `ai-coord status` and treat incomplete coverage as unknown, never as no conflicts; do not edit until
   `ai-coord start` returns `READY`.
@@ -118,14 +117,10 @@ the same `main` branch.
 - When you find something real but out of scope for your task, record it with `ai-coord note '<finding>'` instead of
   relying on the chat report being remembered. When you act on or supersede a pending note, close it with
   `ai-coord note --done '<id>'`.
-- A `⏳ queued behind …` line from a repo tool means another agent's job holds that provider's job lease (prb-finance:
-  `.cache/job-leases/`, `just job-queue` shows holders). Treat it like `index.lock`: wait for the holder to finish,
-  never delete a lease by hand — stale leases self-reclaim after 5 minutes.
-- The moment the conflicting work is committed, start implementing immediately — do not ask for approval.
+- The moment the conflicting work is committed, re-run `ai-coord start` with the same scopes; a `READY` result
+  authorizes starting immediately — do not ask for approval.
 - If still blocked after 1 hour, give up on waiting: present your finished plan and tell me I can run it once the
   conflicting agent workloads are done.
-- In plan mode, include the exact `ai-coord start` scopes and a "Wait out conflicting agents" section that applies the
-  waiting approach above before the first edit after plan approval.
 
 ## Workflow
 
@@ -183,9 +178,9 @@ Use the installed `mailops` CLI to access Gmail and Google Drive from any direct
 
 ## Skills
 
-My personal skills are authored in `~/projects/agent-skills`; its publish workflow propagates them into the installed
-copies under `~/.agents/skills` and `~/.claude/skills`. Edit skills only in that source repository — direct edits to the
-installed copies are overwritten on the next publish.
+My personal skills are authored in `~/projects/agent-skills`; its publish workflow installs them under
+`~/.agents/skills`, with `~/.claude/skills/<name>` symlinked to those installs. Edit skills only in that source
+repository — installed copies are overwritten on the next publish.
 
 ## Dotfiles
 

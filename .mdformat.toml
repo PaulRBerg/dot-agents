@@ -5,3 +5,4 @@ exclude = [
   "skills/**",
 ]
 number = true
+wrap = 120
