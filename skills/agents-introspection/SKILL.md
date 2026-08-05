@@ -4,12 +4,15 @@ coordination: exempt
 disable-model-invocation: false
 name: agents-introspection
 user-invocable: true
-description: Retrospect on a task against local Codex/Claude Code transcripts; propose durable fixes (AGENTS.md, skills).
+description:
+  Assess recurrence risk for agent behavior using local Codex/Claude Code transcripts and recommend evidence-backed
+  durable fixes to AGENTS.md or skills. Not for routine post-success skill-evolution or agent self-improvement reviews.
 ---
 
 # Agents Introspection
 
-This skill is coordination-exempt: skip the ai-coord gate (`git status` / `ai-coord status` / `ai-coord start`) for this skill's own work.
+This skill is coordination-exempt: skip the ai-coord gate (`git status` / `ai-coord status` / `ai-coord start`) for this
+skill's own work.
 
 If these instructions are already present in the conversation from a slash or dollar invocation, follow them directly;
 do not invoke this skill again through a skill tool.
