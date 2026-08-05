@@ -69,7 +69,8 @@ removed, cross-check this table to keep it in sync.
 
 `AGENTS.md` is the canonical source for PRB's global agent instructions (`CLAUDE.md` in this repo is a symlink to it).
 On commit, a Husky + lint-staged pre-commit hook (`.lintstagedrc.js`) regenerates and auto-commits synced copies in
-sibling repos — each using an isolated git index so it doesn't disturb concurrent work there:
+sibling repos. `ai-commit` is the local deterministic commit engine; install it at `~/.local/bin/ai-commit` so these
+helpers can preserve concurrent work there:
 
 - `~/.codex/AGENTS.md` — flattened via `just build` in `~/.codex` (which flattens `AGENTS_symlink.md`, a symlink to this
   repo's `AGENTS.md`, then appends Codex-specific `context/AGENTS_EXTRA.md`), committed by
