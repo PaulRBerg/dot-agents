@@ -1,8 +1,0 @@
-exclude = [
-  ".venv/**",
-  "node_modules/**",
-  # All skills are externally installed
-  "skills/**",
-]
-number = true
-wrap = 120

@@ -1,0 +1,12 @@
+# dependencies
+.venv/
+node_modules/
+
+# externally installed and private state
+.serena/
+.vscode/
+skills/
+TODO.md
+
+# generated symlink
+CLAUDE.md

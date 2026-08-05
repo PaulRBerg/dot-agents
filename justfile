@@ -1,5 +1,8 @@
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
+prettier := "bunx --no-install prettier"
+prettier_globs := "\"**/*.md\""
+
 # ---------------------------------------------------------------------------- #
 #                                   COMMANDS                                   #
 # ---------------------------------------------------------------------------- #
@@ -18,16 +21,26 @@ default:
 # ---------------------------------------------------------------------------- #
 
 # Check Markdown formatting
-@mdformat-check +paths=".":
-    uvx mdformat --check {{ paths }}
+@prettier-check +globs=prettier_globs:
+    {{ prettier }} \
+        --check \
+        --cache \
+        --log-level warn \
+        --no-error-on-unmatched-pattern \
+        {{ globs }}
 
-alias mc := mdformat-check
+alias pc := prettier-check
 
 # Format Markdown files
-@mdformat-write +paths=".":
-    uvx mdformat {{ paths }}
+@prettier-write +globs=prettier_globs:
+    {{ prettier }} \
+        --write \
+        --cache \
+        --log-level warn \
+        --no-error-on-unmatched-pattern \
+        {{ globs }}
 
-alias mw := mdformat-write
+alias pw := prettier-write
 
 # ---------------------------------------------------------------------------- #
 #                                    SKILLS                                    #
