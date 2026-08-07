@@ -1,7 +1,8 @@
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
 prettier := "bunx --no-install prettier"
-prettier_globs := "\"**/*.md\""
+prettier_cache := ".cache/prettier/.prettier-cache"
+prettier_globs := "\"**/*.{md,json,jsonc,yaml,yml}\""
 
 # ---------------------------------------------------------------------------- #
 #                                   COMMANDS                                   #
@@ -20,27 +21,35 @@ default:
 #                                    CHECKS                                    #
 # ---------------------------------------------------------------------------- #
 
-# Check Markdown formatting
+# Check documentation and configuration formatting
 @prettier-check +globs=prettier_globs:
     {{ prettier }} \
         --check \
         --cache \
+        --cache-location {{ prettier_cache }} \
         --log-level warn \
         --no-error-on-unmatched-pattern \
         {{ globs }}
 
 alias pc := prettier-check
 
-# Format Markdown files
+# Format documentation and configuration
 @prettier-write +globs=prettier_globs:
     {{ prettier }} \
         --write \
         --cache \
+        --cache-location {{ prettier_cache }} \
         --log-level warn \
         --no-error-on-unmatched-pattern \
         {{ globs }}
 
 alias pw := prettier-write
+
+# Run staged-file checks
+@pre-commit:
+    sh .husky/pre-commit
+
+alias precommit := pre-commit
 
 # ---------------------------------------------------------------------------- #
 #                                    SKILLS                                    #

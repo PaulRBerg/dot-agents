@@ -3,6 +3,7 @@
 node_modules/
 
 # externally installed and private state
+.cache/
 .serena/
 .vscode/
 skills/
