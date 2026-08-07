@@ -5,8 +5,8 @@
     "": {
       "name": "@prb/dot-agents",
       "devDependencies": {
-        "husky": "9.1.7",
-        "lint-staged": "17.3.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^17.3.0",
         "prettier": "^3.9.6",
       },
     },
