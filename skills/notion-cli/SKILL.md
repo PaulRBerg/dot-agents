@@ -1,6 +1,5 @@
 ---
 name: notion-cli
-coordination: exempt
 description: >-
   Use the Notion CLI (`ntn`) to interact with the Notion API, manage workers,
   and upload files. Use when the user asks to "call the Notion API", "deploy a
@@ -9,8 +8,6 @@ description: >-
 ---
 
 # Notion CLI
-
-This skill is coordination-exempt: skip the ai-coord gate (`git status` / `ai-coord status` / `ai-coord start`) for this skill's own work.
 
 ## Look things up before answering
 
