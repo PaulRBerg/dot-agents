@@ -50,7 +50,6 @@ Skills are installed from these repositories:
 | Source                                                              | Managed skills    | Description                                                      |
 | ------------------------------------------------------------------- | ----------------- | ---------------------------------------------------------------- |
 | [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills) | Catalog portfolio | General-purpose skills (commit, code-review, yeet, cli-gh, etc.) |
-| [anthropics/skills](https://github.com/anthropics/skills)           | `pdf`             | Anthropic document skill                                         |
 | [makenotion/skills](https://github.com/makenotion/skills)           | `notion-cli`      | Notion CLI skill                                                 |
 | [mattpocock/skills](https://github.com/mattpocock/skills)           | `codebase-design` | Deep-module design guidance                                      |
 | [vercel-labs/skills](https://github.com/vercel-labs/skills)         | `find-skills`     | Skills ecosystem discovery                                       |
@@ -65,7 +64,7 @@ The PaulRBerg row is catalog-owned. Every other row is an intentionally external
 global installation snapshots, while canonical ownership remains upstream. They are valid dependencies even though they
 do not belong in the `agent-skills` catalog.
 
-Use `just install-external` to install or refresh the five declared external skills for Codex and Claude Code. **Do not
+Use `just install-external` to install or refresh the four declared external skills for Codex and Claude Code. **Do not
 modify, refactor, or include externally sourced skills in catalog tasks.** When skills are added or removed, update this
 table and the sync recipe together.
 
