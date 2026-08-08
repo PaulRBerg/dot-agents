@@ -65,9 +65,9 @@ The PaulRBerg row is catalog-owned. Every other row is an intentionally external
 global installation snapshots, while canonical ownership remains upstream. They are valid dependencies even though they
 do not belong in the `agent-skills` catalog.
 
-Use `just external-skills-sync` to install or refresh the five declared external skills for Codex and Claude Code. **Do
-not modify, refactor, or include externally sourced skills in catalog tasks.** When skills are added or removed, update
-this table and the sync recipe together.
+Use `just install-external` to install or refresh the five declared external skills for Codex and Claude Code. **Do not
+modify, refactor, or include externally sourced skills in catalog tasks.** When skills are added or removed, update this
+table and the sync recipe together.
 
 ## Instructions
 

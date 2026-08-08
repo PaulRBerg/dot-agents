@@ -74,7 +74,7 @@ alias su := skill-update
 # Install or refresh externally managed skills from their canonical sources
 [group("skills")]
 [script("bash")]
-external-skills-sync: _require-clean
+install-external: _require-clean
     set -euo pipefail
     canonical_skills_dir="$HOME/.agents/skills"
     claude_skills_dir="$HOME/.claude/skills"
@@ -112,13 +112,13 @@ external-skills-sync: _require-clean
 
     printf '{{ GREEN }}%s{{ NORMAL }}\n' "✅ Synced 5 externally managed skills"
 
-alias ess := external-skills-sync
+alias ie := install-external
 
-# Install skills from a repo
+# Install catalog skills from a repo
 # Stale upstream skill pruning is tracked upstream: https://github.com/vercel-labs/skills/issues/415
 [group("skills")]
 [script("bash")]
-install-all repo="PaulRBerg/agent-skills": _require-clean
+install-catalog repo="PaulRBerg/agent-skills": _require-clean
     set -euo pipefail
     repo='{{ repo }}'
     claude_skills_dir="$HOME/.claude/skills"
@@ -276,7 +276,7 @@ install-all repo="PaulRBerg/agent-skills": _require-clean
     printf '{{ GREEN }}%s{{ NORMAL }}\n' \
         "✅ Installed ${#shared[@]} shared, ${#claude_only[@]} Claude-only, and ${#codex_only[@]} Codex-only skills from $repo"
 
-alias ia := install-all
+alias ic := install-catalog
 
 # Purge all skills and print reinstall commands
 [confirm("This will purge all skills. Continue? [y/N]")]
@@ -288,7 +288,7 @@ reset-skills: _require-clean
     echo ""
     echo "Skills purged. Run these commands to reinstall:"
     echo ""
-    echo "  just install-all"
-    echo "  just external-skills-sync"
+    echo "  just install-catalog"
+    echo "  just install-external"
 
 alias rs := reset-skills
