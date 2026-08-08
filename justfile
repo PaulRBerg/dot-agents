@@ -71,6 +71,49 @@ alias list := skill-list
 
 alias su := skill-update
 
+# Install or refresh externally managed skills from their canonical sources
+[group("skills")]
+[script("bash")]
+external-skills-sync: _require-clean
+    set -euo pipefail
+    canonical_skills_dir="$HOME/.agents/skills"
+    claude_skills_dir="$HOME/.claude/skills"
+
+    command -v bunx >/dev/null 2>&1 || {
+        echo "Error: required command not found: bunx" >&2
+        exit 1
+    }
+
+    sync_skill() {
+        source="$1"
+        skill_name="$2"
+
+        bunx skills add "$source" \
+            --global \
+            --agent claude-code codex \
+            --skill "$skill_name" \
+            --yes
+
+        [[ -f "$canonical_skills_dir/$skill_name/SKILL.md" ]] || {
+            echo "Error: $skill_name missing from the universal install" >&2
+            exit 1
+        }
+        [[ -f "$claude_skills_dir/$skill_name/SKILL.md" ]] || {
+            echo "Error: $skill_name missing from the Claude Code install" >&2
+            exit 1
+        }
+    }
+
+    sync_skill "ChromeDevTools/chrome-devtools-mcp" "chrome-devtools"
+    sync_skill "mattpocock/skills" "codebase-design"
+    sync_skill "vercel-labs/skills" "find-skills"
+    sync_skill "makenotion/skills" "notion-cli"
+    sync_skill "anthropics/skills" "pdf"
+
+    printf '{{ GREEN }}%s{{ NORMAL }}\n' "✅ Synced 5 externally managed skills"
+
+alias ess := external-skills-sync
+
 # Install skills from a repo
 # Stale upstream skill pruning is tracked upstream: https://github.com/vercel-labs/skills/issues/415
 [group("skills")]
@@ -245,8 +288,7 @@ reset-skills: _require-clean
     echo ""
     echo "Skills purged. Run these commands to reinstall:"
     echo ""
-    echo "  bunx skills add PaulRBerg/agent-skills"
-    echo "  bunx skills add sablier-labs/agent-skills"
-    echo "  bunx skills add vercel-labs/agent-skills"
+    echo "  just install-all"
+    echo "  just external-skills-sync"
 
 alias rs := reset-skills
