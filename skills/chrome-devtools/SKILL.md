@@ -1,72 +1,71 @@
 ---
+compatibility:
+  Requires PRB's attach-only Chrome DevTools MCP wrapper at ~/.local/libexec/mcp/chrome-devtools and an existing
+  remote-debugging Chromium browser.
 name: chrome-devtools
-description: Uses Chrome DevTools via MCP for efficient debugging, troubleshooting and browser automation. Use when debugging web pages, automating browser interactions, analyzing performance, or inspecting network requests. This skill does not apply to `--slim` mode (MCP configuration).
+description:
+  Use Chrome DevTools through PRB's shared attach-only MCP browser for page debugging, browser automation, visual
+  inspection, console or network analysis, performance or memory profiling, and screencasts.
 ---
 
-## Core Concepts
+# Chrome DevTools
 
-**Browser lifecycle**: Browser starts automatically on first tool call using a persistent Chrome profile. Configure via CLI args in the MCP server configuration: `npx chrome-devtools-mcp@latest --help`.
-Addional tooling can be enabled by providing the following flags:
+Operate the configured Chrome DevTools MCP against the existing shared browser without disrupting unrelated tabs or
+authenticated state.
 
-- For extension tooling, use the `--categoryExtensions` flag.
-- For memory tooling, use the `--memoryDebugging` flag.
+## Environment Contract
 
-**Page selection**: Tools operate on the currently selected page. Use `list_pages` to see available pages, then `select_page` to switch context.
-**Element interaction**: Use `take_snapshot` to get page structure with element `uid`s. Each element has a unique `uid` for interaction. If an element isn't found, take a fresh snapshot - the element may have been removed or the page changed.
+- Treat `~/.local/libexec/mcp/chrome-devtools` and the tools exposed in the current session as authoritative. The
+  wrapper owns server versioning, flags, logging, and browser attachment; do not run the MCP package directly.
+- The MCP attaches to an existing remote-debugging browser. Never launch a fallback browser or create another profile
+  when attachment fails.
+- Treat the browser as shared, authenticated, and concurrently used by the user and other agents. Inspect only pages
+  relevant to the task and do not surface unrelated tab titles or content.
+- Trust the live tool inventory over remembered server features. An absent tool is unavailable in this session; do not
+  advise editing client MCP configuration as a troubleshooting shortcut.
 
-## Workflow Patterns
+## Page Ownership
 
-### Before interacting with a page
+1. Call `list_pages` before interacting and preserve the initial pages as pre-existing state.
+2. Prefer `new_page` with `background: true` when a fresh page satisfies the task. Record the exact `pageId` returned by
+   every page this task creates; never infer ownership from a later page-list difference.
+3. Pass an explicit `pageId` to every page-scoped tool. Do not rely on selected-page state; use `select_page` only when
+   deliberately bringing a page to the foreground.
+4. Navigate or mutate a pre-existing page only when the task explicitly depends on that page's current state. Never
+   close a pre-existing page.
+5. At completion, close only the recorded pages created by this task unless the user asked to leave one open.
 
-1. Navigate: `navigate_page` or `new_page`
-2. Wait: `wait_for` to ensure content is loaded if you know what you look for.
-3. Snapshot: `take_snapshot` to understand page structure
-4. Interact: Use element `uid`s from snapshot for `click`, `fill`, etc.
+## Interaction and Evidence
 
-### Efficient data retrieval
+- Preserve order on a single page: navigate, wait for a known signal when useful, take a fresh snapshot, then interact
+  with identifiers from that snapshot. Refresh the snapshot after navigation or meaningful DOM changes.
+- Prefer `take_snapshot` for structure and automation, `take_screenshot` for visual evidence, and `evaluate_script` for
+  information absent from the accessibility tree. Accept wrapper screenshot defaults unless the task requires lossless
+  or full-resolution output.
+- Keep action responses small with `includeSnapshot: false` unless the updated state is immediately needed. Paginate and
+  filter console, network, memory, and other high-volume results.
+- Use `filePath` for large screenshots, snapshots, traces, recordings, or response bodies, writing only to a
+  task-authorized workspace path or a temporary location. Unrestricted path capability is not write authorization.
+- Parallelize independent pages when useful, but preserve causal order for calls targeting the same page.
 
-- Use `filePath` parameter for large outputs (screenshots, snapshots, traces)
-- Use pagination (`pageIdx`, `pageSize`) and filtering (`types`) to minimize data
-- Set `includeSnapshot: false` on input actions unless you need updated page state
+## Authority and Privacy
 
-### Tool selection
-
-- **Automation/interaction**: `take_snapshot` (text-based, faster, better for automation)
-- **Visual inspection**: `take_screenshot` (when user needs to see visual state)
-- **Additional details**: `evaluate_script` for data not in accessibility tree
-
-### Parallel execution
-
-You can send multiple tool calls in parallel, but maintain correct order: navigate → wait → snapshot → interact.
-
-### Testing an extension
-
-> **Before proceeding**: Extension tools (`install_extension`, `list_extensions`, etc.) are only available when the MCP server is started with the `--categoryExtensions` flag. If these tools are not in your tool list, stop and ask the user to update their MCP server configuration:
->
-> ```json
-> {
->   "mcpServers": {
->     "chrome-devtools": {
->       "command": "npx",
->       "args": ["chrome-devtools-mcp@latest", "--categoryExtensions"]
->     }
->   }
-> }
-> ```
->
-> After updating, the user must restart the MCP server (or their AI client) for the change to take effect.
-
-1. **Install**: Use `install_extension` with the path to the unpacked extension.
-2. **Identify**: Get the extension ID from the response or by calling `list_extensions`.
-3. **Trigger Action**: Use `trigger_extension_action` to open the popup or side panel if applicable.
-4. **Verify Service Worker**: Use `evaluate_script` with `serviceWorkerId` to check extension state or trigger background actions.
-5. **Verify Page Behavior**: Navigate to a page where the extension operates and use `take_snapshot` to check if content scripts injected elements or modified the page correctly.
+- Read-only inspection of task-relevant authenticated state is allowed when the task calls for it. Submitting forms,
+  changing accounts, installing extensions, making purchases, or causing another external mutation requires the same
+  authority that action would require outside the browser.
+- Network-header redaction is an intentional server boundary. Do not bypass it or seek credentials through page or
+  process introspection.
 
 ## Troubleshooting
 
-If `chrome-devtools-mcp` is insufficient, guide users to use Chrome DevTools UI:
+- On attachment or transport failure, distinguish the browser endpoint from the MCP process: check the debugging
+  endpoint at `http://127.0.0.1:${PRB_AGENT_CHROMIUM_PORT:-9222}/json/version`, then inspect the newest per-process log
+  under `$XDG_CACHE_HOME/chrome-devtools-mcp/logs/` or, when unset, `~/.cache/chrome-devtools-mcp/logs/`.
+- Expect Chromium to remain healthy when an MCP transport drops. Report which layer failed and the supporting evidence;
+  do not launch another browser, edit client configuration, or change wrapper flags unless the user explicitly requests
+  configuration work.
+- When a requested capability is missing, confirm the current tool inventory and wrapper configuration, then report the
+  boundary. Do not invent a fallback that weakens the configured privacy or concurrency defaults.
 
-- https://developer.chrome.com/docs/devtools
-- https://developer.chrome.com/docs/devtools/ai-assistance
-
-If there are errors launching `chrome-devtools-mcp` or Chrome, refer to https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/troubleshooting.md.
+Completion requires fresh tool evidence for the requested outcome and confirmation that task-created pages were either
+closed or intentionally left open.
