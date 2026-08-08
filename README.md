@@ -47,14 +47,13 @@ bunx skills add owner/repo
 
 Skills are installed from these repositories:
 
-| Source                                                                                      | Managed skills    | Description                                                      |
-| ------------------------------------------------------------------------------------------- | ----------------- | ---------------------------------------------------------------- |
-| [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills)                         | Catalog portfolio | General-purpose skills (commit, code-review, yeet, cli-gh, etc.) |
-| [anthropics/skills](https://github.com/anthropics/skills)                                   | `pdf`             | Anthropic document skill                                         |
-| [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) | `chrome-devtools` | Companion to the Chrome DevTools MCP server                      |
-| [makenotion/skills](https://github.com/makenotion/skills)                                   | `notion-cli`      | Notion CLI skill                                                 |
-| [mattpocock/skills](https://github.com/mattpocock/skills)                                   | `codebase-design` | Deep-module design guidance                                      |
-| [vercel-labs/skills](https://github.com/vercel-labs/skills)                                 | `find-skills`     | Skills ecosystem discovery                                       |
+| Source                                                              | Managed skills    | Description                                                      |
+| ------------------------------------------------------------------- | ----------------- | ---------------------------------------------------------------- |
+| [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills) | Catalog portfolio | General-purpose skills (commit, code-review, yeet, cli-gh, etc.) |
+| [anthropics/skills](https://github.com/anthropics/skills)           | `pdf`             | Anthropic document skill                                         |
+| [makenotion/skills](https://github.com/makenotion/skills)           | `notion-cli`      | Notion CLI skill                                                 |
+| [mattpocock/skills](https://github.com/mattpocock/skills)           | `codebase-design` | Deep-module design guidance                                      |
+| [vercel-labs/skills](https://github.com/vercel-labs/skills)         | `find-skills`     | Skills ecosystem discovery                                       |
 
 Install all skills from a source:
 
