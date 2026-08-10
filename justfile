@@ -56,7 +56,7 @@ alias precommit := pre-commit
 # ---------------------------------------------------------------------------- #
 
 # Skills synced from their own canonical sources rather than the catalog (must track `install-external`'s sync_skill calls)
-external_skills := "chrome-devtools find-skills"
+external_skills := "find-skills"
 
 # Print a colorized, titled list of skill names (or a "(none)" fallback)
 [private]
@@ -121,10 +121,9 @@ install-external: _require-clean
         }
     }
 
-    sync_skill "ChromeDevTools/chrome-devtools-mcp" "chrome-devtools"
     sync_skill "vercel-labs/skills" "find-skills"
 
-    printf '{{ GREEN }}%s{{ NORMAL }}\n' "✅ Synced 2 externally managed skills"
+    printf '{{ GREEN }}%s{{ NORMAL }}\n' "✅ Synced 1 externally managed skill"
 
 alias ie := install-external
 
