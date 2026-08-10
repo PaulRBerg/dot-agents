@@ -10,7 +10,7 @@ prettier_globs := "\"**/*.{md,json,jsonc,yaml,yml}\""
 
 # Show available commands
 default:
-    @just skill-list
+    @just list-all-skills
 
 # Abort if the working tree has uncommitted changes
 [private]
@@ -55,21 +55,38 @@ alias precommit := pre-commit
 #                                    SKILLS                                    #
 # ---------------------------------------------------------------------------- #
 
-# List skills
+# Skills synced from their own canonical sources rather than the catalog (must track `install-external`'s sync_skill calls)
+external_skills := "chrome-devtools codebase-design find-skills"
+
+# Print a colorized, titled list of skill names (or a "(none)" fallback)
+[private]
+[script("bash")]
+_list-skills title *names:
+    set -euo pipefail
+    echo -e '{{ BOLD }}{{ GREEN }}● {{ title }}:{{ NORMAL }}'
+    if [ -z "{{ names }}" ]; then
+        echo -e '  {{ YELLOW }}(none){{ NORMAL }}'
+    else
+        for name in {{ names }}; do echo -e "  {{ CYAN }}▸ ${name}{{ NORMAL }}"; done
+    fi
+
+# List all installed skills
 [group("skills")]
-@skill-list:
-    echo -e '{{ BOLD }}{{ GREEN }}● Skills:{{ NORMAL }}'
-    ls -1 skills 2>/dev/null | sed 's/^/  {{ CYAN }}▸ /' | sed 's/$/{{ NORMAL }}/' | while read -r line; do echo -e "$line"; done || echo -e '  {{ YELLOW }}(none){{ NORMAL }}'
+@list-all-skills:
+    just _list-skills "Skills" $(ls -1 skills 2>/dev/null)
 
-alias sl := skill-list
-alias list := skill-list
+alias sl := list-all-skills
+alias list := list-all-skills
 
-# Update all installed skills from their sources
+# List externally managed skills (installed via install-external)
 [group("skills")]
-@skill-update: _require-clean
-    bunx skills update --global --yes
+@list-external-skills:
+    just _list-skills "External skills" {{ external_skills }}
 
-alias su := skill-update
+# List catalog-managed skills (installed via install-catalog)
+[group("skills")]
+@list-catalog-skills:
+    just _list-skills "Catalog skills" $(comm -23 <(ls -1 skills 2>/dev/null | sort) <(printf '%s\n' {{ external_skills }} | sort))
 
 # Install or refresh externally managed skills from their canonical sources
 [group("skills")]
