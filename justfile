@@ -107,9 +107,8 @@ install-external: _require-clean
     sync_skill "ChromeDevTools/chrome-devtools-mcp" "chrome-devtools"
     sync_skill "mattpocock/skills" "codebase-design"
     sync_skill "vercel-labs/skills" "find-skills"
-    sync_skill "makenotion/skills" "notion-cli"
 
-    printf '{{ GREEN }}%s{{ NORMAL }}\n' "✅ Synced 4 externally managed skills"
+    printf '{{ GREEN }}%s{{ NORMAL }}\n' "✅ Synced 3 externally managed skills"
 
 alias ie := install-external
 
