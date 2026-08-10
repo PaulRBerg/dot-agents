@@ -10,7 +10,7 @@ prettier_globs := "\"**/*.{md,json,jsonc,yaml,yml}\""
 
 # Show available commands
 default:
-    @just list-all-skills
+    @just list-skills
 
 # Abort if the working tree has uncommitted changes
 [private]
@@ -72,20 +72,20 @@ _list-skills title *names:
 
 # List all installed skills
 [group("skills")]
-@list-all-skills:
+@list-skills:
     just _list-skills "Skills" $(ls -1 skills 2>/dev/null)
 
-alias sl := list-all-skills
-alias list := list-all-skills
+alias sl := list-skills
+alias list := list-skills
 
 # List externally managed skills (installed via install-external)
 [group("skills")]
-@list-external-skills:
+@list-skills-external:
     just _list-skills "External skills" {{ external_skills }}
 
 # List catalog-managed skills (installed via install-catalog)
 [group("skills")]
-@list-catalog-skills:
+@list-skills-catalog:
     just _list-skills "Catalog skills" $(comm -23 <(ls -1 skills 2>/dev/null | sort) <(printf '%s\n' {{ external_skills }} | sort))
 
 # Install or refresh externally managed skills from their canonical sources
