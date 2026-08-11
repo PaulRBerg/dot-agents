@@ -2,7 +2,7 @@
 #
 # commit_claude_repo.sh
 #
-# Run from this repo's pre-commit lint-staged step (.lintstagedrc.js), after
+# Run from this repo's pre-commit lint-staged step (.lintstagedrc.mjs), after
 # the root AGENTS.md changes. Flattens it into ~/.claude/CLAUDE.md (the file
 # ~/.claude loads as user-level context) and commits it in the ~/.claude repo.
 #

@@ -69,7 +69,7 @@ table and the sync recipe together.
 ## Instructions
 
 `AGENTS.md` is the canonical source for PRB's global agent instructions (`CLAUDE.md` in this repo is a symlink to it).
-On commit, a Husky + lint-staged pre-commit hook (`.lintstagedrc.js`) regenerates and auto-commits synced copies in
+On commit, a Husky + lint-staged pre-commit hook (`.lintstagedrc.mjs`) regenerates and auto-commits synced copies in
 sibling repos. `ai-commit` is the local deterministic commit engine; install it at `~/.local/bin/ai-commit` so these
 helpers can preserve concurrent work there:
 

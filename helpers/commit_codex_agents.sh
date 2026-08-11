@@ -2,7 +2,7 @@
 #
 # commit_codex_agents.sh
 #
-# Run from this repo's pre-commit lint-staged step (.lintstagedrc.js), after
+# Run from this repo's pre-commit lint-staged step (.lintstagedrc.mjs), after
 # `just build` regenerates ~/.codex/AGENTS.md from the root AGENTS.md.
 #
 # Usage: commit_codex_agents.sh
