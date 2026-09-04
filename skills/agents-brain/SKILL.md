@@ -2,7 +2,7 @@
 argument-hint:
   <polish|create> [path] [target ...] [--root-only] [--preserve] [--minimal] [--thorough|--full] [--dry-run] [--force]
 compatibility:
-  Requires curl and a writable user cache directory; network populates or refreshes the GPT-5.6 and Claude Fable 5
+  Requires curl and a writable user cache directory; network populates or refreshes the GPT-6 Astra and Claude Fable 5.1
   prompting guides.
 name: agents-brain
 skill-dependencies:
@@ -29,12 +29,13 @@ reporting completed or planned changes, validation, and any blockers.
 
 ## Model and Context Optimization
 
-Optimize skills and other agent-facing context for GPT-5.6 and Claude Fable 5 while preserving README.md as clear
+Optimize skills and other agent-facing context for GPT-6 Astra and Claude Fable 5.1 while preserving README.md as clear
 human-facing documentation. Before complex, long-running, multi-tool, or orchestration-heavy context work, resolve
-`scripts/fetch-guidance.sh` relative to this skill directory, run it once for `gpt-5p6` and once for `claude-fable-5`,
-and read both returned files completely. The helper retrieves the official
-[GPT-5.6 prompting guidance](https://developers.openai.com/api/docs/guides/prompt-guidance-gpt-5p6) and
-[Claude Fable 5 prompting guidance](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5)
+`scripts/fetch-guidance.sh` relative to this skill directory, run it once for `gpt-6-astra` and once for
+`claude-fable-5-1`, and read both returned files completely. The helper retrieves the official
+[GPT-6 Astra prompting guidance](https://developers.openai.com/api/docs/guides/latest-model/gpt-6-astra#prompting-best-practices)
+and
+[Claude Fable 5.1 prompting guidance](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-1)
 because their recommendations may evolve. Simple context work does not require either guide.
 
 Accept an integrity-valid `cached` guide for 24 hours. Use `--refresh` for explicitly latest or change-sensitive work,
@@ -50,21 +51,11 @@ Forced refreshes, expired entries, integrity failures, and unexpected redirects 
 cannot be returned, stop qualifying work before writing instead of substituting memory or another source. Never create
 the cache in a repository or skill installation.
 
-- Keep only agent-facing content that changes a decision, prevents an evidenced mistake, or supplies a non-discoverable
-  constraint. Remove generic advice, tutorials, history, inventories, no-op prose, and mechanics already enforced by
-  scripts, recipes, schemas, or configuration.
-- State each meaning once in an effective load chain. Put shared guidance in the parent and keep descendants to deltas
-  or overrides; preserve repetition when artifacts load independently and need to remain self-contained.
-- Use the narrowest reliable load scope: universal guidance inline, path-specific guidance in nested context, and rare
-  procedures in on-demand context docs or skills. Do not hide required guidance behind an unreliable pointer.
-- Prefer one positive decision rule to enumerated prohibitions. Keep one minimal example only when it encodes an exact
-  requirement or corrects a measured failure; keep tool and command descriptions only when routing, inputs, side
-  effects, outputs, or failure signals matter.
-- Preserve authority, safety, material exceptions, semantic success criteria, exact machine-consumed text, and readable
-  prose. Do not shorten human-facing README.md content merely to reduce agent tokens unless that content also enters
-  agent context.
-- Documentation-only authority does not permit creating or changing helpers or schemas. When none exists, retain the
-  smallest accurate prose and report the extraction opportunity instead of expanding scope.
+Keep only content that changes a decision, prevents an evidenced mistake, or supplies a non-discoverable constraint.
+State each meaning once at the narrowest reliable load scope, except where independently installed artifacts need to
+stay self-contained. Preserve authority, safety, material exceptions, semantic success criteria, and exact
+machine-consumed text. Documentation-only authority does not permit changing helpers or schemas; report an extraction
+opportunity instead.
 
 ## Choose a Workflow
 
@@ -147,11 +138,6 @@ Outside managed agent-config roots, eligible git-tracked `skills/<name>/` source
 
 Snapshot `git status --short` before broad edits. Preserve unrelated pre-existing changes and re-check expected paths
 after generators or broad commands.
-
-## Shared Constraints
-
-Stay inside the resolved repository and preserve unrelated changes. The selected workflow reference is authoritative for
-README.md, AGENTS.md, CLAUDE.md, and skill behavior; do not repeat or broaden its file-specific rules here.
 
 ## Discovery and Tool Routing
 
