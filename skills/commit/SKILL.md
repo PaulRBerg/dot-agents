@@ -1,5 +1,6 @@
 ---
-argument-hint: "[--all] [--staged] [--natural] [--push] [--close <issue_numbers>] [--finding <finding_ids>]"
+argument-hint:
+  "[--all] [--staged] [--natural] [--conventional] [--push] [--close <issue_numbers>] [--finding <finding_ids>]"
 compatibility: Requires Git and ai-commit with automatic ai-coord stale-dirt baseline discovery on PATH.
 effort: medium
 name: commit
@@ -87,8 +88,8 @@ the message.
 - Append the exact `Agent-Session:` line from the preparation trailer section when present. `ai-commit` has already
   validated it; do not synthesize or repair a missing or malformed trailer.
 
-Compose one subject paragraph, an optional body paragraph, and one final trailer paragraph containing all issue and
-Agent-Session lines.
+Compose one subject paragraph, an optional body paragraph, and one final trailer paragraph containing all `Closes`,
+`Finding-ID`, and `Agent-Session` lines.
 
 `ai-commit` receives every `-m` value verbatim and rejects a literal `\\n`; write real line breaks inside the quoted
 argument, as in the step 4 example.

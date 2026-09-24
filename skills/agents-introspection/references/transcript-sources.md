@@ -77,8 +77,8 @@ Source ownership is structural and precedes relevance scoring:
 - A cwd equal to or below multiple requested roots belongs to the longest, most-specific root. A transcript is emitted
   at most once, and project strings in messages, context, tool inputs, or tool outputs never establish ownership.
 
-The live `CODEX_THREAD_ID` or `CLAUDE_SESSION_ID` transcript is excluded by default. Use `--include-current` only when
-diagnosing the miner or intentionally inspecting the active session.
+The live `CODEX_THREAD_ID` or `CLAUDE_CODE_SESSION_ID` transcript is excluded by default. Use `--include-current` only
+when diagnosing the miner or intentionally inspecting the active session.
 
 Candidate signals use delineated channels. `user` is actual task text, preferring Claude history `display`; `assistant`
 is plain assistant message text; injected AGENTS, skill, environment, permission, collaboration, abort, and command
@@ -113,8 +113,9 @@ uv run "$skill_dir/scripts/transcript-inspect.py" <transcript-path>... \
 ```
 
 For each file it emits a header (source, session id, cwd, timestamp range, per-channel totals, sampled flag) and bounded
-entries with absolute record line numbers: every non-context user message, keyword/correction/verification- matching
-assistant messages, and tool failures. Redaction is always on; entry text is capped at 240 characters.
+entries with absolute record line numbers: every non-context user message, keyword-, correction-, or
+verification-matching assistant messages, and tool failures. Redaction is always on; entry text is capped at 240
+characters.
 
 Digests are redacted and bounded — inspect them before reading raw bodies, and read raw bodies only when the digest is
 insufficient. Each entry's line number lets you pull the exact underlying record when needed:
