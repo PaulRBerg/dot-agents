@@ -16,20 +16,19 @@ more details.
 └── skills/      # Skills loaded by agents
 ```
 
-> [!NOTE] `skills/.system` contains Claude Code's official skills. There is an open issue in the Claude Code repo to
-> relocate it: `https://github.com/anthropics/claude-code/issues/20820`.
-
 ## How It Works
 
 AI agents (Claude Code, Cursor, GitHub Copilot, etc.) look for skills in their config directories. This repository acts
-as a central location that agents can reference via symlink:
+as a central location that agents can reference via symlink. For Claude Code, the `agent-skills` publish workflow
+installs each skill here and then creates a per-skill relative symlink:
 
 ```bash
-# Example for Claude Code
-ln -s ~/.agents/skills ~/.claude/skills
+# Example for a single skill
+ln -s ../../.agents/skills/<name> ~/.claude/skills/<name>
 ```
 
-This way, all your agents share the same skill library.
+Claude-only skills (`metadata.install-targets: claude-code`, e.g. `claude-handoff`) are installed as real directories
+under `~/.claude/skills` instead of symlinks. This way, all your agents share the same skill library.
 
 ### Managing Skills
 
@@ -40,17 +39,16 @@ bunx skills add owner/repo
 ```
 
 > [!NOTE] The GitHub repository must contain a `skills/` directory with skill definitions. See
-> [skill discovery](https://github.com/vercel-labs/add-skill?tab=readme-ov-file#skill-discovery) for supported directory
-> structures.
+> [skill discovery](https://github.com/vercel-labs/skills#skill-discovery) for supported directory structures.
 
 ## 📦 Skill Sources
 
 Skills are installed from these repositories:
 
-| Source                                                              | Managed skills    | Description                                                      |
-| ------------------------------------------------------------------- | ----------------- | ---------------------------------------------------------------- |
-| [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills) | Catalog portfolio | General-purpose skills (commit, code-review, yeet, cli-gh, etc.) |
-| [vercel-labs/skills](https://github.com/vercel-labs/skills)         | `find-skills`     | Skills ecosystem discovery                                       |
+| Source                                                              | Managed skills    | Description                                         |
+| ------------------------------------------------------------------- | ----------------- | --------------------------------------------------- |
+| [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills) | Catalog portfolio | General-purpose skills (commit, yeet, cli-gh, etc.) |
+| [vercel-labs/skills](https://github.com/vercel-labs/skills)         | `find-skills`     | Skills ecosystem discovery                          |
 
 For bootstrap or recovery, install the catalog directly from its remote source; this does not require a local
 `agent-skills` checkout:

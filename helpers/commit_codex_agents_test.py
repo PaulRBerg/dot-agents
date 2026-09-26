@@ -58,7 +58,6 @@ def helper_env(tmp_path: Path) -> dict[str, str]:
     environment = os.environ.copy()
     environment["HOME"] = str(tmp_path)
     environment["AI_COMMIT_STATE_DIR"] = str(tmp_path / "ai-commit-state")
-    environment["AI_COMMIT_CONFIG"] = str(tmp_path / "ai-commit-config.toml")
     environment["PATH"] = f"{binary_dir}:{environment['PATH']}"
     return environment
 
