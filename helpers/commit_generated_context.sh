@@ -66,6 +66,11 @@ commit_generated_context() {
   fi
 
   ai-commit commit "$transaction_id" --no-verify --no-gpg-sign -m "$message"
+
+  # Publish the sibling commit, but never fail the caller's commit over a push problem.
+  ai-commit push || {
+    echo "warning: ai-commit push failed in $target_repo; the $generated_path sync commit stays local" >&2
+  }
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then

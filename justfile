@@ -8,7 +8,7 @@ prettier_globs := "\"**/*.{md,json,jsonc,yaml,yml}\""
 #                                   COMMANDS                                   #
 # ---------------------------------------------------------------------------- #
 
-# Show available commands
+# List installed skills
 default:
     @just list-skills
 
@@ -50,6 +50,10 @@ alias pw := prettier-write
     sh .husky/pre-commit
 
 alias precommit := pre-commit
+
+# Run helper tests
+@test:
+    uv run --with pytest pytest helpers
 
 # ---------------------------------------------------------------------------- #
 #                                    SKILLS                                    #
@@ -127,9 +131,10 @@ install-external: _require-clean
 
 alias ie := install-external
 
-# Bootstrap or recover catalog skills from a remote repository without a local catalog checkout
 # Source-owned catalog updates use agent-skills' guarded publish-skills workflow.
 # Stale upstream skill pruning is tracked upstream: https://github.com/vercel-labs/skills/issues/415
+
+# Bootstrap or recover catalog skills from a remote repository without a local catalog checkout
 [group("skills")]
 [script("bash")]
 install-catalog repo="PaulRBerg/agent-skills": _require-clean

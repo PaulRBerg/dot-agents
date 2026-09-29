@@ -1,4 +1,6 @@
 import os
+import shlex
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -128,6 +130,14 @@ def test_noops_when_generated_path_matches_head(tmp_path: Path, target) -> None:
     assert git(target_repo, "rev-parse", "HEAD") == head_before
 
 
+def add_remote(tmp_path: Path, target_repo: Path) -> Path:
+    remote = tmp_path / "remote.git"
+    git(tmp_path, "init", "--quiet", "--bare", str(remote))
+    git(target_repo, "remote", "add", "origin", str(remote))
+    git(target_repo, "push", "--quiet", "--set-upstream", "origin", "HEAD")
+    return remote
+
+
 def fake_ai_commit(tmp_path: Path, source: str) -> Path:
     binary_dir = tmp_path / "bin"
     binary_dir.mkdir(exist_ok=True)
@@ -135,6 +145,39 @@ def fake_ai_commit(tmp_path: Path, source: str) -> Path:
     binary.write_text(source)
     binary.chmod(0o755)
     return binary_dir
+
+
+def test_pushes_sibling_commit_to_upstream(tmp_path: Path, target) -> None:
+    caller_repo, target_repo = fixture(tmp_path, target)
+    remote = add_remote(tmp_path, target_repo)
+    (caller_repo / "AGENTS.md").write_text("new instructions\n")
+
+    result = run_helper(caller_repo, helper_env(tmp_path), target)
+
+    branch = git(target_repo, "branch", "--show-current")
+    assert result.returncode == 0, result.stderr
+    assert "warning" not in result.stderr
+    assert git(target_repo, "show", f"HEAD:{target[1]}") == "new instructions"
+    assert git(remote, "rev-parse", branch) == git(target_repo, "rev-parse", "HEAD")
+
+
+def test_push_failure_warns_without_failing_the_commit(tmp_path: Path, target) -> None:
+    caller_repo, target_repo = fixture(tmp_path, target)
+    (caller_repo / "AGENTS.md").write_text("new instructions\n")
+    real_ai_commit = shlex.quote(shutil.which("ai-commit") or "ai-commit")
+    binary_dir = fake_ai_commit(
+        tmp_path,
+        f'#!/bin/sh\nif [ "$1" = push ]; then echo push failure >&2; exit 74; fi\nexec {real_ai_commit} "$@"\n',
+    )
+    environment = helper_env(tmp_path)
+    environment["PATH"] = f"{binary_dir}:{environment['PATH']}"
+
+    result = run_helper(caller_repo, environment, target)
+
+    assert result.returncode == 0, result.stderr
+    assert "push failure" in result.stderr
+    assert "warning: ai-commit push failed" in result.stderr
+    assert git(target_repo, "show", f"HEAD:{target[1]}") == "new instructions"
 
 
 def test_fails_on_malformed_prepare_porcelain(tmp_path: Path, target) -> None:
