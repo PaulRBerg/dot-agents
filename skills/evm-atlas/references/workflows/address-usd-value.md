@@ -18,10 +18,11 @@ example, a "drained" or dust cutoff) and any token allow/deny policy; this workf
 ## Native Balances
 
 1. Per chain, pin one block: `routemesh rpc <chainId> eth_getBlockByNumber --params='["finalized",false]'` and record
-   its tag, number, hash, and timestamp. Use `"latest"` when the chain rejects `finalized`, and say so. For a
-   post-transfer check, when the finalized head predates the caller's verified receipt block, use a canonical `"latest"`
-   checkpoint at or after that receipt block; record the reason and label it unfinalized. Never use pre-transfer state
-   as the post-transfer balance.
+   its tag, number, hash, and timestamp. Use `"latest"` when the chain rejects `finalized` or returns block `0x0` for
+   it, and say so: RouteMesh served Chiliz (`88888`) genesis for both `finalized` and `safe` (verified 2026-10-01). For
+   a post-transfer check, when the finalized head predates the caller's verified receipt block, use a canonical
+   `"latest"` checkpoint at or after that receipt block; record the reason and label it unfinalized. Never use
+   pre-transfer state as the post-transfer balance.
 2. Send one `routemesh rpc <chainId> --json -` batch with an `eth_getBalance` request per address, each using the
    EIP-1898 `{ "blockHash": "<hash>", "requireCanonical": true }` selector. Apply the numeric-block fallback and
    same-endpoint block-identity checks from `provider-routing.md` when a provider rejects that selector.
@@ -65,10 +66,10 @@ union of these discovery sources:
    Keep each holding's `token.address_hash` and `decimals`, plus `exchange_rate` as a fallback price. An HTTP `402`
    (plan-gated chain; see `references/explorers/blockscout-endpoints.md`) or other failure falls through to DeBank; do
    not retry a `402`.
-3. **DeBank.** For target chains Blockscout does not cover, gates, or fails on, use the Chromium flow in
-   `references/workflows/debank-portfolio.md`: one `https://debank.com/profile/<addr>` page per address covers all its
-   DeBank chains. Click `Show all` before extraction, map slugs to chain IDs through `chain/list` `network_id`, take
-   each row's token contract (and price as a fallback), and record `Data updated`.
+3. **DeBank.** For target chains Blockscout does not cover, gates, or fails on, run the collector per
+   `references/workflows/debank-portfolio.md` (token discovery for one address or many; no `Show all` click). From each
+   `ok` record take the token contracts per target chain ID (`chainId` is the `chain/list` `network_id`), and the price
+   as a fallback, and record its `observedAt`. A `failed` record is a discovery gap for that address's DeBank chains.
 4. **Blockscan.** For remaining target chains DeBank lacks or fails on, use the Chromium flow in
    `references/workflows/blockscan-balances.md`: match chains by exact `data-chainid`, take each row's token contract
    (and price as a fallback) from `#js-chain-table`, and record `Last updated`.
@@ -85,10 +86,11 @@ amount.
 ## Bulk Mode
 
 For many addresses, run API passes first: native batches across all target chains, Blockscout token lists, one
-`balanceOf` confirmation batch per chain, then CoinGecko contract prices for confirmed holdings. Open DeBank, then
-Blockscan, only for addresses that still have gap chains, one page at a time with pacing. Keep request concurrency at or
-below each provider's limit (Blockscout `x-ratelimit-limit`; CoinGecko plan quota); back off on `429` as the provider
-references direct. Never run unbounded parallel requests.
+`balanceOf` confirmation batch per chain, then CoinGecko contract prices for confirmed holdings. Run the DeBank
+collector for the addresses that still have gap chains, across at most two owned pages as `debank-portfolio.md` directs,
+then Blockscan one page at a time for what remains. Keep request concurrency at or below each provider's limit
+(Blockscout `x-ratelimit-limit`; CoinGecko plan quota); back off on `429` as the provider references direct. Never run
+unbounded parallel requests.
 
 ## Pricing Hygiene
 
