@@ -77,8 +77,8 @@ table and the sync recipe together.
 `AGENTS.md` is the canonical source for PRB's global agent instructions. On commit, a Husky + lint-staged pre-commit
 hook (`.lintstagedrc.mjs`) copies it unchanged, auto-commits synced copies in sibling repos, and pushes each new commit
 with `ai-commit push`. A failed push prints a warning to stderr and never fails the commit here. `ai-commit` is the
-local deterministic commit engine; install it at `~/.local/bin/ai-commit` so these helpers can preserve concurrent work
-there:
+local deterministic commit engine; install it at `~/.local/bin/ai-commit` (built from `~/projects/agent-skills/toolkit`
+via `just toolkit::install-cli` there) so these helpers can preserve concurrent work there:
 
 - `~/.codex/AGENTS.md` — copied and committed by `helpers/commit_codex_agents.sh`.
 - `~/.claude/CLAUDE.md` — copied and committed by `helpers/commit_claude_repo.sh`.
