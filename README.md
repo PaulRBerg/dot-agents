@@ -13,6 +13,7 @@ more details.
 
 ```
 ~/.agents/
+├── docs/        # On-demand reference docs linked from AGENTS.md
 └── skills/      # Skills loaded by agents
 ```
 
