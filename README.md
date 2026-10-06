@@ -28,8 +28,8 @@ installs each skill here and then creates a per-skill relative symlink:
 ln -s ../../.agents/skills/<name> ~/.claude/skills/<name>
 ```
 
-Claude-only skills (`metadata.install-targets: claude-code`, e.g. `claude-handoff`) are installed as real directories
-under `~/.claude/skills` instead of symlinks. This way, all your agents share the same skill library.
+Claude-only skills (`metadata.install-targets: claude-code`) are installed as real directories under `~/.claude/skills`
+instead of symlinks. This way, all your agents share the same skill library.
 
 ### Managing Skills
 
@@ -46,10 +46,10 @@ bunx skills add owner/repo
 
 Skills are installed from these repositories:
 
-| Source                                                              | Managed skills    | Description                                         |
-| ------------------------------------------------------------------- | ----------------- | --------------------------------------------------- |
-| [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills) | Catalog portfolio | General-purpose skills (commit, yeet, cli-gh, etc.) |
-| [vercel-labs/skills](https://github.com/vercel-labs/skills)         | `find-skills`     | Skills ecosystem discovery                          |
+| Source                                                              | Managed skills    | Description                                          |
+| ------------------------------------------------------------------- | ----------------- | ---------------------------------------------------- |
+| [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills) | Catalog portfolio | General-purpose skills (commit, yeet, orchestration) |
+| [vercel-labs/skills](https://github.com/vercel-labs/skills)         | `find-skills`     | Skills ecosystem discovery                           |
 
 For bootstrap or recovery, install the catalog directly from its remote source; this does not require a local
 `agent-skills` checkout:
