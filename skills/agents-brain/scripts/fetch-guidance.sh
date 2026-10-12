@@ -9,7 +9,7 @@ stale_lock_seconds=60
 
 usage() {
   cat >&2 <<'EOF'
-Usage: fetch-guidance.sh [--refresh] <gpt-6.1-sol|claude-opus-5-5>
+Usage: fetch-guidance.sh [--refresh] <anthropic|openai>
 
 Reuse fresh cached prompting guides and revalidate older fixed official artifacts.
 Prints the absolute cached file path on stdout.
@@ -34,15 +34,15 @@ fi
 
 artifact=$1
 case "$artifact" in
-  gpt-6.1-sol)
-    source_url='https://developers.openai.com/api/docs/guides/latest-model.md'
-    body_name='gpt-6.1-sol-prompting.md'
-    content_marker='### GPT-6.1 Sol'
+  anthropic)
+    source_url='https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices.md'
+    body_name='anthropic-prompting.md'
+    content_marker='title: Prompting best practices'
     ;;
-  claude-opus-5-5)
-    source_url='https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5.md'
-    body_name='claude-opus-5-5-prompting.md'
-    content_marker='title: Prompting Claude Opus 5.5'
+  openai)
+    source_url='https://developers.openai.com/api/docs/guides/latest-model.md'
+    body_name='openai-prompting.md'
+    content_marker='## Prompting best practices'
     ;;
   *)
     die "unknown artifact '$artifact'" 64

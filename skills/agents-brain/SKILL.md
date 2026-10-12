@@ -2,8 +2,8 @@
 argument-hint:
   maintain [path] [target ...] [--root-only] [--preserve] [--minimal] [--thorough|--full] [--dry-run] [--force]
 compatibility:
-  Requires curl and a writable user cache directory. Network access populates or refreshes the GPT-6.1 Sol and Claude
-  Opus 5.5 prompting guides.
+  Requires curl and a writable user cache directory. Network access populates or refreshes the official Anthropic and
+  OpenAI prompting guides.
 name: agents-brain
 skill-dependencies:
   - skill-writing
@@ -38,21 +38,30 @@ Success means every selected target meets these criteria:
 
 Stop after reporting completed or planned changes, validation, and any blockers.
 
-## Model and Context Optimization
+## Prompting and Context Optimization
 
-Optimize skills and other agent-facing context for GPT-6.1 Sol and Claude Opus 5.5. Preserve README.md as clear
-human-facing documentation. Before complex, long-running, multi-tool, or orchestration-heavy context work, resolve
-`scripts/fetch-guidance.sh` relative to this skill directory. For that work, run it once for `gpt-6.1-sol` and once for
-`claude-opus-5-5`. Read both returned files completely. Run the helper and read the guides only when the task writes or
-changes prompts, skills, or other agent-facing prose. For other edits, do not run the helper or read either guide. In
-that case, report `guides: skipped (no agent-facing prose)`.
+Write skills and other agent-facing context for current Claude and GPT agent models, not for one model. Do not name a
+model, a model version, or a model-specific default in that prose. Content that selects, configures, or attributes a
+model is the exception, for example routing tables, `model:` fields, and API parameters. Preserve README.md as clear
+human-facing documentation.
 
-The helper retrieves the official
-[GPT-6.1 Sol prompting guidance](https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices)
-and
-[Claude Opus 5.5 prompting guidance](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5)
-because their recommendations may change. OpenAI publishes Sol guidance in the shared GPT-6 guide. Evaluate its
-family-wide prompting recommendations on GPT-6.1 Sol. Simple context work does not require either guide.
+Before complex, long-running, multi-tool, or orchestration-heavy context work, resolve `scripts/fetch-guidance.sh`
+relative to this skill directory. For that work, run it once for `anthropic` and once for `openai`. Read both returned
+files completely. Run the helper and read the guides only when the task writes or changes prompts, skills, or other
+agent-facing prose. For other edits, do not run the helper or read either guide. In that case, report
+`guides: skipped (no agent-facing prose)`.
+
+The helper retrieves Anthropic's
+[prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
+and OpenAI's [latest-model guide](https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices)
+because their recommendations may change. The Anthropic guide covers all current Claude models and links each per-model
+prompting page. The OpenAI guide covers the current GPT model family. Its prompting recommendations come from tests on
+one model in that family. Simple context work does not require either guide.
+
+Treat advice that names a model as measured on that model. Apply it to other models only when the cross-model guidance
+supports it. To check such a claim, read the linked per-model page. When the guides give opposite corrections for
+different models, state the wanted behavior directly. Do not write a correction to one model's default, such as "be
+brief" or "write more".
 
 Accept an integrity-valid `cached` guide for 24 hours. Use `--refresh` for explicitly latest or change-sensitive work,
 materially disputed guidance, or conflicts with observed model behavior. Interpret helper diagnostics precisely:

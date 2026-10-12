@@ -14,22 +14,34 @@ description:
 Create a project-local skill in `.agents/skills/`. Expose it to Claude Code through a relative symlink. Verify the
 result with the repository's canonical skill validator.
 
-## Model Guidance
+## Prompting Guidance
 
-Optimize every new skill and its content for GPT-6.1 Sol and Claude Opus 5.5. The summaries below remind you of the live
-guidance. They do not replace the guides. Read both guides before designing or writing a complex, long-running,
+Write every new skill and its content for current Claude and GPT agent models, not for one model. Do not name a model, a
+model version, or a model-specific default in skill prose. Content that selects, configures, or attributes a model is
+the exception, for example a `model:` field or API parameters.
+
+Base the skill on the official vendor guides. Read both guides before designing or writing a complex, long-running,
 multi-tool, or orchestration-heavy skill. Their recommendations may change.
 
-- [GPT-6.1 Sol prompting guidance](https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices)
-  (shared GPT-6 guide): Evaluate its family-wide recommendations on Sol. Complete authorized work under stated
-  assumptions. State that user instructions take precedence over skills. Specify writing and delegation preferences.
-  Keep verification proportional to the change.
-- [Claude Opus 5.5 prompting guidance](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5):
-  Calibrate effort instead of prompting for more thinking. Never ask for reasoning in response text. Name the premature
-  stops to avoid and the stops that are wanted. Treat text-only turns as reports, not completion.
+- [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices):
+  Covers all current Claude models. Its model-specific guidance table links each per-model prompting page.
+- [OpenAI latest-model guide](https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices):
+  Covers the current GPT model family. Its prompting recommendations come from tests on one model in that family.
 
-  Request brief progress updates. Explore relevant sources before acting. Name concrete patterns to avoid instead of
-  giving generic style advice.
+Treat advice that names a model as measured on that model. Apply it to other models only when the cross-model guidance
+supports it. When the guides give opposite corrections for different models, state the wanted behavior directly. Do not
+write a correction to one model's default, such as "be brief" or "write more".
+
+The summaries below remind you of guidance that holds across current models. They do not replace the guides.
+
+- State that user instructions take precedence over skills.
+- Complete authorized work under stated assumptions. Name the premature stops to avoid and the stops that are wanted.
+  Treat text-only turns as reports, not completion.
+- Explore relevant sources before acting.
+- Specify writing style, progress updates, and delegation preferences. Do not rely on model defaults for them.
+- Name concrete patterns to avoid instead of giving generic style advice.
+- Keep verification proportional to the change.
+- Calibrate effort instead of prompting for more thinking. Never ask for reasoning in response text.
 
 ## STE Authoring and Review
 

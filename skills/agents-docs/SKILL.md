@@ -30,7 +30,7 @@ questions to their relevant source.
 Treat `$imagegen` and Codex image-prompting questions as Codex product questions. This classification applies even when
 detailed supporting model guidance is in OpenAI's API Cookbook.
 
-Treat GPT-6.1 Sol prompting for Codex as a Codex product question, with supporting guidance from OpenAI's model docs.
+Treat model prompting for Codex as a Codex product question, with supporting guidance from OpenAI's model docs.
 
 ## Route official sources
 
@@ -38,10 +38,10 @@ Treat GPT-6.1 Sol prompting for Codex as a Codex product question, with supporti
   directory. Run `fetch-doc.sh codex-manual`. Search the returned path narrowly with `rg`. Read only the matching
   heading range into context. The fixed manual and schema endpoints may redirect to their exact
   `https://learn.chatgpt.com/docs/` counterparts.
-- For GPT-6.1 Sol prompting in Codex, read the
-  [GPT-6.1 Sol prompting guidance](https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices)
-  in the shared GPT-6 guide. Evaluate its family-wide recommendations on Sol. Before applying API parameters, confirm
-  Codex settings against the product documentation.
+- For model prompting in Codex, read the
+  [OpenAI latest-model guide](https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices). It
+  covers the current GPT model family. Treat advice that names one model as measured on that model. Before applying API
+  parameters, confirm Codex settings against the product documentation.
 - For `$imagegen` and Codex image-prompting questions, read the manual's exact
   [Image generation](https://learn.chatgpt.com/docs/image-generation) topic first. When detailed prompting patterns or
   production examples are needed, also read the
