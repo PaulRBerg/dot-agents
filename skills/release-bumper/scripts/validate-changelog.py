@@ -91,7 +91,8 @@ def validate(text: str, version: str, date: str, tag: str | None) -> list[str]:
         if not url:
             errors.append(f"linked release {version} has no reference definition")
         else:
-            actual_tag = url.rstrip("/").rsplit("/", 1)[-1]
+            # Accept both `releases/tag/<tag>` and GitHub compare links such as `compare/<previous>...<tag>`.
+            actual_tag = url.rstrip("/").rsplit("/", 1)[-1].rsplit("...", 1)[-1]
             allowed_tags = {tag} if tag else {version, f"v{version}"}
             if actual_tag not in allowed_tags:
                 errors.append(f"release link tag is {actual_tag}, expected {' or '.join(sorted(allowed_tags))}")
