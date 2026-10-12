@@ -13,8 +13,20 @@ user explicitly requests otherwise. After all content and template rendering, ad
 ```
 
 Replace `LLM_NAME` with the assisting model's name from trusted session context, such as `Claude Opus 5.5` or
-`GPT-6.1-Sol`. These are examples, not defaults. If the exact model is unavailable, use the known agent name, such as
-`Codex` or `Claude Code`. Never guess a model/version or infer it from the repository being discussed.
+`Codex GPT-6.1-Sol`. These are examples, not defaults. If the exact model is unavailable, use the known agent name, such
+as `Codex` or `Claude Code`. Never guess a model/version or infer it from the repository being discussed.
+
+For Codex, resolve the active model before using that fallback. Prefer explicit runtime metadata for the current turn.
+Otherwise, use `CODEX_THREAD_ID` to locate the matching rollout JSONL under `${CODEX_HOME:-$HOME/.codex}/sessions/`.
+Match the filename to that thread ID and verify `session_meta.payload.id`. Extract `payload.model` from the latest
+`turn_context` record for the current turn. Read only the matching thread and extract only identity metadata.
+
+Do not use another thread, an earlier turn's model, or the `config.toml` default as evidence of the active model.
+Rollout storage is client-specific. If the thread ID, file, or current-turn model is unavailable, use the agent-name
+fallback.
+
+Include `Codex` before its verified model name. If only a model identifier is available, preserve it exactly in
+parentheses, such as `Codex (gpt-6-astra)`. Do not invent a display name or omit a version or variant suffix.
 
 Keep exactly one co-signature footer. On edits, when the model matches, reuse the footer. When a different model
 assists, retain the existing attribution and add the current name once in the same line, separated by commas. Insert
