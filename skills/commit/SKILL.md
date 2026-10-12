@@ -47,25 +47,26 @@ Arguments: `$ARGUMENTS`
   positional verb or category keyword overrides the inferred verb. Quoted positional text overrides the inferred
   description or subject.
 
-If the requested operation is only to push a clean branch that is already ahead, skip preparation. Resolve the push
-destination below, then use its push command.
+If the requested operation is only to push a clean branch that is already ahead, skip preparation. Check the push
+destination below, then run `ai-commit push --rebase`.
 
 ### Push Destination
 
-When working on an existing PR, resolve its head repository and branch from `gh pr view` before committing or pushing.
-Use the PR's head as the destination, including when the local branch has a different name. Verify the configured
-upstream against that destination. A push to another branch does not update the PR.
+`ai-commit` pushes to the configured upstream: `branch.<name>.remote` and `branch.<name>.merge`. The remote can be a
+named remote or a URL. If the upstream branch has a different name, `branch.<name>.pushRemote` must equal
+`branch.<name>.remote`. `gh pr checkout` writes this configuration for a PR that lets maintainers push.
 
-`ai-commit` supports a named upstream with the same branch name. A fork URL configuration can appear to have no upstream
-and trigger its fallback to `origin`. For a fork URL or differently named PR branch, commit without `--push`. Fetch the
-PR head and verify that the committed head contains it. Then push the verified commit explicitly:
+When you work on an existing PR, get its head repository and branch from `gh pr view` before you commit or push. A push
+to another branch does not update the PR. If the upstream does not match the PR head, correct the branch configuration:
 
 ```bash
-git push --no-follow-tags '<head-repository-url>' '<commit-oid>:refs/heads/<head-branch>'
+git config branch.<branch>.remote '<head-remote-or-url>'
+git config branch.<branch>.merge 'refs/heads/<head-branch>'
+git config branch.<branch>.pushRemote '<head-remote-or-url>'
 ```
 
-Do not force-push. Re-read the PR and verify that its head SHA matches the pushed commit before reporting completion.
-For other supported destinations, use `ai-commit push --rebase` or the commit command's `--push --rebase` flags.
+Then push with `ai-commit`. Do not push manually. Do not force-push. If `ai-commit` refuses the destination, report its
+error. Before you report completion, read the PR again and verify that its head SHA matches the pushed commit.
 
 ## Squash Mode
 
@@ -155,7 +156,7 @@ ai-commit commit <transaction-id> -m '<subject>' -m '- first material change
 - second material change' [-m '<trailers>'] [--push --rebase]
 ```
 
-Append `--push --rebase` when a push is authorized and the Push Destination rules select `ai-commit`. It then rebases a
+Append `--push --rebase` when a push is authorized and the Push Destination check passes. `ai-commit` then rebases a
 behind branch onto its fetched upstream only when no Git operation is in progress and the working tree and index are
 clean. It aborts a rebase that stops. The same command handles default, `--all`, and `--staged` transactions. Never
 stage or commit them with direct Git commands.
