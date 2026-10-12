@@ -182,6 +182,27 @@ records and the minimum adjacent context. Redact secrets before emitting text. W
 transcript, inspect that exact child file and verify its cwd and parent linkage. Count inspected child bodies against
 the body limit. A parent and its child do not establish independent recurrence.
 
+## Global-Rule Signature Sweep
+
+Use this when the task evaluates a global rule, such as a `~/.agents/AGENTS.md` section, rather than one project's
+history. Project-scoped mining cannot establish a cross-project rate, and keyword relevance is the wrong discriminator
+for diagnostics. Keep the same secret handling and external-disclosure boundary.
+
+1. List transcript files for a bounded window across both stores, for example
+   `fd -HI -e jsonl --changed-within 60d . "$claude_config_dir/projects" "$codex_home/sessions"`. Exclude the live
+   session file by its `CLAUDE_CODE_SESSION_ID` or `CODEX_THREAD_ID`. The stores hold tens of gigabytes, so keep the
+   window explicit and report it under `🗂 Historical coverage`.
+2. Match the exact diagnostic strings in one pass, for example
+   `< list.txt xargs rg --no-config -oH --no-line-number -e '<diagnostic>' ...`. macOS `xargs` has no `-a` flag.
+3. Count only matches inside tool-output records by prefixing each pattern with
+   `"type":"(tool_result|function_call_output|custom_tool_call_output)".*`. Injected AGENTS.md, CLAUDE.md, and skill
+   text repeats rule wording and example diagnostics in every session, so a bare content match overcounts by orders of
+   magnitude.
+4. Report distinct files per source against that source's file total, split by month or by the rule's introduction
+   commit (`git log -S'<phrase>' -- AGENTS.md`). Decode a sample of matching records with `jq` to confirm the command
+   that produced each class before counting it. Codex script-tool calls appear as `custom_tool_call` and
+   `custom_tool_call_output` records, not `function_call`.
+
 ## Source Layouts
 
 Claude Code uses `CLAUDE_CONFIG_DIR` when set and otherwise defaults to `~/.claude`. Project transcripts normally live
