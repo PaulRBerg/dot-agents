@@ -58,16 +58,16 @@ Add `--natural` or `--conventional` only as an explicit override. Then follow st
   states that the net diff does not contain.
 - Compose the message from the printed message-format rules. Describe the surviving outcome, not the squash operation.
 - Add one `Co-authored-by: Name <email>` trailer for each plan author other than the current Git user. Read that user
-  with `git config user.name` and `git config user.email`. Put these trailers in the final trailer paragraph.
+  with `git config user.name` and `git config user.email`. Pass these trailers as one final `-m` paragraph. `ai-commit`
+  merges its `Agent-Session:` trailer into that paragraph.
 - A quoted positional subject override from step 1 still applies.
-- Keep the `Agent-Session:` trailer handling from step 3.
 
 ## 5. Commit
 
 Run step 4 of `SKILL.md` without `--push`:
 
 ```bash
-ai-commit commit <transaction-id> -m '<subject>' [-m '<body>'] [-m '<trailers>']
+ai-commit commit <transaction-id> -m '<subject>' [-m '<body>'] [-m '<co-author-trailers>'] [--close <N>]...
 ```
 
 After the squash, the branch diverges from any upstream copy, so a push requires `git push --force-with-lease`. When the
