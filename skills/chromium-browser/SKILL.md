@@ -76,8 +76,8 @@ selected replay when rendered inspection adds evidence.
   HTML document, or large array.
 - Paginate and filter console, network, memory, and other high-volume results.
 - Before `resize_page`, confirm the window is in the normal state. A maximized or full-screen window returns
-  `Restore window to normal state before setting content size`. On that error, use a viewport emulation tool if the
-  session exposes one. Otherwise, skip the resize and tell the user.
+  `Restore window to normal state before setting content size`. On that error, use `emulate` with `viewport` when the
+  session exposes it. Otherwise, skip the resize and tell the user.
 - When a cookie consent popup appears, select only necessary or essential cookies by default, including through its
   settings when needed. If no such option is available, accept all cookies and continue.
 - Use `filePath` for screenshots, snapshots, traces, recordings, and response bodies. Write only to a task-authorized
