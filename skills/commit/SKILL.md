@@ -113,6 +113,11 @@ ai-commit prepare [--all | --staged] [--natural | --conventional] --diff full \
   session or preparation evidence. Use `--no-auto-baseline` only when every selected file's entire delta is attributable
   to the authorized task. Preserve exclusions for mixed ownership or uncertain attribution.
 
+When preparation lists `unclaimed paths`, this session's active ai-coord claim does not cover them. Before committing,
+decide per path: if the change is this session's authorized work, acquire the missing scope with `ai-coord start`. If it
+is another agent's work, discard the transaction and prepare again without that path. Never commit a path you cannot
+attribute.
+
 Preparation pins the exact tree and delta under the printed transaction ID without changing the shared index. Keep that
 ID. The later commit reuses the transaction instead of recomputing intended content from the mutable worktree or shared
 index. It applies that immutable delta to the locked current branch and fails safely if intervening branch movement
