@@ -47,8 +47,25 @@ Arguments: `$ARGUMENTS`
   positional verb or category keyword overrides the inferred verb. Quoted positional text overrides the inferred
   description or subject.
 
-If the requested operation is only to push a clean branch that is already ahead, skip preparation and run
-`ai-commit push --rebase`.
+If the requested operation is only to push a clean branch that is already ahead, skip preparation. Resolve the push
+destination below, then use its push command.
+
+### Push Destination
+
+When working on an existing PR, resolve its head repository and branch from `gh pr view` before committing or pushing.
+Use the PR's head as the destination, including when the local branch has a different name. Verify the configured
+upstream against that destination. A push to another branch does not update the PR.
+
+`ai-commit` supports a named upstream with the same branch name. A fork URL configuration can appear to have no upstream
+and trigger its fallback to `origin`. For a fork URL or differently named PR branch, commit without `--push`. Fetch the
+PR head and verify that the committed head contains it. Then push the verified commit explicitly:
+
+```bash
+git push --no-follow-tags '<head-repository-url>' '<commit-oid>:refs/heads/<head-branch>'
+```
+
+Do not force-push. Re-read the PR and verify that its head SHA matches the pushed commit before reporting completion.
+For other supported destinations, use `ai-commit push --rebase` or the commit command's `--push --rebase` flags.
 
 ## Squash Mode
 
@@ -138,10 +155,10 @@ ai-commit commit <transaction-id> -m '<subject>' -m '- first material change
 - second material change' [-m '<trailers>'] [--push --rebase]
 ```
 
-Append `--push --rebase` when a push is explicitly requested or authorized by standing instructions. `ai-commit` then
-rebases a behind branch onto its fetched upstream only when no Git operation is in progress and the working tree and
-index are clean. It aborts a rebase that stops. The same command handles default, `--all`, and `--staged` transactions.
-Never stage or commit them with direct Git commands.
+Append `--push --rebase` when a push is authorized and the Push Destination rules select `ai-commit`. It then rebases a
+behind branch onto its fetched upstream only when no Git operation is in progress and the working tree and index are
+clean. It aborts a rebase that stops. The same command handles default, `--all`, and `--staged` transactions. Never
+stage or commit them with direct Git commands.
 
 Transactions are idempotent. After an interruption, lock race, or retryable exit, retry the same transaction ID and
 message arguments. For those retryable failures, do not prepare a replacement from newer mutable state. A replay
