@@ -12,8 +12,8 @@ user explicitly requests otherwise. After all content and template rendering, ad
 <sub>Co-signed by LLM_NAME</sub>
 ```
 
-Replace `LLM_NAME` with the assisting model's name from trusted session context, such as `Claude Opus 5.5` or
-`Codex GPT-6.1-Sol`. These are examples, not defaults. If the exact model is unavailable, use the known agent name, such
+Replace `LLM_NAME` with the assisting model's name from trusted session context, such as `GPT-6-Astra` or
+`Claude Fable 5.1`. These are examples, not defaults. If the exact model is unavailable, use the known agent name, such
 as `Codex` or `Claude Code`. Never guess a model/version or infer it from the repository being discussed.
 
 For Codex, resolve the active model before using that fallback. Prefer explicit runtime metadata for the current turn.
@@ -25,13 +25,13 @@ Do not use another thread, an earlier turn's model, or the `config.toml` default
 Rollout storage is client-specific. If the thread ID, file, or current-turn model is unavailable, use the agent-name
 fallback.
 
-Include `Codex` before its verified model name. If only a model identifier is available, preserve it exactly in
-parentheses, such as `Codex (gpt-6-astra)`. Do not invent a display name or omit a version or variant suffix.
+Use the model name alone, without an agent prefix or parentheses. Normalize verified model identifiers to display names,
+preserving the family, version, and variant. For example, format `gpt-6-astra` as `GPT-6-Astra`.
 
-Keep exactly one co-signature footer. On edits, when the model matches, reuse the footer. When a different model
-assists, retain the existing attribution and add the current name once in the same line, separated by commas. Insert
-appended content above the footer. Preserve the rest of the body and template structure. Add the footer after rendering
-an issue form, outside its fields, code fences, and quoted text.
+Keep exactly one co-signature footer. On edits, when the model matches, normalize its name without adding another
+attribution. When a different model assists, retain the existing attribution and add the current name once in the same
+line, separated by commas. Insert appended content above the footer. Preserve the rest of the body and template
+structure. Add the footer after rendering an issue form, outside its fields, code fences, and quoted text.
 
 Title-only, metadata-only, and state-only updates leave the body untouched. Any authored accompanying comment gets its
 own footer.
