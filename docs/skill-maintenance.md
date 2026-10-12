@@ -17,8 +17,8 @@ defaults and exclusions, when to pass `--root` or `--portfolio-root`, the `--fix
 - Verify the issue against current evidence and the catalog source. One verified occurrence is enough. Distinguish skill
   defects from transient failures and project-specific conventions. Keep corrections reusable and based on the observed
   need. If the source already contains the correction, refresh the installation through the publish workflow.
-- Read the source repository's instructions and follow the Autonomous maintenance lifecycle in `~/.agents/AGENTS.md`. A
-  blocked main task does not prevent independent skill repairs.
+- Read the source repository's instructions and follow the Continuous skill maintenance lifecycle in
+  `~/.agents/AGENTS.md`. A blocked main task does not prevent independent skill repairs.
 - Update the owning instructions, references, or helpers in the source catalog. Then validate, commit, push, and publish
   them to the skill's declared installations. Use the corrected source guidance for the rest of the session.
 - A local workaround does not complete the work. A skill's fixed-scope workflow or recommendation-only ending does not

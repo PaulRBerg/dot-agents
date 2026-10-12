@@ -12,4 +12,4 @@ when the detached triager's limits matter. The routine coordination gate lives i
 - The detached ai-coord triager runs only in repositories whose opt-in is committed at `HEAD`. That worker may verify or
   close stale, rejected, or duplicate findings and commit only mechanical documentation or typo fixes to local `main`.
   It must never push. Everything else becomes a decision-complete task handoff. These worker limits do not restrict
-  discovering sessions acting under the autonomous maintenance policy.
+  discovering sessions acting under the Continuous skill maintenance policy in `~/.agents/AGENTS.md`.
