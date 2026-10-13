@@ -78,6 +78,9 @@ Make every visual device earn its place. Cards, pills, gradients, numbering, div
 illustrations, and animation must communicate hierarchy, function, sequence, or subject—not merely decorate. Concentrate
 expressive force in the signature and make the surrounding system support it.
 
+Clear delineation is a functional requirement. Borders and containers are valid when they make grouping and ownership
+easier to scan. Do not remove useful boundaries merely to make a design flatter or less conventional.
+
 Name concrete patterns to avoid. Generic "avoid an AI look" advice only replaces one default with another. Without a
 brief that calls for them, avoid these known model defaults: cream or off-white backgrounds, italic accent words in
 headlines, numbered `01/02/03` section labels, monospace labels, and pill-shaped buttons. After the first render, name
@@ -90,8 +93,9 @@ any other default the result used and revise it.
   marketing surfaces may use a more expressive narrative.
 - Make the first viewport establish both identity and primary purpose. For an application or tool, show the real working
   experience rather than wrapping it in an unrequested landing page.
-- Use structural devices only when they encode real relationships. Use cards for genuinely grouped or repeated objects,
-  not as the default wrapper for every section, and avoid nested cards.
+- Make projects, records, and independent panels easy to distinguish with visible borders, surface contrast, and
+  spacing. Preserve useful group borders unless a rendered replacement makes the boundaries at least as clear.
+- Use cards for related or repeated objects. Use nested containers only when they communicate a real hierarchy.
 - Give typography deliberate display, body, and utility roles. Use available fonts first. Do not add a font dependency
   solely for novelty.
 - Write interface copy from the user's side: specific nouns, active verbs, consistent action names, sentence case, and
@@ -123,9 +127,10 @@ verification only of the changed states at one representative viewport, while a 
 needs representative narrow and wide viewports and every changed interaction and state. Behavior belongs in the
 repository's automated tests where they exist. Use the browser for visual, layout, and theme questions.
 
-Check the rendered result for content hierarchy, subject specificity, asset loading, overflow, overlap, truncation,
-contrast, focus, hover, motion, empty/error states, and theme variants in scope. Compare it with the brief and the art
-direction. Fix visible defects and remove any element that does not materially serve either.
+Check the rendered result for content hierarchy, group boundaries, subject specificity, asset loading, overflow,
+overlap, truncation, contrast, focus, hover, motion, empty/error states, and theme variants in scope. Confirm that each
+item's group and each group's extent remain obvious at the tested widths and in each theme. Compare the result with the
+brief and the art direction. Fix visible defects and remove any element that does not materially serve either.
 
 Do not claim visual verification from source inspection alone when rendering is available. If the environment cannot
 render the UI, state that limitation and report exactly what was verified instead.
