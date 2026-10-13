@@ -132,6 +132,10 @@ since branch links rot.
 
 ## Post the Comment
 
+For requested screenshots or other images, follow [context.md > Image Uploads](context.md#image-uploads). Check
+repository permission before selecting the uploader. Write the complete reviewed body to a temporary file and use
+`--body-file` when it contains uploaded image URLs.
+
 ```bash
 gh issue comment {number} \
   --repo "{owner}/{repo}" \

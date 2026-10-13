@@ -69,15 +69,22 @@ authenticated viewer or `sablier-labs` unless the user explicitly asks. Preserve
 
 ## Image Uploads
 
-This workflow applies to issue and discussion creation and updates. Parse repeated `--image <path>` arguments and the
-optional `--image-release` flag. Resolve every path to a readable local file, preserve argument order, and run an
-external-disclosure review on the files before uploading them.
+This workflow applies to issue and discussion creation, updates, and issue comments. Parse repeated `--image <path>`
+arguments and the optional `--image-release` flag. Resolve every path to a readable local file, preserve argument order,
+and run an external-disclosure review on the files before uploading them.
 
-For issues, use native `gh` attachments when `gh issue create --help` lists `--attach` (gh 2.99.0+). Pass each path in
-input order as `--attach '<path>#<alt>'` on the same `gh issue create` or `gh issue edit` command that writes the issue.
-To place an image, write `![<alt>](<path>)` with the identical path string into the body. `gh` rewrites that reference
-to the uploaded asset and appends unreferenced attachments to the end of the body. A nonzero exit that still prints the
-issue URL means a partial upload: read the issue back, report the missing files, and do not retry.
+Native `gh --attach` requires repository write access. Use it only when the matching command's help lists `--attach` and
+`viewerPermission` is `WRITE`, `MAINTAIN`, or `ADMIN`. Pass each path in input order as `--attach '<path>#<alt>'` on the
+same issue create, edit, or comment command that writes the body. To place an image, write `![<alt>](<path>)` with the
+identical path string into the body. `gh` rewrites that reference to the uploaded asset and appends unreferenced
+attachments to the end of the body. A nonzero exit that still prints the issue URL means a partial upload: read the
+issue back, report the missing files, and do not retry.
+
+For issue comments with `READ` or `TRIAGE` access, use the configured browser workflow to upload in GitHub's
+authenticated comment editor. Capture the generated asset URL and include it in the reviewed comment body. Then post
+with `gh issue comment --body-file` without `--attach`. Do not submit an upload-only comment. Clear the task-created
+draft after posting and verify the final comment and image. After a failed CLI write, check for an existing comment
+before using this route.
 
 GitHub has no public attachment upload API for discussions, and older `gh` lacks `--attach`. In those cases, upload
 before writing and try these paths in order:
