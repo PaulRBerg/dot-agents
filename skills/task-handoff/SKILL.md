@@ -1,8 +1,9 @@
 ---
 argument-hint: "[task-to-handoff]"
 compatibility:
-  Requires Git, `ai-handoff` on PATH, and local file-write access. Default publication also requires macOS `pbcopy` and
-  `pbpaste`. `create --no-clipboard` does not. Generated launch commands require an authenticated Codex CLI.
+  Requires Git, `ai-handoff` on PATH, and local file-write access. Clipboard copying needs `pbcopy`/`pbpaste` on macOS,
+  or `wl-clipboard` (Wayland) or `xclip` (X11) on Linux. `create --no-clipboard` needs no clipboard tools. Generated
+  launch commands require an authenticated Codex CLI.
 coordination: exempt
 name: task-handoff
 skill-dependencies:
@@ -177,10 +178,10 @@ the same `--before-work-skill` value used during validation. This appends a fina
 
 The CLI validates the draft, appends YAML frontmatter recording `category`, `created`, `launch_repo`, `repos`, `origin`,
 and `task`, plus the fixed category, execution-status, and cleanup contracts, then atomically publishes a new target
-without overwriting and copies the generated Codex command after `pbcopy`/`pbpaste` readback verification. Errors are
-written to stderr with an `ai-handoff: ` prefix. Usage errors exit 2 and operational errors exit 1. On a correctable
-validation error, fix the draft or arguments and rerun the same command: failure leaves no handoff behind. There is no
-temporary run directory, cancel command, or manual target cleanup.
+without overwriting. It copies the generated Codex command and verifies the exact bytes through the platform's clipboard
+tools. Errors are written to stderr with an `ai-handoff: ` prefix. Usage errors exit 2 and operational errors exit 1. On
+a correctable validation error, fix the draft or arguments and rerun the same command: failure leaves no handoff behind.
+There is no temporary run directory, cancel command, or manual target cleanup.
 
 The appended `## Handoff cleanup` section contains one command:
 
@@ -205,9 +206,9 @@ ai-handoff create --no-clipboard \
   'FINDING_<UPPERCASE_ID>.md'
 ```
 
-This mode keeps publication and structural validation but skips `pbcopy` and `pbpaste`. The autonomous triage worker
-runs as an ai-coord delegate that rejects lifecycle commands, so it skips `ai-coord draft` and the promote command and
-records only the explicit `ai-coord start '<label>' '<path>'...` (or
+This mode keeps publication and structural validation but skips clipboard copying and verification. The autonomous
+triage worker runs as an ai-coord delegate that rejects lifecycle commands, so it skips `ai-coord draft` and the promote
+command and records only the explicit `ai-coord start '<label>' '<path>'...` (or
 `ai-coord bundle start '<label>' '<absolute-path>'...`) command over the scope union. Never overwrite an existing
 deterministic finding handoff: resolve the existing handoff before creating another one. When creating a finding handoff
 interactively rather than through the autonomous triage runtime, run the following only after successful publication so
