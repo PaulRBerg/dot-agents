@@ -1,29 +1,32 @@
 ---
-argument-hint: <text> [image or video paths] [link] | refresh-preview <page-url> [platform] [post-url]
+argument-hint:
+  <text> [image or video paths] [link] | images <source> <new-output-dir> [presets] | refresh-preview <page-url>
+  [platform] [post-url]
 compatibility:
-  Requires the chromium-browser skill and its Chrome DevTools MCP attached to the user's shared, logged-in Chromium
-  browser.
-coordination: exempt
+  Image exports require ImageMagick 7 and Bash. Publishing and preview refresh require the chromium-browser skill and
+  its Chrome DevTools MCP attached to the user's shared, logged-in Chromium browser.
 disable-model-invocation: true
 name: social-media
 skill-dependencies:
   - chromium-browser
 description:
   Post one user-supplied text, with optional images, video, or link, to X, LinkedIn, Farcaster, and Facebook (in
-  Romanian), and to Hacker News when it suits that audience. Also refresh stale link preview images or find the best
-  subreddits for a post. Uses the shared Chromium browser.
+  Romanian), and to Hacker News when it suits that audience. Resize source artwork into OpenGraph and social image
+  presets with ImageMagick. Also refresh stale link previews or find subreddits. Publishing uses shared Chromium.
 ---
 
 # Social Media
 
-This skill is coordination-exempt: skip the ai-coord gate for its declared work.
-
-Publish one post across the user's social accounts through the shared Chromium browser. Then report where else the post
-can go. User instructions take precedence over this skill. For example, a request for drafts only, a different platform
-set, or no translation replaces the matching default below.
+Prepare social images locally, or publish one post across the user's social accounts through shared Chromium. User
+instructions take precedence over this skill. For example, drafts only, a different platform set, or no translation
+replaces the matching default below. Image writes inside Git worktrees require the normal coordination gate. Browser
+actions and exports outside Git worktrees do not.
 
 ## Routes
 
+- **Images**: for OpenGraph images, social size variants, cropping, padding, or compression, follow
+  [references/images.md](references/images.md). Use [scripts/export-images.sh](scripts/export-images.sh) with a saved
+  source image. This local route does not require post text, a browser, publishing, or subreddit discovery.
 - **Publish**: follow the inputs and posting workflow below.
 - **Refresh preview**: when the user requests an updated link preview or uses `refresh-preview`, follow
   [references/link-previews.md](references/link-previews.md). Use Browser Setup below. This route accepts a page URL and
@@ -41,9 +44,11 @@ These inputs apply to publishing.
 - **Link**: optional URL. If the text does not already contain the link, append it on a new line at the end of the post
   text.
 
-If the request has no text, ask for it. Do not ask other questions when the defaults below cover the case.
+If a publishing request has no text, ask for it. Do not ask other questions when the defaults below cover the case.
 
 ## Authority
+
+A request to prepare images authorizes local exports. It does not authorize posting, deployment, or preview refresh.
 
 A publishing request authorizes the posts. Post directly. Do not add a confirmation gate. A preview-refresh request
 authorizes the cache refresh and requested URL edits on the specified posts. It does not authorize deletion or
@@ -109,6 +114,9 @@ control is absent, find the equivalent control in a fresh snapshot. Do not guess
   the other platforms.
 
 ## Final Report
+
+For images, use the completion report in [references/images.md](references/images.md). The report below applies to
+publishing.
 
 Lead with one outcome line, such as "Posted on 4 of 5 platforms". Then give these sections:
 
