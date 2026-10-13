@@ -86,20 +86,22 @@ explicit user request to post or to skip replaces this test.
 
 ### Submission
 
-The [Hacker News guidelines](https://news.ycombinator.com/newsguidelines.html) prohibit generated text, AI-edited
-comments, and automated posting. Keep this branch read-only. Give editorial suggestions, not replacement prose. The user
-writes the final text and submits it manually.
-
-- Form: give the user `https://news.ycombinator.com/submit`.
-- Title: open the link and recommend the page's original title. Flag the site name, clickbait, gratuitous adjectives,
-  uppercase emphasis, and exclamation marks for removal. Recommend rewriting only when the original title is misleading
-  or clickbait. Keep feedback invitations out of the title.
-- Show HN: recommend the `Show HN: ` prefix only when the user made the linked thing and other people can try it. Apply
-  the [Show HN guidelines](https://news.ycombinator.com/showhn.html). A blog post, newsletter, list, sign-up page, or
-  landing page is not a Show HN.
-- Audience: suggest small edits to the opening or closing that explain the technical problem and why the work is useful.
+- Form: `https://news.ycombinator.com/submit`.
+- Title: open the link and use the page's original title. Remove the site name, clickbait, gratuitous adjectives,
+  uppercase emphasis, and exclamation marks. Keep it at 80 characters or fewer. Rewrite the title only when the original
+  title is misleading or clickbait. Keep feedback invitations out of the title.
+- Show HN: add the `Show HN: ` prefix only when the user made the linked thing and other people can try it. A blog post,
+  newsletter, list, sign-up page, or landing page is not a Show HN.
+- Audience: lightly edit the supplied text to explain the technical problem and why the work is useful to HN readers.
   Preserve the user's meaning, claims, links, and voice. Do not invent capabilities or personal experience.
-- Feedback: for Show HN, suggest one specific question about usefulness, limitations, or design choices. The user writes
-  the invitation in their own words. Avoid generic promotion or requests for upvotes.
-- Ask HN: recommend `Ask HN: ` plus a title that states the question. Suggest only the context needed for readers to
-  answer it. Do not append a separate feedback invitation when the question already serves that purpose.
+- Feedback: when the submission includes body text, add one natural invitation for feedback. For example: "Keen to see
+  if you find this useful or have any feedback!" Prefer a specific question when the topic supports one. Omit the
+  invitation when the text already asks for feedback or the Ask HN question serves that purpose.
+- Text field: leave it empty for a URL submission, except for Show HN. For Show HN, put the lightly edited text in the
+  text field. For Ask HN, use `Ask HN: ` plus a title that states the question, and put the lightly edited text in the
+  text field.
+- Media: Hacker News does not accept media. Ignore the images and video.
+- Duplicate: if Hacker News opens an existing item for the URL, do not submit again. Record that item URL.
+- Rate limit: if Hacker News says that you are posting too fast, record the message and stop work on Hacker News.
+- Readback: open `https://news.ycombinator.com/submitted?id=<username>`. Find the new item and record its
+  `https://news.ycombinator.com/item?id=<id>` URL.

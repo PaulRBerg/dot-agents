@@ -11,9 +11,9 @@ skill-dependencies:
   - chromium-browser
 description:
   Post one user-supplied text, with optional images, video, or link, to X, LinkedIn, Farcaster, and Facebook (in
-  Romanian). Suggest Reddit drafts and Hacker News edits for their audiences. Resize source artwork into OpenGraph and
-  social image presets with ImageMagick. Also refresh stale link previews or find subreddits. Publishing uses shared
-  Chromium.
+  Romanian), and to Hacker News when it suits that audience. Lightly tailor Reddit drafts and Hacker News copy. Resize
+  source artwork into OpenGraph and social image presets with ImageMagick. Also refresh stale link previews or find
+  subreddits. Publishing uses shared Chromium.
 ---
 
 # Social Media
@@ -37,9 +37,9 @@ actions and exports outside Git worktrees do not.
 
 These inputs apply to publishing.
 
-- **Text**: required. Post it verbatim on X, LinkedIn, and Farcaster. Do not rewrite, shorten, add hashtags, or add
-  emoji there. Use the platform notes for Facebook translation and Hacker News editorial suggestions. Lightly tailor
-  Reddit drafts with [references/reddit-discovery.md](references/reddit-discovery.md).
+- **Text**: required. Treat supplied text as user-authored source copy. Post it verbatim on X, LinkedIn, and Farcaster.
+  Do not rewrite, shorten, add hashtags, or add emoji there. Use the platform notes for Facebook translation and light
+  Hacker News edits. Lightly tailor Reddit drafts with [references/reddit-discovery.md](references/reddit-discovery.md).
 - **Media**: optional images or one video, as absolute file paths on the browser host. Before you open the browser,
   confirm that each file exists and has an image or video type. If the user attached media without a usable path, ask
   for the path before you post anywhere.
@@ -52,11 +52,10 @@ If a publishing request has no text, ask for it. Do not ask other questions when
 
 A request to prepare images authorizes local exports. It does not authorize posting, deployment, or preview refresh.
 
-A publishing request authorizes posts on X, LinkedIn, Farcaster, and Facebook. Post directly. Do not add a confirmation
-gate. Hacker News uses the manual submission handoff in [references/platforms.md](references/platforms.md#hacker-news).
-A preview-refresh request authorizes the cache refresh and requested URL edits on the specified posts. It does not
-authorize deletion or replacement posts unless the user requests them. Never post to Reddit. Reddit work is discovery
-and drafts only.
+A publishing request authorizes the posts and the platform-specific edits described below. Post directly. Do not add a
+confirmation gate. A preview-refresh request authorizes the cache refresh and requested URL edits on the specified
+posts. It does not authorize deletion or replacement posts unless the user requests them. Never post to Reddit. Reddit
+work is discovery and drafts only.
 
 Keep each composer's existing audience, visibility, and account selection. Do not change account settings, follow
 accounts, or engage with other posts.
@@ -74,17 +73,16 @@ complete each platform before you start the next one.
 
 1. **Read the platform notes.** Read [references/platforms.md](references/platforms.md) completely.
 2. **Decide on Hacker News.** Apply the suitability test in
-   [references/platforms.md](references/platforms.md#hacker-news). Record the decision and a one-sentence reason. If it
-   fits, prepare the editorial suggestions and manual submission handoff from that reference.
-3. **Check logins.** Open the home page of X, LinkedIn, Farcaster, and Facebook. Take a snapshot of each page and look
-   for a logged-in signal, such as a compose control or an account menu. A login form, a "Sign in" control, or a
-   redirect to a login URL means that the user is logged out.
+   [references/platforms.md](references/platforms.md#hacker-news). Record the decision and a one-sentence reason.
+3. **Check logins.** Open the home page of X, LinkedIn, Farcaster, and Facebook. If step 2 selected Hacker News, also
+   open its home page. Take a snapshot of each page and look for a logged-in signal, such as a compose control or an
+   account menu. A login form, a "Sign in" control, or a redirect to a login URL means that the user is logged out.
 4. **Ask for logins in one message.** If one or more selected sites are logged out, name all of them in one message. Ask
    the user to log in on those pages. Do not end the turn.
 5. **Translate for Facebook.** Translate the text into Romanian with the rules in
    [references/platforms.md](references/platforms.md#facebook). If the text is already in Romanian, use it unchanged.
-6. **Post.** Post on the logged-in platforms in this order: X, LinkedIn, Farcaster, and Facebook. For each platform,
-   follow the composer procedure below.
+6. **Post.** Post on the logged-in platforms in this order: X, LinkedIn, Farcaster, Facebook, and Hacker News when
+   selected. For each platform, follow the composer procedure below.
 7. **Prepare Reddit suggestions.** Read [references/reddit-discovery.md](references/reddit-discovery.md). Follow its
    discovery and drafting procedure.
 8. **Clear the login gates.** For each logged-out page, follow the `chromium-browser` human-gate procedure. When the
@@ -124,17 +122,17 @@ control is absent, find the equivalent control in a fresh snapshot. Do not guess
 For images, use the completion report in [references/images.md](references/images.md). The report below applies to
 publishing.
 
-Lead with one outcome line, such as "Posted on 4 of 4 platforms". Then give these sections:
+Lead with one outcome line, such as "Posted on 4 of 5 platforms". Then give these sections:
 
 - **Posts**: a table with these columns: platform, status, and verified post URL. For a skipped or failed platform, give
   the reason. Show the Romanian Facebook text in full.
-- **Hacker News**: the decision and its reason. When suitable, give the editorial suggestions and manual submission
-  link. State that the user must write and submit the final text.
+- **Hacker News**: the decision and its reason. Give the item URL, or the existing item URL if Hacker News redirected to
+  an earlier submission.
 - **Reddit**: the ranked subreddit table and tailored drafts from
   [references/reddit-discovery.md](references/reddit-discovery.md).
 - **Other places**: optional. From your own knowledge, you may suggest other sites, communities, newsletters, or
   aggregators that suit this post. Give each suggestion one reason. Label the section as unverified suggestions from
   general knowledge. Do not visit those sites.
 
-Completion requires a verified post URL or a recorded reason for each publishing platform. Also complete the Hacker News
-decision and any handoff, Reddit discovery and drafts, and task-page cleanup.
+Completion requires a verified post URL or a recorded reason for each platform, completed Reddit discovery and drafts,
+and closed task pages.
