@@ -2,8 +2,9 @@
 
 Use these placement and generation rules within `maintain` when missing context is warranted or regeneration is
 requested. Create README.md and AGENTS.md from repository evidence. Regenerate existing targets only with `--force` or
-an equally explicit overwrite instruction. Create other context docs only on explicit request. Skill creation follows
-`references/maintain-skills.md` from this skill.
+an equally explicit overwrite instruction. Create other context docs only on explicit request. For agent-initiated skill
+creation, apply `references/maintain-skills.md` first. Explicit skill creation uses this skill's
+`references/create-skill.md`.
 
 Success means each selected package root has the requested human and agent context. CLAUDE.md handling matches the
 installed Claude Code. See Claude Code Compatibility in SKILL.md. Generated claims pass repository-defined validation.

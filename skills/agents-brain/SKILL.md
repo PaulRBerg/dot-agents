@@ -1,21 +1,36 @@
 ---
 argument-hint:
-  maintain [path] [target ...] [--root-only] [--preserve] [--minimal] [--thorough|--full] [--dry-run] [--force]
+  maintain [path] [target ...] [--root-only] [--preserve] [--minimal] [--thorough|--full] [--dry-run] [--force] |
+  create-skill [skill-name]
 compatibility:
   Requires curl and a writable user cache directory. Network access populates or refreshes the official Anthropic and
-  OpenAI prompting guides.
+  OpenAI prompting guides and the agentskills.io specification.
 name: agents-brain
-skill-dependencies:
-  - skill-writing
 description:
-  "Maintain README.md, AGENTS.md/CLAUDE.md, skills, and repo context. Continuously maintain repo-local skills when task
-  evidence warrants deleting obsolete skills, merging overlapping skills, or creating a reusable skill."
+  Maintain README.md, AGENTS.md/CLAUDE.md, skills, and repo context. Create, scaffold, or initialize project-local agent
+  skills. Use task evidence to delete obsolete skills, merge overlapping skills, and capture recurring workflows.
 ---
 
 # Agents Brain
 
 If these instructions are already present in the conversation from a slash or dollar invocation, follow them directly.
 In that case, do not invoke this skill again through a skill tool.
+
+Apply explicit user instructions and established authorization before this skill's defaults. Do not ask again for an
+unchanged decision. Preserve host restrictions and required destructive-action approval.
+
+## Routes
+
+- `maintain [path] [target ...] [flags]`: Maintain context and apply task-backed skill lifecycle changes. Use this route
+  by default for context maintenance or inspection. Read [references/maintain.md](references/maintain.md).
+- `create-skill [skill-name]`: Create a project-local skill from an explicit request. Read
+  [references/create-skill.md](references/create-skill.md). Apply its repository catalog guard before scaffolding.
+  Explicit creation does not require recurring-use evidence.
+
+Choose the route before discovery or writes. Both routes use the prompting and STE requirements below. The maintenance
+sections govern `maintain`. The creation reference owns that route's scope, workflow, validation, and report.
+
+## Maintenance Scope
 
 Maintain repo-local context as one coherent system. It includes these targets:
 
@@ -92,8 +107,8 @@ dictionary compliance.
 
 ## Maintain Workflow
 
-Use `$agents-brain maintain` for every supported operation. Read `references/maintain.md`. Within the requested scope,
-update existing context, create warranted missing context, and apply task-backed skill lifecycle changes.
+Use `$agents-brain maintain` for context maintenance and task-backed skill lifecycle changes. Within the requested
+scope, update existing context, create warranted missing context, and apply task-backed skill lifecycle changes.
 
 In every `maintain` run, capture corrections. Scan the session for user corrections, such as a restated instruction, "do
 not do X", "always do Y", or a reverted choice. Record each durable correction as a rule in the nearest in-scope
@@ -104,15 +119,13 @@ Read `references/create-docs.md` only when creating or regenerating context. Rea
 for skill lifecycle decisions or establishing continuous maintenance. These references support the workflow. They are
 not separate modes.
 
-For skill creation, inspect applicable repository instructions. Follow their source-catalog lifecycle when defined.
-Otherwise, invoke `$skill-writing`. Installation and skill management outside this repository belong to a dedicated
-workflow. For inspection-only or unclear intent, use `maintain --dry-run` and report the smallest useful planned change
-set.
+For skill creation, use this skill's `references/create-skill.md` after applying the maintenance evidence gate. Follow
+applicable source-catalog lifecycle instructions when defined. Installation and skill management outside this repository
+belong to a dedicated workflow. For inspection-only or unclear intent, use `maintain --dry-run` and report the smallest
+useful planned change set.
 
-## Authority
+## Maintenance Authority
 
-- Apply explicit user instructions and established authorization before this skill's defaults. Do not ask again for an
-  unchanged decision. Preserve host restrictions and required destructive-action approval.
 - Explicit creation, update, repair, fix, maintenance, or equivalent intent authorizes in-scope local writes.
   Inspection-only intent, Plan Mode, and `--dry-run` do not. Carry out evidence-backed removal, merging, and creation
   when the request or standing repository instructions authorize those lifecycle actions.
@@ -146,7 +159,7 @@ When asked to establish this behavior for future tasks, use the standing-instruc
 `references/maintain-skills.md` to update or create the applicable AGENTS.md. Loading this skill in one session does not
 by itself make future agents run it.
 
-## Arguments
+## Maintenance Arguments
 
 - `path`: Optional repo-relative subtree. Restrict documentation, package-root, project-skill, source-catalog skill, and
   context-doc discovery to that subtree.
@@ -166,7 +179,7 @@ flags. Continue only when they cannot change scope, safety, or write behavior.
 
 ## Repository Guard Rail
 
-Run before discovery or writes:
+For `maintain`, run before discovery or writes:
 
 ```sh
 cwd="$(pwd -P)"
@@ -283,8 +296,16 @@ detail. Stop once the selected targets meet the completion bar.
 
 ## References
 
-- Every invocation: read `references/maintain.md` for the maintenance workflow.
-- Before writing or changing agent-facing prose: read `references/asd-ste100.md` for the STE-based profile and
-  completion review.
-- Creating or regenerating context: read `references/create-docs.md` for placement and generation rules.
-- Skill lifecycle changes or establishing continuous maintenance: read `references/maintain-skills.md`.
+- Maintenance: read [references/maintain.md](references/maintain.md) for the workflow.
+- Before writing or changing agent-facing prose: read [references/asd-ste100.md](references/asd-ste100.md) for the
+  STE-based profile and completion review.
+- Creating or regenerating context: read [references/create-docs.md](references/create-docs.md) for placement and
+  generation rules.
+- Skill lifecycle changes or establishing continuous maintenance: read
+  [references/maintain-skills.md](references/maintain-skills.md).
+- Creating a skill: read [references/create-skill.md](references/create-skill.md) for scope, metadata, symlink, and
+  validation requirements. Run `scripts/fetch-agentskills-spec.sh [--refresh]` through Bash to obtain the absolute
+  cached specification path. The default reuses a valid cache for 24 hours, then revalidates it. The creation reference
+  owns refresh, stale-cache, and failure rules.
+- Before choosing a new skill's contract or layout: read
+  [references/writing-great-skills.md](references/writing-great-skills.md) for authoring, routing, and execution rules.

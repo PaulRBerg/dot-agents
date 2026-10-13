@@ -29,8 +29,8 @@ destructive-action approvals. When existing explicit or standing authorization c
 
 ## Choose the Smallest Useful Change
 
-One verified task can establish obsolescence or duplication. Creation requires more evidence. Require demonstrated
-recurring use and a distinct contract, not just a difficult or lengthy task.
+One verified task can establish obsolescence or duplication. Agent-initiated creation during maintenance requires
+recurring use and a distinct contract. An explicit user request through `create-skill` bypasses this evidence gate.
 
 | Action | Required evidence                                                                                                                                                                                                                                                                         | Do not infer it from                                                                    |
 | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
@@ -60,14 +60,15 @@ authorized workflow.
   its description and routing. Migrate needed bundled files without name collisions. Before removing the absorbed skill,
   update callers, metadata, dependencies, and local discovery links.
 
-  Preserve self-containment and distinct approval boundaries. If the merge needs a new skill identity, use
-  `$skill-writing` for that creation as below. The existing supported uses establish reuse. It need not clear a separate
-  speculative-new-capability bar.
+  Preserve self-containment and distinct approval boundaries. If the merge needs a new skill identity, use this skill's
+  `references/create-skill.md` for that creation as below. The existing supported uses establish reuse. It need not
+  clear a separate speculative-new-capability bar.
 
-- **Create:** Invoke `$skill-writing` with the chosen name from the intended in-repository project directory. Honor its
-  catalog guard, collision check, current format sources, metadata, symlink, and validation requirements. When it routes
-  to the repository's source-catalog lifecycle, follow that route instead of creating `.agents/skills` there. Capture
-  only the reusable procedure, triggers, constraints, and validation. Omit session narrative and incidental details.
+- **Create:** Follow this skill's `references/create-skill.md` with the chosen name from the intended in-repository
+  project directory. Honor its catalog guard, collision check, current format sources, metadata, symlink, and validation
+  requirements. When it routes to the repository's source-catalog lifecycle, follow that route instead of creating
+  `.agents/skills` there. Capture only the reusable procedure, triggers, constraints, and validation. Omit session
+  narrative and incidental details.
 
 Use `references/maintain.md` from this skill for ordinary context edits. Keep unrelated source changes out of scope.
 Re-read current files before applying edits. Preserve concurrent work. Complete independently actionable candidates even
@@ -80,8 +81,8 @@ path. Confirm affected surviving skills resolve within the allowed boundary. Sea
 and paths. Classify legitimate historical mentions instead of replacing them indiscriminately. For a merge, account for
 every previously supported outcome.
 
-When helpers or their usage changed, run affected helper tests. For a new skill, use `$skill-writing`'s completion
-checks.
+When helpers or their usage changed, run affected helper tests. For a new skill, use the completion checks in this
+skill's `references/create-skill.md`.
 
 Commit through the repository's authorized workflow. Report deleted names, merge mappings, created names, the evidence
 for each decision, exact checks and outcomes, and any concrete blocker. When this is a pass within another task, fold
@@ -97,9 +98,10 @@ every task. Adapt this text to local ownership and lifecycle conventions. Retain
 > During implementation tasks, review repo-owned skills affected by the work. Keep all review and edits inside the
 > repository where the task was given; exclude global skills, other repositories, externally owned copies, and symlinks
 > resolving outside it. Delete skills made obsolete or wholly redundant by verified task evidence. Merge skills when one
-> coherent workflow preserves their supported outcomes with less duplication. Create a skill through `$skill-writing`
-> only with at least two concrete recurring uses, a stable reusable procedure, and no suitable existing skill or short
-> context rule; honor its repository catalog guard. This is standing authorization for those local lifecycle changes,
-> subject to protected contracts and required approvals. Preserve needed guidance, update local callers and discovery
-> paths, and validate each change. Finish fixed-scope work before independent maintenance; keep read-only tasks and Plan
-> Mode read-only. Review opportunities encountered during the task, without unrelated audits or background jobs.
+> coherent workflow preserves their supported outcomes with less duplication. Create a skill through
+> `$agents-brain create-skill` only with at least two concrete recurring uses, a stable reusable procedure, and no
+> suitable existing skill or short context rule; honor its repository catalog guard. This is standing authorization for
+> those local lifecycle changes, subject to protected contracts and required approvals. Preserve needed guidance, update
+> local callers and discovery paths, and validate each change. Finish fixed-scope work before independent maintenance;
+> keep read-only tasks and Plan Mode read-only. Review opportunities encountered during the task, without unrelated
+> audits or background jobs.

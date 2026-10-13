@@ -1,54 +1,25 @@
----
-argument-hint: "[skill-name]"
-compatibility:
-  Requires curl and a writable user cache directory. Network access populates or refreshes the agentskills.io
-  specification.
-name: skill-writing
-description:
-  Create, scaffold, or initialize a project-local agent skill under `.agents/skills` in an ordinary repository. Defer to
-  repository instructions that define a source catalog and lifecycle.
----
+# Create a Project Skill
 
-# Skill Writing
+Use `agents-brain create-skill [skill-name]` to create a project-local skill in `.agents/skills/`. Expose it to Claude
+Code through a relative symlink. Verify it with the canonical local skill validator.
 
-Create a project-local skill in `.agents/skills/`. Expose it to Claude Code through a relative symlink. Verify the
-result with the repository's canonical skill validator.
+Follow user instructions and established authorization in SKILL.md. Apply its shared prompting and STE requirements.
+This route uses the invocation working directory and the workflow below. The maintenance guard, discovery, CLAUDE.md
+cleanup, and context report do not apply.
 
-## Prompting Guidance
+An explicit user request to create a skill does not require recurring-use evidence. For agent-initiated creation during
+maintenance, apply the evidence gate in this skill's `references/maintain-skills.md` first.
 
-Write every new skill and its content for current Claude and GPT agent models, not for one model. Do not name a model, a
-model version, or a model-specific default in skill prose. Content that selects, configures, or attributes a model is
-the exception, for example a `model:` field or API parameters.
+## Contents
 
-Base the skill on the official vendor guides. Read both guides before designing or writing a complex, long-running,
-multi-tool, or orchestration-heavy skill. Their recommendations may change.
-
-- [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices):
-  Covers all current Claude models. Its model-specific guidance table links each per-model prompting page.
-- [OpenAI latest-model guide](https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices):
-  Covers the current GPT model family. Its prompting recommendations come from tests on one model in that family.
-
-Treat advice that names a model as measured on that model. Apply it to other models only when the cross-model guidance
-supports it. When the guides give opposite corrections for different models, state the wanted behavior directly. Do not
-write a correction to one model's default, such as "be brief" or "write more".
-
-The summaries below remind you of guidance that holds across current models. They do not replace the guides.
-
-- State that user instructions take precedence over skills.
-- Complete authorized work under stated assumptions. Name the premature stops to avoid and the stops that are wanted.
-  Treat text-only turns as reports, not completion.
-- Explore relevant sources before acting.
-- Specify writing style, progress updates, and delegation preferences. Do not rely on model defaults for them.
-- Name concrete patterns to avoid instead of giving generic style advice.
-- Keep verification proportional to the change.
-- Calibrate effort instead of prompting for more thinking. Never ask for reasoning in response text.
-
-## STE Authoring and Review
-
-Before writing or changing skill prose, read [references/asd-ste100.md](references/asd-ste100.md) completely. Apply its
-STE-based profile to descriptions, instructions, references, examples, and agent-facing metadata descriptions. Complete
-its meaning and style review before reporting completion. Preserve obligation strength and protected technical content.
-The profile does not establish official ASD dictionary compliance.
+- [Input](#input)
+- [Repository catalog guard](#1-apply-the-repository-catalog-guard)
+- [Local scope](#2-resolve-and-validate-the-local-scope)
+- [Current format sources](#3-read-the-current-format-sources)
+- [Contract and layout](#4-define-the-contract-and-layout)
+- [Skill files](#5-create-the-skill)
+- [Claude Code symlink](#6-create-the-claude-code-symlink)
+- [Verification and report](#7-verify-and-report)
 
 ## Input
 
@@ -92,15 +63,14 @@ validator behavior. Read a `stale` result before using it. Disclose its validati
 the completion report. If the helper cannot return a valid file, stop before writing. Never fetch the agentskills.io
 specification directly or create its cache in a repository or skill installation.
 
-Fetch the current [Claude Code frontmatter reference](https://code.claude.com/docs/en/skills#frontmatter-reference) with
-`WebFetch`. Confirm field shapes, naming rules, and progressive-disclosure conventions from both sources. Do not guess
-because the formats change.
+Use an available web tool to retrieve the current
+[Claude Code frontmatter reference](https://code.claude.com/docs/en/skills#frontmatter-reference). Confirm field shapes,
+naming rules, and progressive-disclosure conventions from both sources. Do not guess because the formats change.
 
 ### 4. Define the Contract and Layout
 
-Read [references/writing-great-skills.md](references/writing-great-skills.md) completely before choosing the contract or
-layout. It defines the authoring principles, content-routing thresholds, helper runtime defaults, and communication
-contract.
+Read [writing-great-skills.md](writing-great-skills.md) completely before choosing the contract or layout. It defines
+the authoring principles, content-routing thresholds, helper runtime defaults, and communication contract.
 
 Define the contract. Identify every skill the workflow requires, invokes, or transfers work to on any supported branch.
 Suggestions, examples, related-skill references, and underlying tool capabilities are not dependencies. Create only the
@@ -182,9 +152,9 @@ ln -s "../../.agents/skills/<name>" "<scope>/.claude/skills/<name>"
   permission error.
 - `ai-skillet doctor --root "<scope>/.agents/skills/<name>"` exits 0. This is the canonical local schema and policy
   gate.
-- Complete the meaning and style review in `references/asd-ste100.md` for every authored or changed prose target.
-  Compare existing prose with its source and new prose with the authoritative contract. Review protected content and
-  precision exceptions explicitly.
+- Complete the meaning and style review in this skill's `references/asd-ste100.md` for every authored or changed prose
+  target. Compare existing prose with its source and new prose with the authoritative contract. Review protected content
+  and precision exceptions explicitly.
 - Finish with `### 🧩 Skill created: <name>`, a tree of created paths, and `### ✅ Verified` with the exact checks. Link
   files by their absolute `.agents/skills/<name>/` source paths, never through the `.claude/skills/<name>` symlink.
 - Commit when the request or standing instructions authorize it. Otherwise, offer to commit. Do not ask again for

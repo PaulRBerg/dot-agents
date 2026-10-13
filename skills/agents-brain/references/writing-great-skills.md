@@ -92,7 +92,7 @@ Unknown fields are errors. `metadata` maps strings to strings. Tool, argument, a
 lists. `hooks` is a mapping. `effort` accepts `low`, `medium`, `high`, `xhigh`, or `max`.
 
 `context` accepts only `fork`. `shell` accepts `bash` or `powershell`. `agent` and `background` require `context: fork`.
-The entrypoint defines invocation defaults and dependency policy.
+The workflow in [create-skill.md](create-skill.md) defines invocation defaults and dependency policy.
 
 Use portable-only validators such as `skills-ref` or `agentskills` only when a distribution target explicitly requires
 the strict portable format. They do not replace the canonical local gate.
