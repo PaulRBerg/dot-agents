@@ -1,5 +1,5 @@
 ---
-argument-hint: <text> [image or video paths] [link]
+argument-hint: <text> [image or video paths] [link] | refresh-preview <page-url> [platform] [post-url]
 compatibility:
   Requires the chromium-browser skill and its Chrome DevTools MCP attached to the user's shared, logged-in Chromium
   browser.
@@ -10,8 +10,8 @@ skill-dependencies:
   - chromium-browser
 description:
   Post one user-supplied text, with optional images, video, or link, to X, LinkedIn, Farcaster, and Facebook (in
-  Romanian), and to Hacker News when it suits that audience. Also find the best subreddits for the post. Uses the shared
-  Chromium browser.
+  Romanian), and to Hacker News when it suits that audience. Also refresh stale link preview images or find the best
+  subreddits for a post. Uses the shared Chromium browser.
 ---
 
 # Social Media
@@ -22,7 +22,16 @@ Publish one post across the user's social accounts through the shared Chromium b
 can go. User instructions take precedence over this skill. For example, a request for drafts only, a different platform
 set, or no translation replaces the matching default below.
 
+## Routes
+
+- **Publish**: follow the inputs and posting workflow below.
+- **Refresh preview**: when the user requests an updated link preview or uses `refresh-preview`, follow
+  [references/link-previews.md](references/link-previews.md). Use Browser Setup below. This route accepts a page URL and
+  the target platform or existing post URL. It does not require new post text, cross-posting, or subreddit discovery.
+
 ## Inputs
+
+These inputs apply to publishing.
 
 - **Text**: required. Treat it as final copy. Post it verbatim on every platform except Facebook. Do not rewrite,
   shorten, add hashtags, or add emoji.
@@ -36,8 +45,9 @@ If the request has no text, ask for it. Do not ask other questions when the defa
 
 ## Authority
 
-The invocation authorizes the posts. Post directly. Do not add a confirmation gate. Never post to Reddit. Reddit work is
-discovery only.
+A publishing request authorizes the posts. Post directly. Do not add a confirmation gate. A preview-refresh request
+authorizes the cache refresh and requested URL edits on the specified posts. It does not authorize deletion or
+replacement posts unless the user requests them. Never post to Reddit. Reddit work is discovery only.
 
 Keep each composer's existing audience, visibility, and account selection. Do not change account settings, follow
 accounts, or engage with other posts.
@@ -80,7 +90,9 @@ Do these steps for each platform:
    missing characters.
 3. Attach the media with `upload_file`. Wait until each upload finishes processing and the post button is enabled.
 4. If the composer shows an over-limit counter or rejects the length, use the platform's overflow rule in
-   [references/platforms.md](references/platforms.md).
+   [references/platforms.md](references/platforms.md). If a link preview is stale, follow
+   [references/link-previews.md](references/link-previews.md) before submission. Preserve the supplied URL unless the
+   user requested a preview refresh or authorized a URL change.
 5. Submit the post. Then read it back. Open the new post from the confirmation notice or from the user's own profile
    feed. Confirm that the text and media appear and record the post URL.
 
