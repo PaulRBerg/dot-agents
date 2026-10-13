@@ -23,6 +23,8 @@ Create a working frontend with a clear, subject-specific point of view. Then pro
   design system as authoritative. Fidelity requests override this skill's defaults.
 - Preserve the stack and working behavior. Do not replace the framework or design system, add dependencies, or invent
   features unless the request requires it.
+- Preserve distinctive existing artwork and useful visual cues during redesigns. Before replacing them, verify that the
+  replacement retains their contribution to identity, comprehension, or interaction.
 - Choose original SVG authored in code or stock imagery when it supports the art direction. Generate other media only
   when the request requires it.
 - Make the smallest defensible assumption when the subject, audience, or page job is missing. State it before building.
