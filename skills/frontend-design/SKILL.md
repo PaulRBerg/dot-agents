@@ -23,8 +23,8 @@ Create a working frontend with a clear, subject-specific point of view. Then pro
   design system as authoritative. Fidelity requests override this skill's defaults.
 - Preserve the stack and working behavior. Do not replace the framework or design system, add dependencies, or invent
   features unless the request requires it.
-- Use original SVG authored in code when it supports the art direction. Fetch or generate other media only when the
-  request requires it.
+- Choose original SVG authored in code or stock imagery when it supports the art direction. Generate other media only
+  when the request requires it.
 - Make the smallest defensible assumption when the subject, audience, or page job is missing. State it before building.
   Ask only when the answer would materially change scope or identity.
 
@@ -57,9 +57,17 @@ Before coding, define a compact direction:
 Adapt this direction to existing brand constraints instead of creating a parallel design language. Keep options and
 process narration internal unless the user asked to choose among directions.
 
-For builds and substantial redesigns, consider an original SVG motif for the background, layout, or a focal detail. Read
-[SVG design](references/svg-design.md) when choosing or building one. Use it to express the subject and guide the eye.
-Keep undecorated space where the content needs it.
+For builds and substantial redesigns, evaluate imagery case by case. Consider stock photos, artwork, or original SVG for
+backgrounds, section transitions, or focal details. Use images only when they strengthen the site's subject, atmosphere,
+or content hierarchy. An image-free design is valid. Read [SVG design](references/svg-design.md) when choosing or
+building an original SVG motif.
+
+When stock imagery suits the direction, use `$chromium-browser` to search Google or [Unsplash](https://unsplash.com/).
+Open the original source to verify usage rights and any attribution requirements before using an image. Search results
+alone do not establish permission to reuse an asset.
+
+Compose imagery and colorful backgrounds as one palette. Choose complementary colors, deliberate crops, and quiet space
+behind text and controls. Avoid generic stock images that could fit any unrelated site.
 
 ### 3. Run the anti-default critique
 
@@ -94,6 +102,8 @@ any other default the result used and revise it.
   without animation.
 - Build responsive constraints from content rather than device labels. Prevent overlap, clipping, unreadable wrapping,
   and layout shift at narrow and wide widths.
+- For images, choose responsive crops and delivery sizes that preserve the focal point without unnecessary download
+  weight. Give meaningful images useful alt text and decorative images empty alt text.
 - Preserve semantic structure, keyboard operation, visible focus, adequate contrast, and target sizes. Match the
   project's accessibility standard when it is stricter.
 - Keep selector specificity and component ownership predictable. Do not rely on competing selectors or fragile cascade
