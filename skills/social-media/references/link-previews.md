@@ -26,6 +26,13 @@ Prefer the platform's refresh tool before changing the page URL. A third-party p
 platform's cache. On X, treat URL versioning as a workaround to verify, not a guaranteed cache-purge operation. Do not
 rely on the legacy Twitter Card Validator to render a preview or refresh an existing post.
 
+## X Trailing-Slash URLs
+
+On X (Twitter), a trailing `/` in the shared page URL can prevent the Open Graph preview image from appearing. Prefer
+`https://example.com/post` over `https://example.com/post/` when sharing on X. Apply the supplied-URL rule in `SKILL.md`
+before removing the slash. Confirm that the URL without the slash serves the same page and shows the intended image in
+the X composer.
+
 ## Version the Shared URL
 
 Add one unused query parameter, or increment an existing parameter used only for preview versioning. For a page without

@@ -25,6 +25,8 @@ live interface disagree, follow the interface and report the difference.
 
 - Composer: `https://x.com/compose/post`, or the "Post" control on `https://x.com/home`.
 - Length: the limit depends on the account tier. The composer counts each URL as a fixed short length.
+- Link previews: apply the [trailing-slash URL caveat](link-previews.md#x-trailing-slash-urls) before sharing a link on
+  X.
 - Overflow: use the shared overflow split as a thread. Add each part with the composer's add-post control. Then post the
   whole thread in one submit.
 - Readback: open the post from the "Your post was sent" notice, or from the user's profile. Record the
