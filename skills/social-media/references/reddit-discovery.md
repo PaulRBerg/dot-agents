@@ -1,8 +1,8 @@
 # Reddit Discovery
 
-Find the subreddits where the post fits best and where the rules permit it. This work is read-only. Do not post,
-comment, vote, join, or send messages on Reddit. A logged-out session is sufficient. If Reddit shows a captcha or a
-block page, follow the `chromium-browser` human-gate procedure.
+Find the subreddits where the post fits best and where the rules permit it. Prepare lightly tailored drafts for the
+user. All Reddit interaction is read-only. Do not post, comment, vote, join, or send messages on Reddit. A logged-out
+session is sufficient. If Reddit shows a captcha or a block page, follow the `chromium-browser` human-gate procedure.
 
 ## Procedure
 
@@ -21,6 +21,22 @@ block page, follow the `chromium-browser` human-gate procedure.
    flair, weekly threads such as "Showoff Saturday", and minimum karma or account age.
 5. **Rank.** Exclude a subreddit when its rules forbid this post type or forbid self-promotion. Rank the rest by topic
    fit first, then by recent activity, then by size. Prefer an active niche subreddit to a large generic one.
+6. **Tailor drafts.** For the three strongest matches, lightly edit the supplied text for that community's interests and
+   posting rules. Use all matches when fewer than three qualify. If the user names target subreddits, prepare a draft
+   for each permitted target. Follow the drafting rules below.
+
+## Drafting Rules
+
+- Adjust the title, opening, and closing only where the community benefits from different framing. Preserve the core
+  meaning, factual claims, links, and the user's voice. Do not invent capabilities, personal experience, or community
+  membership.
+- Explain why the post is relevant to that subreddit. Keep the tone conversational and avoid promotional language.
+- When the format and rules permit, add one natural invitation for feedback. For example: "Keen to see if you find this
+  useful or have any feedback!" Prefer a specific question when the topic supports one. Vary the wording across
+  communities and omit it when the post already asks for feedback.
+- Keep feedback invitations in the body or an allowed introductory comment. Do not add them to a link-post title or ask
+  for upvotes. If the community prohibits AI-written or AI-edited text, provide editorial suggestions for the user
+  instead of a draft.
 
 ## Output
 
@@ -36,3 +52,7 @@ Give at most 10 rows, sorted by rank:
 | Rule caveats | Flair, self-promotion limits, required weekly threads, or account minimums |
 
 After the table, list each excluded subreddit that a reader can expect to see, with the rule that excludes it.
+
+Then give the tailored drafts under their subreddit names. Include the title and body, or an introductory comment when
+the selected post format has no body and the rules permit one. Label each as a draft for manual posting. Report any
+editorial-only suggestions with the rule that prevents drafting.
