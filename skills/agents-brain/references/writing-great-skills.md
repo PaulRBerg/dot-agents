@@ -1,8 +1,10 @@
 # Writing Great Skills
 
 Compact authoring guidance adapted from Matt Pocock's
-[writing-great-skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/writing-great-skills)
-(SKILL.md + GLOSSARY.md).
+[writing-great-skills](https://github.com/mattpocock/skills/tree/697d4ce9742da558fd1ba6697c8e9775e2e302dd/skills/productivity/writing-great-skills)
+(SKILL.md + GLOSSARY.md). The link preserves the historical source layout. The exact local import revision is
+unrecorded. The upstream successor is
+[writing-for-agents](https://github.com/mattpocock/skills/tree/main/skills/productivity/writing-for-agents).
 
 A skill makes a stochastic system reliably satisfy an observable contract. Predictability means reaching the intended
 outcome while preserving the contract, not following an identical path.
