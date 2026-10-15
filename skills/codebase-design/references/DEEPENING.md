@@ -1,7 +1,7 @@
 # Deepening
 
 This reference explains how to deepen a cluster of shallow modules safely, given its dependencies. It assumes the
-vocabulary in [SKILL.md](../SKILL.md) — **module**, **interface**, **seam**, **adapter**.
+vocabulary in [SKILL.md](../SKILL.md): **module**, **interface**, **seam**, **adapter**.
 
 ## Dependency categories
 
@@ -45,8 +45,8 @@ as an injected port. Tests provide a mock adapter.
   delete those old tests.
 - Write new tests at the deepened module's interface. The **interface is the test surface**.
 - Tests assert on observable outcomes through the interface, not internal state.
-- Tests should survive internal refactors — they describe behaviour, not implementation. If a test has to change when
-  the implementation changes, it tests past the interface.
+- Tests should survive internal refactors, since they describe behaviour, not implementation. If a test has to change
+  when the implementation changes, it tests past the interface.
 
 ## Finding deepening candidates
 
