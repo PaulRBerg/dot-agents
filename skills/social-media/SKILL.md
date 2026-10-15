@@ -39,12 +39,14 @@ These inputs apply to publishing.
 
 - **Text**: required. Treat supplied text as user-authored source copy. Post it verbatim on X, LinkedIn, and Farcaster.
   Do not rewrite, shorten, add hashtags, or add emoji there. Use the platform notes for Facebook translation and light
-  Hacker News edits. Lightly tailor Reddit drafts with [references/reddit-discovery.md](references/reddit-discovery.md).
+  Hacker News edits. Preserve the wording, structure, and length of Reddit source copy. Make only minimal edits under
+  [references/reddit-discovery.md](references/reddit-discovery.md).
 - **Media**: optional images or one video, as absolute file paths on the browser host. Before you open the browser,
   confirm that each file exists and has an image or video type. If the user attached media without a usable path, ask
   for the path before you post anywhere.
 - **Link**: optional URL. If the text does not already contain the link, append it on a new line at the end of the post
-  text.
+  text. For Reddit, follow the subreddit's link rules instead. Some subreddits permit links only in comments after post
+  approval.
 
 If a publishing request has no text, ask for it. Do not ask other questions when the defaults below cover the case.
 
@@ -54,8 +56,11 @@ A request to prepare images authorizes local exports. It does not authorize post
 
 A publishing request authorizes the posts and the platform-specific edits described below. Post directly. Do not add a
 confirmation gate. A preview-refresh request authorizes the cache refresh and requested URL edits on the specified
-posts. It does not authorize deletion or replacement posts unless the user requests them. Never post to Reddit. Reddit
-work is discovery and drafts only.
+posts. It does not authorize deletion or replacement posts unless the user requests them.
+
+Reddit submissions remain drafts for manual posting. A publishing request also authorizes the link comment described in
+[references/reddit-discovery.md](references/reddit-discovery.md#links-after-post-approval), after the user's post is
+approved by the subreddit. A drafts-only request does not authorize comments.
 
 Keep each composer's existing audience, visibility, and account selection. Do not change account settings, follow
 accounts, or engage with other posts.
@@ -84,7 +89,7 @@ complete each platform before you start the next one.
 6. **Post.** Post on the logged-in platforms in this order: X, LinkedIn, Farcaster, Facebook, and Hacker News when
    selected. For each platform, follow the composer procedure below.
 7. **Prepare Reddit suggestions.** Read [references/reddit-discovery.md](references/reddit-discovery.md). Follow its
-   discovery and drafting procedure.
+   discovery and drafting procedure. When applicable, complete its link-comment procedure after post approval.
 8. **Clear the login gates.** For each logged-out page, follow the `chromium-browser` human-gate procedure. When the
    gate clears, post on that platform.
 9. **Clean up.** Close only the pages that this task created.
@@ -129,10 +134,12 @@ Lead with one outcome line, such as "Posted on 4 of 5 platforms". Then give thes
 - **Hacker News**: the decision and its reason. Give the item URL, or the existing item URL if Hacker News redirected to
   an earlier submission.
 - **Reddit**: the ranked subreddit table and tailored drafts from
-  [references/reddit-discovery.md](references/reddit-discovery.md).
+  [references/reddit-discovery.md](references/reddit-discovery.md). Include any verified link-comment URL or the reason
+  the comment remains pending.
 - **Other places**: optional. From your own knowledge, you may suggest other sites, communities, newsletters, or
   aggregators that suit this post. Give each suggestion one reason. Label the section as unverified suggestions from
   general knowledge. Do not visit those sites.
 
 Completion requires a verified post URL or a recorded reason for each platform, completed Reddit discovery and drafts,
-and closed task pages.
+and closed task pages. When the Reddit link-comment procedure applies, also require a verified comment URL or a recorded
+reason that the comment remains pending.

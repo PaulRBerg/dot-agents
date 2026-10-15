@@ -56,7 +56,7 @@ before choosing a size. OpenGraph cards belong to linked web pages. Feed images 
 
 For Discord, Slack, WhatsApp, Telegram, and other link unfurlers, start with `og` and inspect the actual preview. Their
 display and crop depend on the client and placement. A square export is also available when the target needs one. Export
-support does not expand the skill's publishing permissions. Reddit remains discovery-only.
+support does not expand the skill's publishing permissions. Reddit submissions remain manual.
 
 ### Evidence and Freshness
 
