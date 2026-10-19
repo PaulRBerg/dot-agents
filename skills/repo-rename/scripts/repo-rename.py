@@ -103,27 +103,48 @@ def collect_replacements(
             if occurrences:
                 replacements.append(Replacement(path, path_pair, occurrences))
 
-    name_pair = ((old_name.encode(), new_name.encode()),)
+    repo_pairs = path_pair if old_name == new_name else ((old_name.encode(), new_name.encode()),)
     for path in readable_files(old_root, repo=True, include_local_state=include_local_state):
-        occurrences = count_pairs(path, name_pair)
+        occurrences = count_pairs(path, repo_pairs)
         if occurrences:
-            replacements.append(Replacement(path, name_pair, occurrences))
+            replacements.append(Replacement(path, repo_pairs, occurrences))
     return sorted(replacements, key=lambda item: str(item.path))
 
 
-def preflight(new_name: str, *, include_local_state: bool = False) -> dict[str, object]:
-    if not new_name or new_name.startswith(".") or "/" in new_name:
+def preflight(
+    new_name: str, destination: str | None = None, *, include_local_state: bool = False
+) -> dict[str, object]:
+    source = Path(new_name).expanduser().resolve() if destination is not None else None
+    if destination is None and (not new_name or new_name.startswith(".") or "/" in new_name):
         raise RenameError(f"invalid repo name: {new_name!r}")
 
-    old_root = Path(run("git", "rev-parse", "--show-toplevel")).resolve()
+    old_root = Path(run("git", "rev-parse", "--show-toplevel", cwd=source)).resolve()
+    if source is not None and source != old_root:
+        raise RenameError(f"source must be the repository root: {old_root}")
     status = run("git", "status", "--short", cwd=old_root)
     if status:
         raise RenameError(f"working tree is not clean:\n{status}")
 
     old_name = old_root.name
-    new_root = old_root.parent / new_name
-    if new_root.exists():
+    new_root = Path(destination).expanduser().absolute() if destination is not None else old_root.parent / new_name
+    if new_root.exists() or new_root.is_symlink():
         raise RenameError(f"target folder already exists: {new_root}")
+    new_root = new_root.resolve()
+    if destination is not None:
+        if new_root.name != old_name:
+            raise RenameError("source/destination moves must keep the folder name; use <new-name> to rename first")
+        new_name = old_name
+    if new_root.is_relative_to(old_root):
+        raise RenameError(f"target folder is inside the source repository: {new_root}")
+    if not (old_root / ".git").is_dir():
+        raise RenameError("linked worktrees and external Git directories are not supported")
+    parents = []
+    parent = new_root.parent
+    while not parent.exists():
+        parents.append(parent)
+        parent = parent.parent
+    if not parent.is_dir():
+        raise RenameError(f"target parent is not a directory: {parent}")
 
     # A repository without any remote has no GitHub identity; rename only local state.
     local_only = not run("git", "remote", cwd=old_root)
@@ -140,13 +161,17 @@ def preflight(new_name: str, *, include_local_state: bool = False) -> dict[str, 
         token = f"{old_repo}->{new_repo}"
 
         remote = run("git", "remote", "get-url", "origin", cwd=old_root)
-        if remote.startswith("git@github.com:"):
+        if destination is not None:
+            new_remote = remote
+        elif remote.startswith("git@github.com:"):
             new_remote = f"git@github.com:{owner}/{new_name}.git"
         elif remote.startswith("https://github.com/"):
             new_remote = f"https://github.com/{owner}/{new_name}.git"
         else:
             new_remote = f"git@github.com:{owner}/{new_name}.git"
 
+    if destination is not None:
+        token = f"move:{old_root}->{new_root}"
     claude_projects, _ = continuity_paths()
     old_claude = claude_projects / claude_project_name(old_root)
     new_claude = claude_projects / claude_project_name(new_root)
@@ -163,6 +188,8 @@ def preflight(new_name: str, *, include_local_state: bool = False) -> dict[str, 
         "old_repo": old_repo,
         "new_repo": new_repo,
         "local_only": local_only,
+        "rename_github": not local_only and destination is None,
+        "create_parents": list(reversed(parents)),
         "old_remote": remote,
         "new_remote": new_remote,
         "old_claude": old_claude,
@@ -177,7 +204,7 @@ def preflight(new_name: str, *, include_local_state: bool = False) -> dict[str, 
 def preview(plan: dict[str, object]) -> dict[str, object]:
     replacements = plan["replacements"]
     assert isinstance(replacements, list)
-    remote_mutations = [] if plan["local_only"] else [
+    remote_mutations = [] if not plan["rename_github"] else [
         {"kind": "github-rename", "command": f"gh repo rename {plan['new_name']} --yes"},
         {"kind": "origin", "from": plan["old_remote"], "to": plan["new_remote"]},
     ]
@@ -188,10 +215,14 @@ def preview(plan: dict[str, object]) -> dict[str, object]:
         "new_repo": plan["new_repo"],
         "old_root": str(plan["old_root"]),
         "new_root": str(plan["new_root"]),
+        "old_remote": plan["old_remote"],
+        "new_remote": plan["new_remote"],
+        "rename_github": plan["rename_github"],
         "confirmation_token": plan["confirm"],
         "include_local_state": plan["include_local_state"],
         "mutations": [
             *remote_mutations,
+            *[{"kind": "create-parent", "path": str(parent)} for parent in plan["create_parents"]],
             {"kind": "folder", "from": str(plan["old_root"]), "to": str(plan["new_root"])},
             {
                 "kind": "claude-project-folder",
@@ -206,7 +237,7 @@ def preview(plan: dict[str, object]) -> dict[str, object]:
                 ],
             },
         ],
-        "rollback": "replacement files are backed up; folder, origin, Claude directory, and GitHub name are restored in reverse order on failure",
+        "rollback": "replacement files are backed up; changed folders, origin, and GitHub name are restored on failure; newly created empty parent directories are removed",
     }
 
 
@@ -241,6 +272,7 @@ def apply(plan: dict[str, object]) -> dict[str, object]:
     backup_dir = Path(tempfile.mkdtemp(prefix="repo-rename-rollback-"))
     backups: dict[Path, Path] = {}
     github_done = remote_done = repo_moved = claude_moved = False
+    created_parents: list[Path] = []
     rollback_errors: list[str] = []
     try:
         for index, item in enumerate(replacements):
@@ -248,11 +280,14 @@ def apply(plan: dict[str, object]) -> dict[str, object]:
             shutil.copy2(item.path, backup)
             backups[item.path] = backup
 
-        if not plan["local_only"]:
+        if plan["rename_github"]:
             run("gh", "repo", "rename", str(plan["new_name"]), "--yes", cwd=old_root)
             github_done = True
             run("git", "remote", "set-url", "origin", str(plan["new_remote"]), cwd=old_root)
             remote_done = True
+        for parent in plan["create_parents"]:
+            parent.mkdir()
+            created_parents.append(parent)
         old_root.rename(new_root)
         repo_moved = True
         if plan["move_claude"]:
@@ -265,9 +300,12 @@ def apply(plan: dict[str, object]) -> dict[str, object]:
             for old, new in item.pairs:
                 data = data.replace(old, new)
             temp = target.with_name(f".{target.name}.repo-rename.tmp")
-            temp.write_bytes(data)
-            shutil.copymode(target, temp)
-            os.replace(temp, target)
+            try:
+                temp.write_bytes(data)
+                shutil.copymode(target, temp)
+                os.replace(temp, target)
+            finally:
+                temp.unlink(missing_ok=True)
 
         shutil.rmtree(backup_dir)
         return {
@@ -308,6 +346,11 @@ def apply(plan: dict[str, object]) -> dict[str, object]:
                 run("gh", "repo", "rename", str(plan["old_name"]), "--repo", str(plan["new_repo"]), "--yes")
             except Exception as rollback_error:
                 rollback_errors.append(f"restore GitHub name: {rollback_error}")
+        for parent in reversed(created_parents):
+            try:
+                parent.rmdir()
+            except Exception as rollback_error:
+                rollback_errors.append(f"remove created parent {parent}: {rollback_error}")
         detail = f"apply failed: {error}"
         if rollback_errors:
             detail += "; rollback incomplete: " + "; ".join(rollback_errors)
@@ -318,7 +361,8 @@ def apply(plan: dict[str, object]) -> dict[str, object]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("new_name")
+    parser.add_argument("new_name", help="new repository name, or source repository path when destination is supplied")
+    parser.add_argument("destination", nargs="?", help="destination path for a same-name local move")
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--dry-run", action="store_true")
     mode.add_argument("--apply", action="store_true")
@@ -326,11 +370,11 @@ def main() -> int:
     parser.add_argument("--include-local-state", action="store_true", help="include explicitly authorized notes, dependencies, caches, and generated files")
     args = parser.parse_args()
     try:
-        plan = preflight(args.new_name, include_local_state=args.include_local_state)
+        plan = preflight(args.new_name, args.destination, include_local_state=args.include_local_state)
         if args.apply and args.confirm != plan["confirm"]:
             raise RenameError(f"--apply requires --confirm {plan['confirm']!r}")
         result = apply(plan) if args.apply else preview(plan)
-    except RenameError as error:
+    except (RenameError, OSError) as error:
         print(f"repo-rename: {error}", file=sys.stderr)
         return 64
     print(json.dumps(result, indent=2, sort_keys=True))

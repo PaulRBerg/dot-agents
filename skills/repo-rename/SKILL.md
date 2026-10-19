@@ -1,10 +1,10 @@
 ---
-argument-hint: <new-name> [--dry-run]
+argument-hint: <new-name> | <source-path> <destination-path> [--dry-run]
 disable-model-invocation: true
 name: repo-rename
 description:
-  "Preview or rename a GitHub upstream repo and matching local project folder, update origin, and preserve Codex CLI and
-  Claude Code continuity references."
+  "Preview or rename a GitHub repo, or move a local repo to another parent directory. Preserve Codex CLI and Claude Code
+  continuity references."
 ---
 
 # Repo Rename
@@ -17,6 +17,8 @@ Preview the complete GitHub, Git, filesystem, and agent-continuity mutation set 
 ## Scope
 
 - Rename the current GitHub repository, matching local folder, and `origin` URL.
+- With two path arguments, move the source repository to the destination without changing its name, GitHub identity, or
+  `origin`. Both paths must have the same folder name. Preview missing parent directories before creating them.
 - If the repository has no Git remotes, rename only local state: the folder, continuity references, and repository
   content. The helper then skips the GitHub rename and the `origin` update. A repository with any remote still requires
   a valid GitHub context.
@@ -25,6 +27,7 @@ Preview the complete GitHub, Git, filesystem, and agent-continuity mutation set 
   continuity update does not apply to repos with no active transcripts.
 - Update constrained literal old-name references inside the repository, excluding VCS, dependencies (including Python
   virtual environments), caches, and generated build directories.
+- For a same-name move, replace only the old absolute repository path inside repository files.
 - By default, skip `PROMPT.md`, `TODO.md`, and symlinks before reading replacement candidates. Prune excluded
   directories during discovery. When the user explicitly authorizes updating notes, dependencies, caches, or generated
   files, pass `--include-local-state` to both preview and apply. This includes those repository text files while
@@ -35,7 +38,8 @@ Preview the complete GitHub, Git, filesystem, and agent-continuity mutation set 
 
 ## Workflow
 
-1. Check whether the repository has any active AI chat transcript before treating continuity preservation as in scope:
+1. Resolve the source repository from the first of two path arguments, or from the current directory for a rename. Check
+   whether it has any active AI chat transcript before treating continuity preservation as in scope:
    - Claude Code: resolve `${CLAUDE_CONFIG_DIR:-~/.claude}/projects/<encoded-repo-path>` (the absolute repo path with
      every non-alphanumeric character replaced by `-`) and check it exists and is non-empty.
    - Codex: resolve `${CODEX_HOME:-~/.codex}/sessions` and check whether any session file references the exact absolute
@@ -49,11 +53,18 @@ Preview the complete GitHub, Git, filesystem, and agent-continuity mutation set 
    uv run <skill-dir>/scripts/repo-rename.py <new-name> --dry-run
    ```
 
+   For a same-name move, run from any directory:
+
+   ```sh
+   uv run <skill-dir>/scripts/repo-rename.py <source-path> <destination-path> --dry-run
+   ```
+
    The helper requires a clean worktree, matching GitHub repo/folder names, a free target path, and valid GitHub
    context. For a repository with no remotes, it requires only a clean worktree and a free target path. It reports
    `"local_only": true` and a `local:<old>-><new>` confirmation token. It prints the old/new repo and paths, exact
    confirmation token, external commands, directory moves, every replacement file, occurrence counts, and rollback
-   coverage.
+   coverage. Same-name moves use `move:<absolute-source>-><absolute-destination>` tokens. Linked worktrees and external
+   Git directories are unsupported.
 
 3. If `--dry-run` was requested, return the preview and stop. A successful dry run must not change the GitHub repo,
    remote, folder, config, transcripts, or repository files.
@@ -65,11 +76,15 @@ Preview the complete GitHub, Git, filesystem, and agent-continuity mutation set 
    counts, and rollback coverage in compact tables, then the exhaustive file/count list. Put the exact confirmation
    token alone in code formatting. If any preview fact changes, regenerate it and ask again.
 
+   For same-name moves, show the unchanged GitHub identity and `origin`, plus each parent directory to create.
+
 5. After confirmation, pass the preview's exact token:
 
    ```sh
    uv run <skill-dir>/scripts/repo-rename.py <new-name> --apply --confirm '<owner/old->owner/new>'
    ```
+
+   For a same-name move, pass both paths and the preview's `move:` token instead.
 
    The helper re-runs preflight, backs up every replacement file, applies deterministic literal replacements, and
    attempts rollback on failure. Never bypass its clean-tree, target-path, or confirmation checks.
