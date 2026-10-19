@@ -54,6 +54,11 @@ under subpaths such as `effect/http`, `effect/http-api`, `effect/rpc`, `effect/c
 set. These modules are documented `@stability unstable` and may break in minor releases. There are no
 `effect/unstable/*` compatibility paths. Separate packages remain for platforms, drivers, and providers:
 `@effect/platform-*`, `@effect/sql-*`, `@effect/ai-*`, `@effect/atom-*`, `@effect/opentelemetry`, and `@effect/vitest`.
+Their modules are also `@stability unstable`.
+
+From 4.0.2, every module and directly importable export declares `@stability`. Check the tag before you depend on an
+API. `stable` follows strict semver. `experimental` modules, such as `effect/graphql` and parts of `effect/net`, may
+break in patch releases. Some root modules are also `unstable`, such as `Arbitrary`, `Crypto`, `FileSystem`, and `Path`.
 
 ## Reference Router
 

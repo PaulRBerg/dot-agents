@@ -31,7 +31,7 @@ If the user selects another available browser integration, follow its tool contr
   configuration as a troubleshooting shortcut.
 
 For released tool behavior, consult the
-[upstream tool reference](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/chrome-devtools-mcp-v1.10.1/docs/tool-reference.md).
+[upstream tool reference](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/chrome-devtools-mcp-v1.11.0/docs/tool-reference.md).
 The current session's schemas determine which tools and parameters are available.
 
 ## Reference Routing
@@ -44,7 +44,8 @@ selected replay when rendered inspection adds evidence.
 
 1. Call `list_pages` before interacting and preserve the initial pages as pre-existing state.
 2. Prefer `new_page` with `background: true` when a fresh page satisfies the task. Record the exact `pageId` returned by
-   every page this task creates. Never infer ownership from a later page-list difference.
+   every page this task creates. When an input action response lists `## Opened pages`, record those page IDs as created
+   by this task. Never infer ownership from a later page-list difference.
 3. Pass an explicit `pageId` to every page-scoped tool. Do not rely on selected-page state. Use `select_page` only when
    deliberately bringing a page to the foreground or recovering the closed-page context described below.
 4. Navigate or mutate a pre-existing page only when the task explicitly depends on that page's current state. Never
@@ -80,11 +81,11 @@ selected replay when rendered inspection adds evidence.
   session exposes it. Otherwise, skip the resize and tell the user.
 - When a cookie consent popup appears, select only necessary or essential cookies by default, including through its
   settings when needed. If no such option is available, accept all cookies and continue.
-- Use `filePath` for screenshots, snapshots, traces, recordings, and response bodies. Write only to a task-authorized
-  absolute path. Prefer a git-ignored `.ai/` directory under the current repository, or another root the client
-  negotiated. The Claude Code scratchpad under `/private/tmp` and the `/tmp` directory are not permitted roots. A write
-  there returns `Access denied`. On that error, retry once under `<cwd>/.ai/`. Path capability is not write
-  authorization.
+- Use `filePath` for screenshots, snapshots, traces, recordings, response bodies, and large script results. Write only
+  to a task-authorized absolute path. Prefer a git-ignored `.ai/` directory under the current repository, or another
+  root the client negotiated. The Claude Code scratchpad under `/private/tmp` and the `/tmp` directory are not permitted
+  roots. A write there returns `Access denied`. On that error, retry once under `<cwd>/.ai/`. Path capability is not
+  write authorization.
 - Calls within one MCP server are serialized, even with explicit page routing. Separate agent servers still share
   browser state. Preserve causal order and page ownership across concurrent work.
 
@@ -113,11 +114,13 @@ Use these workflows only when the tools are exposed in the current session.
 - For Lighthouse audits, choose `mode: "snapshot"` to analyze current page state. `mode: "navigation"` reloads the page.
   Lighthouse excludes performance audits. Use performance traces for performance questions.
 - Navigate before `performance_start_trace`. Set `reload: false` to profile an interaction without reloading. When
-  `autoStop: false`, stop the trace with `performance_stop_trace` after the measured interaction, including during
-  cleanup after a failed task. Stop only traces this task started.
+  `reload: true`, set `ignoreCache: true` to measure a cold load. When `autoStop: false`, stop the trace with
+  `performance_stop_trace` after the measured interaction, including during cleanup after a failed task. Stop only
+  traces this task started.
 - For heap analysis, capture with `take_heapsnapshot`, then start with `get_heapsnapshot_summary`. Use targeted,
-  paginated queries for objects or retainers. Call `close_heapsnapshot` for each snapshot this task loaded to release
-  server memory, including during cleanup after a failed task.
+  paginated queries for objects or retainers. Use `compare_heapsnapshots` for growth between two snapshots and
+  `analyze_heapsnapshot_contexts` for closures that retain dead captured values. Call `close_heapsnapshot` for each
+  snapshot this task loaded to release server memory, including during cleanup after a failed task.
 - Each server permits one active screencast. Record whether this task started it, then call `screencast_stop` during
   cleanup. Never stop another task's recording to make room.
 

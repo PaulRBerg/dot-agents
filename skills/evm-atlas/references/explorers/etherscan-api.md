@@ -12,7 +12,7 @@ facts, blocks, logs, and contract ABI/source. Preserve the read-only boundary. N
 Keep Blockscout first on covered overlaps. CLI availability does not change provider priority, the target allowlist,
 checkpoint proof, quorum, or plan gates. User instructions take precedence over this skill.
 
-The dated access rules reflect the [changelog](https://docs.etherscan.io/changelog) check on 2026-10-05. Apply scheduled
+The dated access rules reflect the [changelog](https://docs.etherscan.io/changelog) check on 2026-10-19. Apply scheduled
 changes by their effective date. Provider membership alone does not prove plan access.
 
 Sources: [official CLI guide](https://docs.etherscan.io/build-with-ai/cli) and
@@ -447,6 +447,10 @@ etherscan --chain CHAIN_ID --output json contract getsourcecode CONTRACT
 These read commands remain available on supported chains for every plan, including Free on paid-only chains. They do not
 restore deprecated provider support. Preserve returned ABI/source fields. ABI or explorer decoding alone does not prove
 execution semantics.
+
+Since 2026-09-02, the `getsourcecode` field `Proxy` is `0` (not a proxy), `1` (proxy), or `2` (minimal proxy). For `2`,
+`Implementation` is the target contract and `ConstructorArguments` is empty. Treat `1` and `2` as proxies. Source:
+[changelog](https://docs.etherscan.io/changelog#minimal-proxy-indicator-in-get-contract-source-code).
 
 ## Multi-Chain Usage
 

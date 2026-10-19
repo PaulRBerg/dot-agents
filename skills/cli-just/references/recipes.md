@@ -14,6 +14,14 @@ Use Just-native checks instead of shell `command -v` or backtick `which`. When t
 `require()` when its standard missing-executable error is enough. If every recipe needs the tool, put the assertion at
 top level. Otherwise, put it in a private prerequisite of affected recipes.
 
+## Cached recipes
+
+`[cache]` is unstable and applies only to `[script]` recipes. Use it only when the cache key captures every input that
+matters. By default, the key includes variables that the justfile exports or unexports, but not inherited environment
+variables. Since 1.59.0, `[cache(environment = EXPRESSION)]` adds variables to the key or removes them from it. List
+literals need `set lists`. Keep `.justcache` out of version control. Use `--no-cache` to bypass the cache and
+`--clean [RECIPE_PATH]` to clear it.
+
 ## Quiet recipes and command prefixes
 
 Make ordinary recipes quiet with `@recipe:` when echoed commands add no value. In a quiet recipe, a line-level `@`

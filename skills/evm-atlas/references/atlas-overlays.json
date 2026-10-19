@@ -2,7 +2,7 @@
   "metadata": {
     "blockscoutObservedAt": "2026-07-08",
     "etherscanProviderChainCount": 63,
-    "etherscanVerifiedAt": "2026-10-05",
+    "etherscanVerifiedAt": "2026-10-19",
     "routeMeshVerifiedAt": "2026-07-15"
   },
   "chains": {
@@ -91,7 +91,10 @@
         "https://81457.rpc.thirdweb.com"
       ],
       "routeMesh": true,
-      "etherscan": { "support": "free" },
+      "etherscan": {
+        "support": "free",
+        "notes": "API support is scheduled to end on 2026-10-31. From that date, route it as a chain not on Etherscan V2"
+      },
       "blockscout": { "status": "absent", "notes": "Not returned by Chainscout" }
     },
     "bsc": {

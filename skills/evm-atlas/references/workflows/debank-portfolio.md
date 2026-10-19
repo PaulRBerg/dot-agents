@@ -46,7 +46,7 @@ uv run --no-project scripts/debank-gate.py acquire --label '<skill>: <purpose>' 
    instead.
 3. **Token discovery**, for one address or many, uses the collector. Read `scripts/debank-collect.js`. Pass its whole
    contents verbatim as the `evaluate_script` `function`. The file intentionally has no trailing `;`, so it stays a
-   pasteable arrow function. It returns `{ installed: true, reused: false }` (`reused: true` when the page already has
+   pasteable named function. It returns `{ installed: true, reused: false }` (`reused: true` when the page already has
    it), installs `window.__debankCollect`, and wraps `window.fetch` to record the app's `used_chains` and `balance_list`
    responses.
 

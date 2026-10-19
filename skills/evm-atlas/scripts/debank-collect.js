@@ -1,4 +1,4 @@
-() => {
+function debankCollect() {
   // Paste verbatim as the Chrome DevTools MCP `evaluate_script` function on a debank.com page.
   // It records the app's own signed responses; it never calls balance endpoints itself.
   if (window.__debankCollect) return { installed: true, reused: true };

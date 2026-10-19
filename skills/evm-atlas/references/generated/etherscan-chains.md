@@ -5,7 +5,7 @@
 Source: <https://docs.etherscan.io/supported-chains> Access changes: <https://docs.etherscan.io/changelog> Live list:
 <https://api.etherscan.io/v2/chainlist> (returns the provider's authoritative `chainid` set)
 
-Verified against the live `chainlist` endpoint on 2026-10-05 (63 provider chains). This file intentionally lists only
+Verified against the live `chainlist` endpoint on 2026-10-19 (63 provider chains). This file intentionally lists only
 chains from `references/generated/target-mainnets.json`; provider-supported chains outside that list are out of scope
 for this skill. Apply dated notes using the request date: a scheduled paid-plan requirement overrides the table grouping
 once effective. Chainlist membership does not establish plan access or an active explorer UI. Free availability may
@@ -18,7 +18,7 @@ depend on a shared community quota; see `references/explorers/etherscan-api.md` 
 | Abstract        | `2741`   |                                                                                                                             |
 | Arbitrum        | `42161`  | Shared community Free quota effective 2026-11-01; honor the reset time on quota exhaustion                                  |
 | Berachain       | `80094`  |                                                                                                                             |
-| Blast           | `81457`  |                                                                                                                             |
+| Blast           | `81457`  | API support is scheduled to end on 2026-10-31. From that date, route it as a chain not on Etherscan V2                      |
 | Celo            | `42220`  | Shared community Free quota since 2026-07-16; honor the reset time on quota exhaustion                                      |
 | Ethereum        | `1`      | Default chain                                                                                                               |
 | Fraxtal         | `252`    |                                                                                                                             |

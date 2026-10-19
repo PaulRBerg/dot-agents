@@ -22,6 +22,9 @@ fi
 # healthy. Keep enough headroom for document-heavy workflows.
 export NODE_OPTIONS="${NODE_OPTIONS:+$NODE_OPTIONS }--max-old-space-size=8192"
 
+# Use only these wrapper options; do not discover ambient server config files.
+export CHROME_DEVTOOLS_MCP_NO_CONFIG_DISCOVERY=1
+
 # Per-process server log (namespace mcp:log; export NODE_DEBUG='*' for verbose CDP
 # traffic) so transport drops are diagnosable after the fact. Each agent
 # session spawns its own server process, hence the PID suffix.
@@ -39,8 +42,6 @@ exec "$server" \
   --memory-debugging \
   --experimental-vision \
   --experimental-structured-content \
-  --experimental-screencast \
-  --experimental-ffmpeg-path=/opt/homebrew/bin/ffmpeg \
   --redact-network-headers \
   --no-performance-crux \
   --no-usage-statistics \
