@@ -28,10 +28,10 @@ Preview the complete GitHub, Git, filesystem, and agent-continuity mutation set 
 - Update constrained literal old-name references inside the repository, excluding VCS, dependencies (including Python
   virtual environments), caches, and generated build directories.
 - For a same-name move, replace only the old absolute repository path inside repository files.
-- By default, skip `PROMPT.md`, `TODO.md`, and symlinks before reading replacement candidates. Prune excluded
-  directories during discovery. When the user explicitly authorizes updating notes, dependencies, caches, or generated
-  files, pass `--include-local-state` to both preview and apply. This includes those repository text files while
-  preserving file permissions. Symlinks, binary files, and `.git` remain excluded.
+- By default, use tracked repository files and skip `PROMPT.md`, `TODO.md`, and symlinks before reading replacement
+  candidates. Prune excluded directories during discovery. When the user explicitly authorizes updating notes,
+  dependencies, caches, or generated files, pass `--include-local-state` to both preview and apply. This includes those
+  repository text files while preserving file permissions. Symlinks, binary files, and `.git` remain excluded.
 - The helper honors `CLAUDE_CONFIG_DIR` and `CODEX_HOME`, gates continuity updates on active transcripts, and replaces
   only the absolute repository path in continuity stores and Codex config.
 - Do not modify other transcript stores, archives, remotes, or repositories.

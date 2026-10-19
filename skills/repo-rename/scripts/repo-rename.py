@@ -49,6 +49,15 @@ def readable_files(root: Path, *, repo: bool = False, include_local_state: bool 
         return []
     if root.is_file():
         return [root]
+    if repo and not include_local_state:
+        files = []
+        for name in run("git", "ls-files", "-z", cwd=root).split("\0"):
+            path = root / name
+            if not name or path.name in protected or any(part in excluded for part in Path(name).parts):
+                continue
+            if not path.is_symlink() and path.is_file():
+                files.append(path)
+        return files
     files: list[Path] = []
     for directory, names, filenames in os.walk(root):
         parent = Path(directory)
