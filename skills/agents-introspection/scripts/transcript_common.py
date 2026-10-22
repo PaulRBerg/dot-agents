@@ -31,10 +31,14 @@ CORRECTION_PATTERNS = {
 VERIFICATION_PATTERNS = {
     "tests": re.compile(r"(?i)\b(test|pytest|vitest|unit tests?|integration tests?)\b"),
     "lint-format": re.compile(r"(?i)\b(lint|format|mdformat|prettier|ruff|eslint)\b"),
-    "repo-check": re.compile(r"(?i)\b(just |uv run|cargo check|npm run|pnpm |bun test|verified|verification|passes?|passed)\b"),
+    "repo-check": re.compile(
+        r"(?i)\b(just |uv run|cargo check|npm run|pnpm |bun test|verified|verification|passes?|passed)\b"
+    ),
 }
 THEME_PATTERNS = {
-    "agent-skills": re.compile(r"(?i)\b(SKILL\.md|openai\.yaml|frontmatter|allow_implicit|agent skills?|skill catalog)\b"),
+    "agent-skills": re.compile(
+        r"(?i)\b(SKILL\.md|openai\.yaml|frontmatter|allow_implicit|agent skills?|skill catalog)\b"
+    ),
     "transcripts": re.compile(r"(?i)\b(transcript|session_index|sessions/|claude/projects|history\.jsonl)\b"),
     "markdown": re.compile(r"(?i)\b(markdown|mdformat|README\.md|AGENTS\.md)\b"),
     "git": re.compile(r"(?i)\b(git status|git diff|commit|branch|worktree|staged)\b"),
@@ -52,7 +56,10 @@ CONTEXT_PREFIXES = (
     "Base directory for this skill:",
 )
 FAILURE_STATUSES = {"error", "failed", "failure", "cancelled", "canceled", "timed_out", "timeout"}
-INFLECTION_SUFFIXES = ("ying", "ies", "ied", "ing", "ions", "ion", "ers", "er", "es", "ed", "en", "s", "e", "y")
+# Endings removed from a keyword to find its stem. Derivational endings such as `-er` and `-ion` are not stripped, so
+# `miner` cannot stem to `min` and match `mining`.
+INFLECTION_SUFFIXES = ("ying", "ies", "ied", "ing", "es", "ed", "en", "s", "e", "y")
+# Endings accepted after a stem in text. These include `-er` and `-ion`, so `delete` still finds `deletion`.
 INFLECTION_ENDINGS = r"(?:ying|ies|ied|ing|ions|ion|ers|er|es|ed|en|s|e|y)?(?![a-z])"
 MIN_INFLECTION_STEM = 3
 MAX_FULL_SESSION_BYTES = 2_000_000
@@ -88,7 +95,11 @@ def extract_session_lineage(records: Iterable[Any], source: str) -> SessionLinea
             subagent = native_source.get("subagent") if isinstance(native_source, dict) else None
             if isinstance(subagent, dict) and subagent.get("other") == "guardian":
                 return SessionLineage("guardian", parent)
-            if (isinstance(native_source, dict) and "subagent" in native_source) or thread_source == "subagent" or parent:
+            if (
+                (isinstance(native_source, dict) and "subagent" in native_source)
+                or thread_source == "subagent"
+                or parent
+            ):
                 return SessionLineage("subagent", parent)
             if thread_source == "user" or (
                 isinstance(native_source, str) and native_source in {"cli", "vscode"} and thread_source is None
@@ -577,7 +588,9 @@ def tool_failure_status_and_text(value: Any) -> tuple[str | None, str]:
                 return status_text or nested_status, nested_text or raw
             return status_text, raw
         if isinstance(raw, list):
-            texts = [entry.get("text") for entry in raw if isinstance(entry, dict) and isinstance(entry.get("text"), str)]
+            texts = [
+                entry.get("text") for entry in raw if isinstance(entry, dict) and isinstance(entry.get("text"), str)
+            ]
             if texts:
                 return status_text, " ".join(texts)
     return status_text, ""

@@ -119,9 +119,13 @@ class SinceFilter:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Mine project-owned Codex and Claude Code transcript signals.")
-    parser.add_argument("--project", action="append", default=[], help="Project path to mine. Repeatable. Default: pwd -P")
     parser.add_argument(
-        "--historical-project", action="append", default=[],
+        "--project", action="append", default=[], help="Project path to mine. Repeatable. Default: pwd -P"
+    )
+    parser.add_argument(
+        "--historical-project",
+        action="append",
+        default=[],
         help="Additional explicit ownership root that may no longer exist. Repeatable",
     )
     parser.add_argument(
@@ -437,9 +441,7 @@ def prune_if_stale(path: Path, since: SinceFilter, counter: str, timestamp_count
     return False
 
 
-def codex_ownership(
-    metadata: list[Any], path: Path, projects: list[Path]
-) -> tuple[Ownership | None, set[Path]]:
+def codex_ownership(metadata: list[Any], path: Path, projects: list[Path]) -> tuple[Ownership | None, set[Path]]:
     session_cwds: list[Path] = []
     turn_cwds: list[Path] = []
     for item in metadata:
@@ -474,7 +476,11 @@ def codex_ownership(
             if isinstance(cwd, str) and cwd.strip():
                 turn_cwds.append(normalize_path(cwd))
     owners = {owner for cwd in turn_cwds if (owner := most_specific_project(cwd, projects)) is not None}
-    if not turn_cwds or len(owners) != 1 or any(most_specific_project(cwd, projects) not in owners for cwd in turn_cwds):
+    if (
+        not turn_cwds
+        or len(owners) != 1
+        or any(most_specific_project(cwd, projects) not in owners for cwd in turn_cwds)
+    ):
         return None, owners
     owner = next(iter(owners))
     canonical_cwds = set(turn_cwds)
@@ -558,9 +564,7 @@ def mine_claude_sessions(
         metadata = list(read_jsonl_head(path))
         session_id = claude_session_id(metadata, path)
         history_records = history.get(session_id, [])
-        ownership, ambiguous_projects = claude_ownership(
-            metadata, directory_candidates, history_records, projects
-        )
+        ownership, ambiguous_projects = claude_ownership(metadata, directory_candidates, history_records, projects)
         if ownership is None:
             mark_ambiguous(coverage, ambiguous_projects or directory_candidates)
             continue
@@ -571,9 +575,7 @@ def mine_claude_sessions(
         coverage[owner]["claude_candidates"] += 1
         coverage[owner]["structurally_matched"] += 1
 
-        history_messages = deduplicate_messages(
-            record["display"] for record in history_records if record["display"]
-        )
+        history_messages = deduplicate_messages(record["display"] for record in history_records if record["display"])
         if keywords and history_records and not count_keywords(history_messages, keywords):
             continue
         if not history_records and raw_prescan_eligible(keywords):
