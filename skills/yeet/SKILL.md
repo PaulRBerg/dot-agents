@@ -46,7 +46,8 @@ contribution.
 
 ## Workflows
 
-Each workflow is fully documented in its reference file. Load the appropriate reference based on user intent.
+Each workflow is fully documented in its reference file. Load the appropriate reference based on user intent. Then read
+the shared reference sections that the workflow names (`posting.md`, `writing.md`, `context.md`) in one parallel batch.
 
 | Workflow           | Trigger                                                                   | Reference                          |
 | ------------------ | ------------------------------------------------------------------------- | ---------------------------------- |

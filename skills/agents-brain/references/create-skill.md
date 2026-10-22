@@ -64,8 +64,9 @@ the completion report. If the helper cannot return a valid file, stop before wri
 specification directly or create its cache in a repository or skill installation.
 
 Use an available web tool to retrieve the current
-[Claude Code frontmatter reference](https://code.claude.com/docs/en/skills#frontmatter-reference). Confirm field shapes,
-naming rules, and progressive-disclosure conventions from both sources. Do not guess because the formats change.
+[Claude Code frontmatter reference](https://code.claude.com/docs/en/skills#frontmatter-reference). Do this in the same
+turn as the helper run, because the two retrievals are independent. Confirm field shapes, naming rules, and
+progressive-disclosure conventions from both sources. Do not guess because the formats change.
 
 ### 4. Define the Contract and Layout
 

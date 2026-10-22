@@ -106,6 +106,14 @@ esac
 mkdir -p "$(dirname "$output_dir")"
 mkdir "$output_dir"
 
+# Each preset decodes the source on its own, so run them concurrently. Wait in preset order
+# so a failure exits with that job's status and its stderr, as the serial loop did.
+pids=()
+destinations=()
+# Background jobs ignore SIGINT in a non-interactive shell, so forward interrupts to them.
+stop_jobs() { if [[ ${#pids[@]} -gt 0 ]]; then kill "${pids[@]}" 2>/dev/null || true; fi; }
+trap 'stop_jobs; exit 130' INT
+trap 'stop_jobs; exit 143' TERM
 for ((i=0; i<${#selected[@]}; i++)); do
   dimensions=${sizes[$i]}
   resize=$dimensions
@@ -116,6 +124,17 @@ for ((i=0; i<${#selected[@]}; i++)); do
   if [[ "$format" = jpg ]]; then
     magick_args+=(-alpha remove -alpha off -sampling-factor 4:4:4 -quality "$quality")
   fi
-  magick "${magick_args[@]}" -strip "$destination"
-  magick identify -format '%f %wx%h %b\n' "$destination"
+  magick "${magick_args[@]}" -strip "$destination" &
+  pids+=("$!")
+  destinations+=("$destination")
+done
+
+for ((i=0; i<${#pids[@]}; i++)); do
+  rc=0
+  wait "${pids[$i]}" || rc=$?
+  if [[ $rc -ne 0 ]]; then
+    if (( i + 1 < ${#pids[@]} )); then kill "${pids[@]:$((i + 1))}" 2>/dev/null || true; fi
+    exit "$rc"
+  fi
+  magick identify -format '%f %wx%h %b\n' "${destinations[$i]}"
 done

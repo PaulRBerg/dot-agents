@@ -65,9 +65,10 @@ model is the exception, for example routing tables, `model:` fields, and API par
 human-facing documentation.
 
 Before complex, long-running, multi-tool, or orchestration-heavy context work, resolve `scripts/fetch-guidance.sh`
-relative to this skill directory. For that work, run it once for `anthropic` and once for `openai`. Read both returned
-files completely. Run the helper and read the guides only when the task writes or changes prompts, skills, or other
-agent-facing prose. For other edits, do not run the helper or read either guide. In that case, report
+relative to this skill directory. For that work, run it once for `anthropic` and once for `openai`. The two runs are
+independent, so start both in the same turn, as parallel calls or one shell command. Read both returned files
+completely, in one parallel batch. Run the helper and read the guides only when the task writes or changes prompts,
+skills, or other agent-facing prose. For other edits, do not run the helper or read either guide. In that case, report
 `guides: skipped (no agent-facing prose)`.
 
 The helper retrieves Anthropic's
@@ -107,7 +108,8 @@ Before writing or changing agent-facing prose, read [references/asd-ste100.md](r
 Apply its STE-based profile during writing. Complete its meaning and style review before reporting completion. Preserve
 obligation strength, uncertainty, conditions, technical precision, and protected literal content. Honor the target's
 audience and any instructions to preserve accurate user-authored prose. The profile does not establish official ASD
-dictionary compliance.
+dictionary compliance. One complete read of that reference during the current run satisfies every later requirement in
+this skill to read it, unless the file changed since.
 
 ## Maintain Workflow
 

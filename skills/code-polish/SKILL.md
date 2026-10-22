@@ -58,7 +58,7 @@ changed code. Merge duplicates and apply the smallest defensible fix. Resolve am
 repository first. State routine assumptions. Ask only when the answer changes behavior or scope. While that item waits,
 continue independent in-scope fixes.
 
-Select every applicable profile and read it once:
+Select every applicable profile and read it once. Read all selected profiles together in one parallel turn:
 
 | Surface                                                       | Profile                 |
 | ------------------------------------------------------------- | ----------------------- |

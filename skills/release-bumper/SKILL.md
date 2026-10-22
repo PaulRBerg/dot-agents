@@ -89,7 +89,8 @@ tag. It does not judge importance, wording, or semantic category.
    skips. Stop before writes.
 8. For a stable release, read `references/common-changelog.md` and write consumer-facing entries from the bounded net
    diff. The agent owns entry selection, wording, importance, and category. Beta releases do not update changelogs.
-9. Update manifests and accepted dependency ranges. Validate every stable changelog with the helper.
+9. Update manifests and accepted dependency ranges. Validate every stable changelog with the helper, in a single shell
+   invocation that loops over the changelogs and reports each result.
 10. Format once using the repository's narrowest established command.
 11. Commit and tag dependencies before dependents. Use one commit and one annotated tag per package:
     - single-package commit: `docs: release <version>`.
@@ -98,11 +99,12 @@ tag. It does not judge importance, wording, or semantic category.
     - monorepo tag: follow observed package tag facts, defaulting to `<package-dir>@<version>`.
 12. Do not push. After success, recommend an exact `git push origin <tag>...` command containing only the tags created
     by this execution. Do not use `--tags`.
-13. Before the final report, inspect `.github/workflows/` for an active workflow that creates or publishes GitHub
-    releases from pushed tags. A filename such as `release.yml` is a hint, not proof. Use `$cli-gh` to run
-    `gh release list` read-only and check whether the repository has an established history of maintained GitHub
-    releases. If it does, offer to create a GitHub release for each new tag, pending the user's approval, according to
-    these rules:
+13. Before the final report, inspect `.github/workflows/` once for both the criteria in this step and the criteria in
+    step 14. For this step, look for an active workflow that creates or publishes GitHub releases from pushed tags. A
+    filename such as `release.yml` is a hint, not proof. Use `$cli-gh` to run `gh release list` read-only in the same
+    turn as that inspection and check whether the repository has an established history of maintained GitHub releases.
+    If it does, offer to create a GitHub release for each new tag, pending the user's approval, according to these
+    rules:
     - One to three tags and applicable release CI exists: do not offer manual release creation. In that case, the tag
       push should trigger CI.
     - No applicable release CI exists: offer to create one release per new tag with `gh release create` through
@@ -114,9 +116,9 @@ tag. It does not judge importance, wording, or semantic category.
     Never create a GitHub release without the user's approval. If release history cannot be verified, report it as
     unknown and do not offer the write.
 
-14. Before the final report, also inspect `.github/workflows/` for an active workflow that runs on pushed tags, sets
-    `id-token: write`, and runs `npm stage publish` (staged) or `npm publish` (direct). A filename is a hint, not proof.
-    If such a workflow exists:
+14. Before the final report, also use the single `.github/workflows/` inspection from step 13 to look for an active
+    workflow that runs on pushed tags, sets `id-token: write`, and runs `npm stage publish` (staged) or `npm publish`
+    (direct). A filename is a hint, not proof. If such a workflow exists:
     - Report that pushing the recommended tags triggers npm publication.
     - For staged publishing, report that each version stays unpublished until the maintainer approves it with 2FA. The
       maintainer can run `npm stage approve <stage-id>` or use the Staged Packages tab on npmjs.com.

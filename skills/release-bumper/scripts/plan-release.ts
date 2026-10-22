@@ -307,6 +307,34 @@ function safeRealpath(value: string): string {
 }
 
 function findPackageDirs(root: string): string[] {
+  return findGitPackageDirs(root) ?? walkPackageDirs(root);
+}
+
+function findGitPackageDirs(root: string): string[] | null {
+  if (ignoredDirs.has(path.basename(root))) return [];
+  let output: string;
+  try {
+    output = execFileSync(
+      "git",
+      ["ls-files", "-z", "-co", "--exclude-standard", "--", "package.json", "**/package.json"],
+      { cwd: root, encoding: "utf8", maxBuffer: 256 * 1024 * 1024, stdio: ["ignore", "pipe", "pipe"] },
+    );
+  } catch {
+    return null;
+  }
+
+  const dirs = new Set<string>();
+  for (const file of output.split("\0")) {
+    if (!file) continue;
+    const segments = file.split("/");
+    if (segments.slice(0, -1).some((segment) => ignoredDirs.has(segment))) continue;
+    const dir = path.join(root, ...segments.slice(0, -1));
+    if (fs.existsSync(path.join(dir, "package.json"))) dirs.add(dir);
+  }
+  return [...dirs];
+}
+
+function walkPackageDirs(root: string): string[] {
   const results: string[] = [];
   walk(root);
   return results;

@@ -18,7 +18,8 @@ Recommend the current option that best fits the user's actual constraints, backe
    repository. Ask only when an unknown would materially change the recommendation.
 2. Check whether the standard library, platform, or an already-installed tool is sufficient before adding a dependency.
 3. Search current authoritative sources. Read [references/tool-finder.md](references/tool-finder.md) only for the
-   relevant ecosystem's source routing, fallback criteria, install conventions, and red flags.
+   relevant ecosystem's source routing, fallback criteria, install conventions, and red flags. Issue independent lookups
+   for different candidates (registry, repository, advisories, changelog) together in one turn.
 4. Compare the viable options against the user's criteria. Use adoption, maintenance, security, documentation,
    performance, operational cost, and ecosystem fit only where they affect this decision. Do not force fixed weights or
    a fixed number of candidates.

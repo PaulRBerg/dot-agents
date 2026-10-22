@@ -86,7 +86,8 @@ unwired check, an oversized steering file, or a no-op instruction. Verify them d
 
 ## 5. Inspect the Environment
 
-Before you propose a change, read the current mechanism that the change replaces or extends:
+This step does not depend on step 4. You may run it in parallel with step 4, for example in the same turn. Before you
+propose a change, read the current mechanism that the change replaces or extends:
 
 - Steering files: the global, repository, and nested `AGENTS.md` or `CLAUDE.md` files that applied to the sessions.
 - Check commands: `justfile`, `package.json` scripts, `Makefile`, pre-commit hooks, and CI workflows.

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import datetime as dt
+import functools
+import itertools
 import json
 import os
 import re
@@ -57,6 +59,7 @@ MAX_FULL_SESSION_BYTES = 2_000_000
 SESSION_HEAD_RECORDS = 250
 SESSION_TAIL_RECORDS = 750
 METADATA_HEAD_RECORDS = 100
+CODEX_HEAD_MARKERS = (b'"session_meta"', b'"turn_context"')
 TAIL_TIMESTAMP_BYTES = 262_144
 TIMESTAMP_KEYS = ("timestamp", "created_at", "updated_at")
 
@@ -256,6 +259,23 @@ def read_jsonl_head(path: Path) -> Iterable[Any]:
         with path.open("r", encoding="utf-8", errors="replace") as handle:
             for _, line in zip(range(METADATA_HEAD_RECORDS), handle):
                 item = parse_jsonl_line(line)
+                if item is not None:
+                    yield item
+    except OSError:
+        return
+
+
+def read_codex_metadata_head(path: Path) -> Iterable[Any]:
+    """Yield session_meta and turn_context records from the head window.
+
+    Same window and order as read_jsonl_head; skips json.loads for lines that cannot be those records.
+    """
+    try:
+        with path.open("rb") as handle:
+            for line in itertools.islice(handle, METADATA_HEAD_RECORDS):
+                if not any(marker in line for marker in CODEX_HEAD_MARKERS):
+                    continue
+                item = parse_jsonl_line(line.decode("utf-8", errors="replace"))
                 if item is not None:
                     yield item
     except OSError:
@@ -568,6 +588,7 @@ def is_context_envelope(text: str) -> bool:
     return any(stripped.startswith(prefix) for prefix in CONTEXT_PREFIXES)
 
 
+@functools.lru_cache(maxsize=4096)
 def normalize_path(value: str) -> Path:
     return Path(os.path.expanduser(value)).resolve(strict=False)
 

@@ -61,9 +61,9 @@ def worktree_status(root: Path) -> dict[str, list[str]]:
     return statuses
 
 
-def repository_paths(root: Path) -> tuple[set[str], set[str]]:
+def repository_paths(root: Path, status: dict[str, list[str]]) -> tuple[set[str], set[str]]:
     tracked = set(nul_paths(git(root, "ls-files", "-z")))
-    untracked = set(nul_paths(git(root, "ls-files", "--others", "--exclude-standard", "-z")))
+    untracked = {path for path, codes in status.items() if "??" in codes}
     return tracked, untracked
 
 
@@ -237,8 +237,8 @@ def init_command(args: argparse.Namespace) -> dict[str, Any]:
     ledger = ensure_external_ledger(root, args.ledger)
     if ledger.exists():
         raise LedgerError(f"ledger already exists: {ledger}")
-    tracked, untracked = repository_paths(root)
     status = worktree_status(root)
+    tracked, untracked = repository_paths(root, status)
     paths = sorted(tracked | untracked)
     payload = {
         "schemaVersion": 1,
@@ -314,8 +314,8 @@ def refresh_command(args: argparse.Namespace) -> dict[str, Any]:
     root = repo_root(Path(payload["repoRoot"]))
     if str(root) != payload["repoRoot"]:
         raise LedgerError(f"repository root changed: {root}")
-    tracked, untracked = repository_paths(root)
     status = worktree_status(root)
+    tracked, untracked = repository_paths(root, status)
     current_paths = tracked | untracked
     by_path = {item["path"]: item for item in payload["files"]}
     changed = False

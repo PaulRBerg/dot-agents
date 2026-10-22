@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import sys
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
 
@@ -162,17 +163,24 @@ def main() -> int:
         "encrypted": encrypted,
         "page_count": page_count,
     }
-    integrity = run(["qpdf", "--check", str(pdf_path)])
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        integrity_job = pool.submit(run, ["qpdf", "--check", str(pdf_path)])
+        detailed_job = pool.submit(
+            run, ["pdfinfo", "-f", "1", "-l", str(page_count), "-box", str(pdf_path)]
+        )
+        text_job = pool.submit(run, ["pdftotext", "-layout", str(pdf_path), "-"])
+        images_job = pool.submit(run, ["pdfimages", "-list", str(pdf_path)])
+    integrity = integrity_job.result()
     if integrity.returncode not in (0, 3):
         return fail("integrity_failed", "qpdf rejected the input", pdf_path)
 
-    detailed = run(["pdfinfo", "-f", "1", "-l", str(page_count), "-box", str(pdf_path)])
+    detailed = detailed_job.result()
     if detailed.returncode != 0:
         return fail("metadata_failed", "pdfinfo could not inspect page geometry", pdf_path)
-    text_result = run(["pdftotext", "-layout", str(pdf_path), "-"])
+    text_result = text_job.result()
     if text_result.returncode != 0:
         return fail("text_failed", "pdftotext could not inspect text coverage", pdf_path)
-    images_result = run(["pdfimages", "-list", str(pdf_path)])
+    images_result = images_job.result()
     if images_result.returncode != 0:
         return fail("images_failed", "pdfimages could not inspect image coverage", pdf_path)
 

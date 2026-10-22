@@ -156,8 +156,8 @@ def init_command(args: argparse.Namespace) -> dict[str, Any]:
     root = repo_root(args.root.resolve())
     scopes = normalize_scopes(root, args.scopes + args.scope)
     tracked = set(nul_paths(git(root, "ls-files", "-z")))
-    untracked = set(nul_paths(git(root, "ls-files", "--others", "--exclude-standard", "-z")))
     status = preexisting_status(root)
+    untracked = {path for path, codes in status.items() if "??" in codes}
     paths = sorted(path for path in tracked | untracked if in_scope(path, scopes))
     empty_scopes = [scope for scope in scopes if not any(in_scope(path, [scope]) for path in paths)]
     if empty_scopes:

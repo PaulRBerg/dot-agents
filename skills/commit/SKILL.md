@@ -99,6 +99,8 @@ ai-commit prepare [--all | --staged] [--natural | --conventional] --diff full \
   `git status` or `git status --porcelain` output, which can include another agent's untracked or modified files.
   Default mode requires every path edited in this session. For a rename, include both old and new file paths, including
   case-only file or directory renames.
+- The formatter run, the `ai-coord touched` check below, and any `gh pr view` lookup of the PR head repository and
+  branch are independent. Issue them together in one turn. The formatter must still finish before `prepare`.
 - Before default-mode preparation, run `ai-coord touched` when available and reconcile its output against the session
   path list. For that cross-check, add missed session-edited paths. Ignore paths this session did not semantically
   change. Touched paths are best-effort evidence, not authority. When the command is unavailable or the session is

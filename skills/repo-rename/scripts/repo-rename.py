@@ -82,6 +82,29 @@ def count_pairs(path: Path, pairs: tuple[tuple[bytes, bytes], ...]) -> int:
     return sum(data.count(old) for old, _ in pairs)
 
 
+def prefilter(files: list[Path], roots: list[Path], pairs: tuple[tuple[bytes, bytes], ...]) -> list[Path]:
+    """Narrow files to those containing any old needle, using ripgrep when available.
+
+    Returns files unchanged when ripgrep is missing or fails, so the caller's full scan stays authoritative.
+    """
+    rg = shutil.which("rg")
+    searchable = [str(root) for root in roots if root.exists() and not root.is_symlink()]
+    if not files or rg is None or not searchable:
+        return files
+    command: list[str | bytes] = [rg, "--no-config", "-l", "-0", "-F", "-a", "--no-ignore", "--hidden", "-E", "none"]
+    for old, _ in pairs:
+        command += ["-e", old]
+    command += ["--", *searchable]
+    try:
+        result = subprocess.run(command, check=False, capture_output=True)
+    except OSError:
+        return files
+    if result.returncode not in (0, 1):
+        return files
+    matched = {os.fsdecode(name) for name in result.stdout.split(b"\0") if name}
+    return [path for path in files if str(path) in matched]
+
+
 def continuity_paths() -> tuple[Path, Path]:
     home = Path.home()
     return (
@@ -96,7 +119,8 @@ def collect_replacements(
     claude_projects, codex_home = continuity_paths()
     path_pair = ((str(old_root).encode(), str(new_root).encode()),)
     replacements = []
-    for path in readable_files(codex_home / "sessions"):
+    sessions = codex_home / "sessions"
+    for path in prefilter(readable_files(sessions), [sessions], path_pair):
         occurrences = count_pairs(path, path_pair)
         if occurrences:
             replacements.append(Replacement(path, path_pair, occurrences))
@@ -105,9 +129,10 @@ def collect_replacements(
     claude_active = project.is_dir() and next(project.iterdir(), None) is not None
     if claude_active or replacements:
         candidates = set()
-        for root in (claude_projects, Path.home() / "claude/projects", codex_home / "config.toml"):
+        roots = [claude_projects, Path.home() / "claude/projects", codex_home / "config.toml"]
+        for root in roots:
             candidates.update(readable_files(root))
-        for path in candidates:
+        for path in prefilter(list(candidates), roots, path_pair):
             occurrences = count_pairs(path, path_pair)
             if occurrences:
                 replacements.append(Replacement(path, path_pair, occurrences))

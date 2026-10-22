@@ -18,6 +18,9 @@ that will be published.
 
 Use `repository.defaultBranchRef.name` as the default base branch unless args specify a base.
 
+The existing-PR check and the CODEOWNERS lookup do not depend on the repository context. Run them in the same turn as
+the context call. Only the base fetch depends on `defaultBranchRef`.
+
 ## Parse Arguments Naturally
 
 - "draft" or "--draft" → draft mode

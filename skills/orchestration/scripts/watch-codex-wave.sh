@@ -38,7 +38,7 @@ def emit(record: dict) -> None:
 
 agents: list[dict] = []
 digest_seconds = 300.0
-poll_seconds = 1.0
+poll_seconds = 0.2
 no_sentinel_grace_seconds = 120.0
 arguments = sys.argv[1:]
 index = 0

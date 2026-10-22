@@ -109,14 +109,15 @@ Investigate only the key or feature relevant to the request. Do not turn this pr
 
 ## Route Codex hook, app-server, and trust questions
 
-For Codex hooks, app-server, managed hooks, or hook-trust operations, first fetch the relevant official pages:
+For Codex hooks, app-server, managed hooks, or hook-trust operations, fetch the relevant official pages:
 
 - `https://developers.openai.com/codex/hooks`
 - `https://developers.openai.com/codex/app-server`
 
-Then read [the version-aware hooks reference](references/codex-hooks.md). Use its local protocol and config details only
-when the installed client is explicitly verified as the version named there. Keep official behavior and local
-observations distinct in the answer. Do not turn a local implementation detail into a product guarantee.
+Read [the version-aware hooks reference](references/codex-hooks.md) in the same parallel batch, because the fetches and
+the read are independent. Use its local protocol and config details only when the installed client is explicitly
+verified as the version named there. Keep official behavior and local observations distinct in the answer. Do not turn a
+local implementation detail into a product guarantee.
 
 ## Bound failures
 

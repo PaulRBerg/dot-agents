@@ -39,6 +39,7 @@ from transcript_common import (
     normalize_path,
     parse_utc_timestamp,
     raw_prescan_eligible,
+    read_codex_metadata_head,
     read_jsonl,
     read_jsonl_head,
     read_jsonl_sampled,
@@ -321,7 +322,7 @@ def mine_codex_sessions(
     sessions: list[SessionSummary] = []
     current_id = os.environ.get("CODEX_THREAD_ID", "").strip()
     for path in paths:
-        metadata = list(read_jsonl_head(path))
+        metadata = list(read_codex_metadata_head(path))
         ownership, ambiguous_projects = codex_ownership(metadata, path, projects)
         mark_ambiguous(coverage, ambiguous_projects)
         if ownership is None:
@@ -804,9 +805,13 @@ def apply_excerpt_budget(sessions: list[SessionSummary], max_bytes: int) -> bool
 def mark_content_only_mentions(
     records: list[Any], owner: Path, projects: list[Path], coverage: dict[Path, dict[str, Any]]
 ) -> None:
-    strings = list(extract_strings(records))
+    strings: list[str] | None = None
     for project in projects:
-        if project != owner and any(str(project) in text for text in strings):
+        if project == owner:
+            continue
+        if strings is None:
+            strings = list(extract_strings(records))
+        if any(str(project) in text for text in strings):
             coverage[project]["content_only_project_mentions_ignored"] += 1
 
 

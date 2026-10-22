@@ -41,7 +41,8 @@ Immediately and before anything else:
 ## Worker Wind-Down
 
 Enumerate active subagents with the host's agent listing, then message every messageable worker — in Claude Code through
-SendMessage, in Codex CLI through the native subagent messaging tool — with a wrap-up order:
+SendMessage, in Codex CLI through the native subagent messaging tool — with a wrap-up order. Send all messages in one
+turn as parallel calls:
 
 - Finish the smallest safe unit: complete the current edit, leave no file half-written, start nothing new.
 - Skip remaining validation; report what ran and what was skipped instead.
@@ -65,9 +66,12 @@ problem becomes remaining work in the handoff.
 
 ## Secure
 
-Inventory the working tree with `git status --short` and `git diff --stat`, and map every change to a workstream using
-the wrap-up reports. Classify each workstream as completed (edits done and validated), partial (edits or validation
-unfinished), or untouched.
+While the worker wind-down wait is open, you may inventory and commit this session's own finished work under the commit
+policy below. Commit no worker-owned scope before that worker's report arrives.
+
+Inventory the working tree with `git status --short` and `git diff --stat` in a single command, and map every change to
+a workstream using the wrap-up reports. Classify each workstream as completed (edits done and validated), partial (edits
+or validation unfinished), or untouched.
 
 Exclude every `active-unsettled` scope from validation, staging, and commits. Preserve its current coordination claims
 and avoid overlapping writes until the worker settles. A snapshot may describe visible paths only as provisional

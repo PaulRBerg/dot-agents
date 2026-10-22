@@ -39,8 +39,9 @@ transcript. Treat the task as a scope selector: retain only evidence needed for 
 
 Resolve discoverable facts before writing. While preserving user and concurrent-agent changes, inspect every involved
 repository's instructions, relevant task surface, and working-tree state, and distinguish completed work, partial work,
-and remaining work. If the task is already complete, report the evidence and create nothing. Ask only when an unresolved
-choice materially changes scope, safety, execution approach, verification, repository membership, or handoff placement.
+and remaining work. Run these reads for multiple involved repositories in one parallel batch. If the task is already
+complete, report the evidence and create nothing. Ask only when an unresolved choice materially changes scope, safety,
+execution approach, verification, repository membership, or handoff placement.
 
 Classify the handoff from the user's requested outcome, expected evidence, and authorized actions. Reason about the
 task. Do not keyword-match it. Select exactly one lowercase category:
@@ -107,12 +108,12 @@ actions still awaiting approval so the receiving session can continue authorized
 questions. A handoff does not itself grant approval or override the receiving host's restrictions.
 
 Add a `## Execution approach` section. For a simple task, direct the receiving session to execute this one isolated
-handoff without invoking an in-session handoff skill. For a complex task, expand and canonicalize
-`~/.agents/skills/orchestration`, verify that `<resolved-directory>/SKILL.md` is readable, and write that resolved
-absolute directory path into the execution approach. Explicitly direct the receiving session to enter Plan mode, load
-the skill from that path, and use this file as the decision-complete task specification. Do not name only
-`$orchestration`. Let orchestration choose the smallest effective subagent team instead of prescribing its manifest
-here.
+handoff without invoking an in-session handoff skill. For a complex task, write the resolved absolute directory path of
+`~/.agents/skills/orchestration` into the execution approach. Reuse the earlier resolution and readable `SKILL.md`
+check. Resolve and verify it again only if you have not done so or the location changed. Explicitly direct the receiving
+session to enter Plan mode, load the skill from that path, and use this file as the decision-complete task
+specification. Do not name only `$orchestration`. Let orchestration choose the smallest effective subagent team instead
+of prescribing its manifest here.
 
 For that complex task, retain the resolved directory for `--before-work-skill` when validating and publishing so the
 generated Codex prompt also names the skill and directs the receiving session to load it before any task work. Stop
