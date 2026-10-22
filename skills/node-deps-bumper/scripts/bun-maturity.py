@@ -30,7 +30,7 @@ def main() -> None:
             # Configs can contain registry credentials; do not echo parser input.
             raise ValueError(f"cannot read Bun configuration: {config}") from None
         if not isinstance(install, dict):
-            raise ValueError(f"expected an install table in {config}")
+            raise TypeError(f"expected an install table in {config}")
         policy.update(install)
 
     age = policy.get("minimumReleaseAge", 0)
@@ -52,6 +52,6 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
-    except ValueError as error:
+    except (TypeError, ValueError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         sys.exit(1)

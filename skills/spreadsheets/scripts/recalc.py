@@ -240,7 +240,7 @@ def main() -> None:
 
     try:
         audit_result = audit(workbook)
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 - any audit failure must become a JSON error report
         report({"status": "error", "error": f"could not audit workbook: {exc}"}, code=1)
 
     if audit_result["status"] == "recalc_incomplete":

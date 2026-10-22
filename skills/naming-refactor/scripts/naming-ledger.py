@@ -24,7 +24,7 @@ class LedgerError(ValueError):
 
 def git(root: Path, *args: str) -> bytes:
     try:
-        result = subprocess.run(["git", *args], cwd=root, capture_output=True)
+        result = subprocess.run(["git", *args], cwd=root, check=False, capture_output=True)
     except OSError as exc:
         raise LedgerError(f"cannot run git: {exc}") from exc
     if result.returncode:

@@ -66,6 +66,7 @@ def load_yaml_text(args: argparse.Namespace) -> str:
     try:
         result = subprocess.run(
             ["gh", "api", f"repos/{args.repo}/contents/.github/ISSUE_TEMPLATE/{args.template}"],
+            check=False,
             text=True,
             capture_output=True,
         )

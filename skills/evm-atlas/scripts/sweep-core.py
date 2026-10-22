@@ -37,7 +37,7 @@ def iso_time(value: Any, field: str) -> dt.datetime:
     if not isinstance(value, str):
         raise SweepError(f"{field} must be an ISO-8601 string")
     try:
-        parsed = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+        parsed = dt.datetime.fromisoformat(value)
     except ValueError as exc:
         raise SweepError(f"{field} must be an ISO-8601 string") from exc
     if parsed.tzinfo is None:
