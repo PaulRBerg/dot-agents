@@ -1,8 +1,8 @@
 # Jev Configuration Routing
 
 Before each new research or implementation brief launches, use this workflow to select its worker configuration. The
-parent retains the worker family selected in `SKILL.md`. Jev chooses one allowed model and effort pair. User
-instructions take precedence over this workflow.
+parent retains the worker family selected in `SKILL.md`. Jev rates the brief against an ordered ladder of allowed model
+and effort pairs. User instructions take precedence over this workflow.
 
 ## Allowed Candidates and Local Fallback
 
@@ -40,6 +40,28 @@ If only one configuration remains, skip the network request. Use it directly and
 For either Claude route's fallback, preserve configured effort unless the user specified one. Keep CLI timeouts under
 the adapter's local rules.
 
+## Candidate Order and Descriptions
+
+List candidates from the cheapest pair to the strongest pair, in the table order above. Jev rates the brief on that
+ladder, and the acceptance rule treats neighbouring positions as interchangeable. A wrong order breaks both.
+
+Give each candidate the description below. Replace a description only when a user constraint changes what the pair is
+for. Thin or overlapping descriptions, such as "bounded survey" against "bounded survey, more careful", leave Jev
+nothing to separate the tiers with. When effort is `inherited`, omit the effort phrase.
+
+| Pair          | Description                                                                                                                                                     |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Luna/high     | Fast small model at deep effort. Bounded, well-specified routine work: lookups, mechanical edits, focused tests, short summaries.                               |
+| Sol/medium    | Capable mid-tier model at default effort. Moderate work: several files, some ambiguity, routine debugging, careful surveys across sources.                      |
+| Sol/high      | Capable mid-tier model at deep effort. Involved work that needs judgment: unfamiliar subsystems, design trade-offs, cross-cutting changes, noisy sources.       |
+| Sol/xhigh     | Capable mid-tier model at maximum effort. Hard, ambiguous work with high error cost: interacting invariants, concurrency, strict verification.                  |
+| Astra/xhigh   | Strongest model at maximum effort. The hardest implementation work: broad blast radius, many interacting invariants, mistakes that are expensive to undo.       |
+| Sonnet/medium | Fast mid-tier model at default effort. Bounded, well-specified work in familiar territory: lookups, mechanical edits, focused tests, summaries of a few files.  |
+| Sonnet/high   | Fast mid-tier model at deep effort. Moderate work that needs care but not frontier judgment: several files, some ambiguity, routine debugging, careful surveys. |
+| Opus/medium   | Strongest model at default effort. Involved work that needs strong judgment: unfamiliar subsystems, design trade-offs, cross-cutting changes, noisy sources.    |
+| Opus/high     | Strongest model at deep effort. Hard, ambiguous work with high error cost: interacting invariants, concurrency, security-sensitive logic, deep investigation.   |
+| Opus/xhigh    | Strongest model at maximum effort. The hardest implementation work: broad blast radius, many interacting invariants, mistakes that are expensive to undo.       |
+
 ## Request
 
 Before sending data to Vercel, review the task summary and context for external disclosure. Remove secrets, unrelated
@@ -48,53 +70,69 @@ the brief's outcome, complexity, authority boundary, verification needs, and rel
 send repository contents or the full parent conversation by default.
 
 Resolve `../scripts/select-model.py` relative to this reference. Run it with Python 3 through the host's available
-shell. Use the target project's Python command convention when present. Supply a JSON object on stdin:
+shell. Use the target project's Python command convention when present. Supply a JSON object on stdin, with candidates
+in ladder order:
 
 ```json
 {
   "task": "Correct a bounded parser bug and add a focused regression test.",
   "context": "Implementation. Native Codex. Two files. No external writes.",
   "candidates": [
-    { "id": "luna_high", "model": "gpt-6-luna", "effort": "high", "description": "Bounded routine work." },
+    {
+      "id": "luna_high",
+      "model": "gpt-6-luna",
+      "effort": "high",
+      "description": "Fast small model at deep effort. Bounded, well-specified routine work: lookups, mechanical edits, focused tests, short summaries."
+    },
     {
       "id": "sol_medium",
       "model": "gpt-6.1-sol",
       "effort": "medium",
-      "description": "Involved work across unfamiliar code."
+      "description": "Capable mid-tier model at default effort. Moderate work: several files, some ambiguity, routine debugging, careful surveys across sources."
     }
   ]
 }
 ```
 
 Read `AI_GATEWAY_API_KEY` from the environment. Do not read credential files, print the key, or write it into artifacts.
-The helper makes one POST to `https://ai-gateway.vercel.sh/v1/evaluate` with model `typesafe-ai/jev`. It uses a single
-choice question for the complete configuration. It does not use a chat endpoint. Use the
+The helper makes one POST to `https://ai-gateway.vercel.sh/v1/evaluate` with model `typesafe-ai/jev`. It asks a single
+[Score question](https://docs.typesafe.ai/api) whose ordered levels are the candidates, so the answer is a probability
+per ladder position. It does not use a chat endpoint. Use the
 [Vercel Decision HTTP API](https://vercel.com/docs/ai-gateway/modalities/decision#http-api) request format. Its
 [native decision response](https://vercel.com/docs/ai-gateway/models-and-providers/decision-fallbacks#use-the-http-decision-api)
 includes provider confidence. It disables redirects and environment-configured proxies. It bounds the response to 64 KiB
 and the complete request to eight seconds. If the host cannot enforce that deadline, the helper returns fallback without
-sending the request.
+sending the request. The helper accepts at most ten candidates, which is Jev's level limit.
 
 ## Accept or Fall Back
 
 Accept only `status: selected` with an exact allowed candidate ID and its unchanged model and effort. The helper
-requires a complete finite probability distribution, approximately summing to one, and a unique maximum matching that
-ID. It checks [Jev's choice confidence formula](https://docs.typesafe.ai/confidence#choice),
-`(n * max(probabilities) - 1) / (n - 1)`, against the returned distribution.
+requires a complete finite probability distribution over every ladder position, approximately summing to one, with a
+unique maximum. The selected candidate is that maximum. It recomputes
+[Jev's Score confidence formula](https://docs.typesafe.ai/confidence#score), which discounts probability on distant
+levels more than probability on neighbouring levels, and checks the returned confidence against it.
 
-Observed live responses and [Jev's published examples](https://docs.typesafe.ai/api#choice-answer) are consistent with
-independent rounding to hundredths. The local tolerance permits this rounding without assuming guaranteed wire
-precision. Under this rounding, each field can differ by `0.005` from its unrounded value. For `n` candidates, the
-helper permits a distribution sum error of `n * 0.005`.
+Observed live responses and [Jev's published examples](https://docs.typesafe.ai/api) are consistent with independent
+rounding to hundredths. The local tolerance permits this rounding without assuming guaranteed wire precision. Under this
+rounding, each probability can differ by `0.005` from its unrounded value. For `n` levels, the helper permits a
+distribution sum error of `n * 0.005`. For the confidence check, it scales the probability rounding by the total level
+distance over the uniform spread and adds `0.005` for confidence rounding. A small floating-point allowance covers
+numerical representation error. The helper does not normalize probabilities or raise confidence.
 
-The formula scales probability error by `n / (n - 1)`. Including confidence rounding, the permitted confidence error is
-`0.005 * (1 + n / (n - 1))`. A small floating-point allowance covers numerical representation error. The helper does not
-normalize probabilities or raise confidence.
+The helper accepts a selection under either rule:
 
-Both provider confidence and recomputed confidence must reach `0.6`. This confidence threshold is not a winning
-probability threshold. With two candidates, confidence `0.6` means winning probability `0.8`. This initial local policy
-is not a calibrated accuracy guarantee. A `low_confidence` result is an expected abstention, not an API malfunction. The
-parent must still reject a selection that conflicts with the task, constraints, or verified runtime support.
+- `rule: confidence`. Both provider confidence and recomputed confidence reach `0.6`.
+- `rule: adjacent_tiers`. The runner-up level is a neighbour of the maximum, no distant level ties with the runner-up,
+  and the two levels hold at least `0.8` of the probability together. A split between neighbouring tiers means either
+  tier would do, so the helper takes the more probable one. With two candidates, every split is adjacent, so only a tie
+  abstains.
+
+The result reports the rule and the provider confidence. An `adjacent_tiers` result also reports `top_two_mass`. On 81
+recorded briefs, the earlier unordered Choice question with a `0.6` confidence floor accepted 34 percent. The Score
+ladder with the standard descriptions and the adjacency rule accepted 93 percent, and still abstained on every split
+between distant tiers. These rates are a local measurement, not a calibrated accuracy guarantee. A `low_confidence`
+result is an expected abstention, not an API malfunction. The parent must still reject a selection that conflicts with
+the task, constraints, or verified runtime support.
 
 On any failure, uncertainty, dubious selection, unavailable Python or shell, missing key, malformed output, or nonzero
 helper exit, use the local fallback. Do not retry, ask for approval, stop the handoff, or substitute a worker family
@@ -105,9 +143,10 @@ code. A `low_confidence` result includes provider `confidence` and the `threshol
 `recomputed_confidence` when only that value falls below the threshold. Never expose raw API errors, response bodies, or
 credentials.
 
-Record `selection: jev; confidence: <value>` or `selection: fallback; reason: <safe code>` in the manifest brief. For a
-parent rejection, use `parent_rejected`. Include optional safe `detail` codes and numeric confidence diagnostics when
-present. Keep this record concise.
+Record `selection: jev; rule: <rule>; confidence: <value>` or `selection: fallback; reason: <safe code>` in the manifest
+brief. For a parent rejection, use `parent_rejected`. Include optional safe `detail` codes and numeric confidence
+diagnostics when present. Keep this record concise. Do not explain an abstention in user-facing prose. The local
+fallback is the normal path, not an incident.
 
 Continue through the selected adapter's normal launch mechanics. Reuse the selected configuration for same-agent
 continuation. Route each genuinely new brief again.
