@@ -59,7 +59,10 @@ Use these when product context does not indicate otherwise:
 
 - controls beside a live preview, with prompt output below.
 - a desktop-browser layout. Do not implement or inspect responsive/mobile behavior unless requested.
-- a polished light theme, system UI font, monospace code/values, minimal chrome.
+- one polished theme that matches the system appearance: light when the system uses light mode, dark otherwise. Do not
+  add a second theme, a theme toggle, or a `prefers-color-scheme` variant. On macOS,
+  `defaults read -g AppleInterfaceStyle` prints `Dark` in dark mode and fails in light mode.
+- system UI font, monospace code/values, minimal chrome.
 - sensible non-empty initial state and 3–5 cohesive named presets.
 - one state object, one update path, and immediate preview/prompt refresh.
 - controls grouped by concern, with advanced controls collapsed.

@@ -149,6 +149,9 @@ Organize nodes in horizontal bands by layer, with consistent spacing.
 
 ## Layer color palette (light theme)
 
+These fills suit a light theme. When the system uses dark mode, use dark tints of the same hues that keep node text
+readable.
+
 | Layer       | Node fill            | Description                          |
 | ----------- | -------------------- | ------------------------------------ |
 | Client/UI   | #dbeafe (blue-100)   | React components, hooks, pages       |
