@@ -1,14 +1,15 @@
 ---
 argument-hint:
   maintain [path] [target ...] [--root-only] [--preserve] [--minimal] [--thorough|--full] [--dry-run] [--force] |
-  create-skill [skill-name]
+  create-skill [skill-name] | create-agents-md [path] [--root-only] [--dry-run] [--force]
 compatibility:
   Requires curl and a writable user cache directory. Network access populates or refreshes the official Anthropic and
   OpenAI prompting guides and the agentskills.io specification.
 name: agents-brain
 description:
-  Maintain README.md, AGENTS.md/CLAUDE.md, skills, and repo context. Create, scaffold, or initialize project-local agent
-  skills. Use task evidence to delete obsolete skills, merge overlapping skills, and capture recurring workflows.
+  Maintain README.md, AGENTS.md/CLAUDE.md, skills, and repo context. Create, scaffold, or initialize AGENTS.md files and
+  project-local agent skills. Use task evidence to delete obsolete skills, merge overlapping skills, and capture
+  recurring workflows.
 ---
 
 # Agents Brain
@@ -26,9 +27,12 @@ unchanged decision. Preserve host restrictions and required destructive-action a
 - `create-skill [skill-name]`: Create a project-local skill from an explicit request. Read
   [references/create-skill.md](references/create-skill.md). Apply its repository catalog guard before scaffolding.
   Explicit creation does not require recurring-use evidence.
+- `create-agents-md [path] [--root-only] [--dry-run] [--force]`: Initialize AGENTS.md files for a scope from an explicit
+  request. Create the scope-root file and judge each subtree for a nested file. Read
+  [references/create-agents-md.md](references/create-agents-md.md).
 
-Choose the route before discovery or writes. Both routes use the prompting and STE requirements below. The maintenance
-sections govern `maintain`. The creation reference owns that route's scope, workflow, validation, and report.
+Choose the route before discovery or writes. All routes use the prompting and STE requirements below. The maintenance
+sections govern `maintain`. Each creation reference owns its route's scope, workflow, validation, and report.
 
 ## Maintenance Scope
 
@@ -179,7 +183,7 @@ flags. Continue only when they cannot change scope, safety, or write behavior.
 
 ## Repository Guard Rail
 
-For `maintain`, run before discovery or writes:
+For `maintain` and `create-agents-md`, run before discovery or writes:
 
 ```sh
 cwd="$(pwd -P)"
@@ -307,5 +311,7 @@ detail. Stop once the selected targets meet the completion bar.
   validation requirements. Run `scripts/fetch-agentskills-spec.sh [--refresh]` through Bash to obtain the absolute
   cached specification path. The default reuses a valid cache for 24 hours, then revalidates it. The creation reference
   owns refresh, stale-cache, and failure rules.
+- Initializing AGENTS.md files: read [references/create-agents-md.md](references/create-agents-md.md) for scope,
+  nested-file decisions, and the report.
 - Before choosing a new skill's contract or layout: read
   [references/writing-great-skills.md](references/writing-great-skills.md) for authoring, routing, and execution rules.
