@@ -1,7 +1,7 @@
 ---
 compatibility:
-  Requires PRB's attach-only Chrome DevTools MCP wrapper, bundled as scripts/chrome-devtools-mcp.sh, and an existing
-  remote-debugging Chromium browser.
+  Requires PRB's attach-only Chrome DevTools MCP wrapper, bundled as scripts/chrome-devtools-mcp.sh, and a
+  remote-debugging Chromium browser. On macOS, scripts/ensure-chromium.sh launches that browser when it is closed.
 name: chromium-browser
 description:
   Use Chrome DevTools through PRB's shared attach-only Chromium browser for browsing, debugging, automation, visual
@@ -23,8 +23,11 @@ If the user selects another available browser integration, follow its tool contr
 - Treat the bundled `scripts/chrome-devtools-mcp.sh` wrapper and the tools exposed in the current session as
   authoritative. The wrapper runs the globally installed `chrome-devtools-mcp` executable and sets flags, logging, and
   browser attachment. Do not run the MCP package directly.
-- The MCP attaches to an existing remote-debugging browser. Never launch a fallback browser or create another profile
-  when attachment fails.
+- The MCP attaches to an existing remote-debugging browser and does not launch one.
+- If an MCP call cannot attach to the browser, run the bundled `scripts/ensure-chromium.sh` once. The helper launches
+  Chromium with the shared profile on the configured port. It does nothing when the endpoint already responds. After it
+  succeeds, retry the failed call once. If the call still fails, follow Troubleshooting.
+- Never launch Chromium another way, launch a fallback browser, or create another profile.
 - Treat the browser as shared, authenticated, and concurrently used by the user and other agents. Inspect only pages
   relevant to the task and do not surface unrelated tab titles or content.
 - Trust the live tool inventory. An absent tool is unavailable in this session. Do not advise editing client MCP
@@ -152,8 +155,9 @@ Use these workflows only when the tools are exposed in the current session.
   list or use it to close tabs.
 
 - On attachment or transport failure, distinguish the browser endpoint from the MCP process. First, check the debugging
-  endpoint at `http://127.0.0.1:${PRB_AGENT_CHROMIUM_PORT:-9222}/json/version`. Then inspect the newest per-process log
-  under `$XDG_CACHE_HOME/chrome-devtools-mcp/logs/` or, when unset, `~/.cache/chrome-devtools-mcp/logs/`.
+  endpoint at `http://127.0.0.1:${PRB_AGENT_CHROMIUM_PORT:-9222}/json/version`. `scripts/ensure-chromium.sh` performs
+  this check. Then inspect the newest per-process log under `$XDG_CACHE_HOME/chrome-devtools-mcp/logs/` or, when unset,
+  `~/.cache/chrome-devtools-mcp/logs/`.
 - A responsive endpoint proves the browser process is alive, not that renderers can start. If `new_page` times out and
   tabs show a crashed icon or `Untitled`, stop repeated creation attempts and check browser health separately from MCP
   transport health. A failed creation can leave a tab without returning a `pageId`. Do not infer ownership from a later
@@ -165,6 +169,7 @@ Use these workflows only when the tools are exposed in the current session.
   `/json/version` can still work. A version mismatch alone is a clue, not proof of the failure.
 - Report the failed layer and evidence. Do not change client configuration or wrapper flags without authorization for
   that configuration work. Do not automatically restart the shared browser during ordinary browsing or from the wrapper.
+  A launch of a closed browser with `scripts/ensure-chromium.sh` is not a restart.
 
   An explicit request to repair the browser authorizes a graceful restart using the same profile and debugging port.
   Record those arguments first. Preserve the session. `chrome://restart` requests a session-restoring restart. If the

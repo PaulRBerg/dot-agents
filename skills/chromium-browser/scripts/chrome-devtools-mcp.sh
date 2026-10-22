@@ -5,6 +5,7 @@ set -eu
 # Upstream: https://github.com/ChromeDevTools/chrome-devtools-mcp
 # Connect only to the existing debugging browser. Do not fall back to launching
 # Chromium: that lets concurrent agents create extra windows or fresh profiles.
+# Agents start the shared profile with ensure-chromium.sh when it is closed.
 port="${PRB_AGENT_CHROMIUM_PORT:-9222}"
 
 # Use the globally installed executable directly. Package runners such as bunx
