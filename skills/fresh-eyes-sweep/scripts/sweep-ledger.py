@@ -15,7 +15,6 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
-
 STATUSES = ("pending", "inspected", "fixed", "reported", "excluded")
 
 

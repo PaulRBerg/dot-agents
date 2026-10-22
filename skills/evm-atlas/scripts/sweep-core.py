@@ -11,7 +11,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-
 ADDRESS_RE = re.compile(r"^0x[0-9a-fA-F]{40}$")
 HASH_RE = re.compile(r"^0x[0-9a-fA-F]{64}$")
 HEX_RE = re.compile(r"^0x(?:0|[1-9a-fA-F][0-9a-fA-F]*)$")

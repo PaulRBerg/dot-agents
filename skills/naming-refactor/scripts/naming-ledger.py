@@ -14,7 +14,6 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
-
 STATUSES = ("pending", "retained", "renamed", "excluded", "blocked")
 REASON_REQUIRED = ("excluded", "blocked")
 

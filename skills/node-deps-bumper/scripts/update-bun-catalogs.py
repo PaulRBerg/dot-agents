@@ -12,7 +12,6 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-
 VERSION_RE = re.compile(r"^(?P<prefix>\^|~)?(?P<version>\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)$")
 
 

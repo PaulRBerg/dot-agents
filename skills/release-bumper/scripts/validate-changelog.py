@@ -10,7 +10,6 @@ import re
 import sys
 from pathlib import Path
 
-
 CATEGORIES = ("Changed", "Added", "Removed", "Fixed")
 RELEASE_RE = re.compile(r"^## (?P<linked>\[)?(?P<version>\d+\.\d+\.\d+)(?(linked)\]) - (?P<date>\d{4}-\d{2}-\d{2})$")
 NESTED_ITEM_RE = re.compile(r"^\s+(?:[-*+]|\d+[.)])\s")

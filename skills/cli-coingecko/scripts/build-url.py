@@ -8,7 +8,6 @@ import re
 from datetime import date, timedelta
 from urllib.parse import quote
 
-
 COIN_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 

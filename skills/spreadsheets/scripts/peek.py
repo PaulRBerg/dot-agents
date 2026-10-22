@@ -23,9 +23,10 @@ import shutil
 import subprocess
 import sys
 from collections import Counter
+from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Iterator, NoReturn
+from typing import Any, NoReturn
 
 SNIFF_BYTES = 64 * 1024
 CANDIDATE_DELIMITERS = ",\t;|"

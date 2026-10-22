@@ -10,7 +10,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-
 PLAN_KEYS = ("repoRoot", "branch", "baseRef", "mergeBase", "originalHead", "aheadCount", "authors", "rollback")
 
 

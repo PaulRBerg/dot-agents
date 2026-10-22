@@ -14,7 +14,6 @@ import urllib.error
 import urllib.request
 from contextlib import contextmanager
 
-
 ENDPOINT = "https://ai-gateway.vercel.sh/v1/evaluate"
 TIMEOUT_SECONDS = 8
 MAX_BYTES = 65536

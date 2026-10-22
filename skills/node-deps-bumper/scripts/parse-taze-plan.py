@@ -8,7 +8,6 @@ import json
 import re
 from pathlib import Path
 
-
 ANSI_RE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 VERSION_RE = re.compile(r"^(?:workspace:)?[~^<>=v]*([0-9]+)\.([0-9]+)\.([0-9]+)(?:[-+][0-9A-Za-z.-]+)?$")
 

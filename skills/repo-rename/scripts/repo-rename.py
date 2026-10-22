@@ -14,7 +14,6 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
-
 EXCLUDED_PARTS = {
     ".git",
     "node_modules",

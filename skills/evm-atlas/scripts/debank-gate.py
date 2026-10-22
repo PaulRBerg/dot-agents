@@ -16,7 +16,7 @@ import signal
 import sys
 import time
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 DEFAULT_TTL = 600
@@ -40,7 +40,7 @@ def state_dir() -> Path:
 
 
 def iso(ts: float) -> str | None:
-    return datetime.fromtimestamp(ts, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ") if ts else None
+    return datetime.fromtimestamp(ts, UTC).strftime("%Y-%m-%dT%H:%M:%SZ") if ts else None
 
 
 @contextlib.contextmanager
