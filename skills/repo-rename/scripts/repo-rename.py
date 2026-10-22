@@ -15,7 +15,18 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-EXCLUDED_PARTS = {".git", "node_modules", ".venv", "venv", ".cache", "__pycache__", "dist", "build", ".next", "coverage"}
+EXCLUDED_PARTS = {
+    ".git",
+    "node_modules",
+    ".venv",
+    "venv",
+    ".cache",
+    "__pycache__",
+    "dist",
+    "build",
+    ".next",
+    "coverage",
+}
 PROTECTED_FILES = {"PROMPT.md", "TODO.md"}
 
 
@@ -61,10 +72,7 @@ def readable_files(root: Path, *, repo: bool = False, include_local_state: bool 
     files: list[Path] = []
     for directory, names, filenames in os.walk(root):
         parent = Path(directory)
-        names[:] = [
-            name for name in names
-            if not (parent / name).is_symlink() and not (repo and name in excluded)
-        ]
+        names[:] = [name for name in names if not (parent / name).is_symlink() and not (repo and name in excluded)]
         for name in filenames:
             path = parent / name
             if name not in protected and not path.is_symlink() and path.is_file():
@@ -145,9 +153,7 @@ def collect_replacements(
     return sorted(replacements, key=lambda item: str(item.path))
 
 
-def preflight(
-    new_name: str, destination: str | None = None, *, include_local_state: bool = False
-) -> dict[str, object]:
+def preflight(new_name: str, destination: str | None = None, *, include_local_state: bool = False) -> dict[str, object]:
     source = Path(new_name).expanduser().resolve() if destination is not None else None
     if destination is None and (not new_name or new_name.startswith(".") or "/" in new_name):
         raise RenameError(f"invalid repo name: {new_name!r}")
@@ -238,10 +244,14 @@ def preflight(
 def preview(plan: dict[str, object]) -> dict[str, object]:
     replacements = plan["replacements"]
     assert isinstance(replacements, list)
-    remote_mutations = [] if not plan["rename_github"] else [
-        {"kind": "github-rename", "command": f"gh repo rename {plan['new_name']} --yes"},
-        {"kind": "origin", "from": plan["old_remote"], "to": plan["new_remote"]},
-    ]
+    remote_mutations = (
+        []
+        if not plan["rename_github"]
+        else [
+            {"kind": "github-rename", "command": f"gh repo rename {plan['new_name']} --yes"},
+            {"kind": "origin", "from": plan["old_remote"], "to": plan["new_remote"]},
+        ]
+    )
     return {
         "mode": "dry-run",
         "local_only": plan["local_only"],
@@ -266,9 +276,7 @@ def preview(plan: dict[str, object]) -> dict[str, object]:
             },
             {
                 "kind": "literal-replacements",
-                "files": [
-                    {"path": str(item.path), "occurrences": item.occurrences} for item in replacements
-                ],
+                "files": [{"path": str(item.path), "occurrences": item.occurrences} for item in replacements],
             },
         ],
         "rollback": "replacement files are backed up; changed folders, origin, and GitHub name are restored on failure; newly created empty parent directories are removed",
@@ -401,7 +409,11 @@ def main() -> int:
     mode.add_argument("--dry-run", action="store_true")
     mode.add_argument("--apply", action="store_true")
     parser.add_argument("--confirm")
-    parser.add_argument("--include-local-state", action="store_true", help="include explicitly authorized notes, dependencies, caches, and generated files")
+    parser.add_argument(
+        "--include-local-state",
+        action="store_true",
+        help="include explicitly authorized notes, dependencies, caches, and generated files",
+    )
     args = parser.parse_args()
     try:
         plan = preflight(args.new_name, args.destination, include_local_state=args.include_local_state)

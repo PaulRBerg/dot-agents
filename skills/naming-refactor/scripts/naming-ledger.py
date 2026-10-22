@@ -187,9 +187,7 @@ def load_dispositions(path: Path, pending_as: str | None = None) -> list[tuple[s
             continue
         fields = line.split("\t")
         if len(fields) < 2:
-            raise LedgerError(
-                f"dispositions line {line_number}: expected status<TAB>path<TAB>reason"
-            )
+            raise LedgerError(f"dispositions line {line_number}: expected status<TAB>path<TAB>reason")
         if len(fields) > 3:
             raise LedgerError(f"dispositions line {line_number}: reason cannot contain a tab")
         status, path = fields[:2]
@@ -262,9 +260,7 @@ def mark_command(args: argparse.Namespace) -> dict[str, Any]:
         skipped = missing if args.skip_unknown else []
         applicable = [item for item in dispositions if item[1] in by_path]
         absent_retained = [
-            path
-            for status, path, _ in applicable
-            if status == "retained" and not by_path[path]["present"]
+            path for status, path, _ in applicable if status == "retained" and not by_path[path]["present"]
         ]
         if absent_retained:
             raise LedgerError(f"absent paths cannot be retained: {', '.join(absent_retained)}")

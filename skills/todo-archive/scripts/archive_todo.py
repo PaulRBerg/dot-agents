@@ -30,9 +30,7 @@ class Node:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Archive checked Markdown tasks from .ai/TODO.md into .ai/todos/."
-    )
+    parser = argparse.ArgumentParser(description="Archive checked Markdown tasks from .ai/TODO.md into .ai/todos/.")
     parser.add_argument("--root", default=None, help="repository root; defaults to git root or cwd")
     parser.add_argument("--date", default=None, help="YYYY-MM-DD or YYYY_MM_DD; defaults to today")
     parser.add_argument("--dry-run", action="store_true", help="print rendered outputs without writing")
@@ -186,8 +184,7 @@ def parse_document(lines: Iterable[str]) -> Node:
         if heading_match:
             level = len(heading_match.group(1))
             while len(stack) > 1 and (
-                stack[-1].kind == "task"
-                or (stack[-1].kind == "heading" and stack[-1].level >= level)
+                stack[-1].kind == "task" or (stack[-1].kind == "heading" and stack[-1].level >= level)
             ):
                 stack.pop()
             node = Node("heading", line=line, level=level)
@@ -288,9 +285,7 @@ def render(node: Node, archive: bool) -> str:
 
     if node.kind == "heading":
         if not archive:
-            children = "".join(
-                render_child(child, archive, parent_is_rendered=True) for child in node.children
-            )
+            children = "".join(render_child(child, archive, parent_is_rendered=True) for child in node.children)
             return node.line + children if children.strip() else ""
         if not has_task(node, archive):
             return ""

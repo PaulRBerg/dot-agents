@@ -45,8 +45,10 @@ def plan_updates(plan: dict[str, Any], names: list[str]) -> dict[str, list[dict[
         if not matches:
             raise CatalogError(f"selected package is missing from plan: {name}")
         normalized = {
-            (parse_version(entry.get("current"), f"plan current for {name}")[1],
-             parse_version(entry.get("available"), f"plan available for {name}")[1])
+            (
+                parse_version(entry.get("current"), f"plan current for {name}")[1],
+                parse_version(entry.get("available"), f"plan available for {name}")[1],
+            )
             for entry in matches
         }
         if len(normalized) != 1:
@@ -142,7 +144,9 @@ def main() -> int:
     except (OSError, json.JSONDecodeError, CatalogError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 64
-    print(json.dumps({"schemaVersion": 1, "wrote": args.write, "file": str(package_path), "changes": changes}, indent=2))
+    print(
+        json.dumps({"schemaVersion": 1, "wrote": args.write, "file": str(package_path), "changes": changes}, indent=2)
+    )
     return 0
 
 

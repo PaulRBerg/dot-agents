@@ -98,9 +98,7 @@ def text_coverage(output: str, page_count: int) -> dict[str, Any]:
         "characters": sum(counts),
         "pages_with_text": [index for index, count in enumerate(counts, 1) if count > 0],
         "pages_without_text": [index for index, count in enumerate(counts, 1) if count == 0],
-        "per_page": [
-            {"page": index, "characters": count} for index, count in enumerate(counts, 1)
-        ],
+        "per_page": [{"page": index, "characters": count} for index, count in enumerate(counts, 1)],
     }
 
 
@@ -112,9 +110,7 @@ def image_coverage(output: str, page_count: int) -> dict[str, Any]:
             counts[int(match.group(1))] += 1
     return {
         "total": sum(counts.values()),
-        "per_page": [
-            {"page": page, "count": counts.get(page, 0)} for page in range(1, page_count + 1)
-        ],
+        "per_page": [{"page": page, "count": counts.get(page, 0)} for page in range(1, page_count + 1)],
     }
 
 
@@ -165,9 +161,7 @@ def main() -> int:
     }
     with ThreadPoolExecutor(max_workers=4) as pool:
         integrity_job = pool.submit(run, ["qpdf", "--check", str(pdf_path)])
-        detailed_job = pool.submit(
-            run, ["pdfinfo", "-f", "1", "-l", str(page_count), "-box", str(pdf_path)]
-        )
+        detailed_job = pool.submit(run, ["pdfinfo", "-f", "1", "-l", str(page_count), "-box", str(pdf_path)])
         text_job = pool.submit(run, ["pdftotext", "-layout", str(pdf_path), "-"])
         images_job = pool.submit(run, ["pdfimages", "-list", str(pdf_path)])
     integrity = integrity_job.result()

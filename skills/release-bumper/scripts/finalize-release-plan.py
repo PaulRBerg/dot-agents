@@ -167,7 +167,9 @@ def package_index(discovery: dict[str, Any]) -> tuple[dict[str, dict[str, Any]],
     return by_id, aliases
 
 
-def resolve_versions(discovery: dict[str, Any], explicit_args: list[str]) -> tuple[dict[str, dict[str, Any]], list[dict[str, str]]]:
+def resolve_versions(
+    discovery: dict[str, Any], explicit_args: list[str]
+) -> tuple[dict[str, dict[str, Any]], list[dict[str, str]]]:
     by_id, aliases = package_index(discovery)
     explicit: dict[str, str] = {}
     for assignment in explicit_args:
@@ -215,7 +217,12 @@ def resolve_versions(discovery: dict[str, Any], explicit_args: list[str]) -> tup
         else:
             planned = stable_promotion(current)
             source = "prerelease-promotion" if planned else "agent-decision"
-        versions[package_id] = {"current": current, "planned": planned, "source": source, "resolved": planned is not None}
+        versions[package_id] = {
+            "current": current,
+            "planned": planned,
+            "source": source,
+            "resolved": planned is not None,
+        }
         if planned is None:
             unresolved.append({"package": package_id, "decision": "choose patch, minor, or major version"})
     for package_id, explicit_version in explicit.items():

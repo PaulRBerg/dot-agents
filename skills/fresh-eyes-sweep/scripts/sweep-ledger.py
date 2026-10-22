@@ -145,7 +145,9 @@ def summary(payload: dict[str, Any]) -> dict[str, Any]:
         "revision": payload["revision"],
         "counts": summary_counts,
         "complete": summary_counts["pending"] == 0,
-        "progress": None if filled is None else {"filled": filled, "empty": 10 - filled, "bar": "█" * filled + "░" * (10 - filled)},
+        "progress": None
+        if filled is None
+        else {"filled": filled, "empty": 10 - filled, "bar": "█" * filled + "░" * (10 - filled)},
         "preexistingChangedFiles": sum(bool(item.get("preexistingStatus")) for item in payload["files"]),
     }
 
@@ -208,7 +210,12 @@ def pending_command(args: argparse.Namespace) -> dict[str, Any]:
     paths = [item["path"] for item in payload["files"] if item["status"] == "pending"]
     if args.limit is not None:
         paths = paths[: args.limit]
-    return {"schemaVersion": 1, "revision": payload["revision"], "paths": paths, "remaining": counts(payload)["pending"]}
+    return {
+        "schemaVersion": 1,
+        "revision": payload["revision"],
+        "paths": paths,
+        "remaining": counts(payload)["pending"],
+    }
 
 
 def build_parser() -> argparse.ArgumentParser:

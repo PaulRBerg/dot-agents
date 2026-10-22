@@ -177,8 +177,7 @@ def audit(workbook: Path) -> dict[str, Any]:
         "uncached_formulas": uncached,
         "total_errors": total_errors,
         "errors": {
-            kind: {"count": len(cells), "cells": cells[:MAX_CELLS_PER_ERROR]}
-            for kind, cells in sorted(errors.items())
+            kind: {"count": len(cells), "cells": cells[:MAX_CELLS_PER_ERROR]} for kind, cells in sorted(errors.items())
         },
     }
 
@@ -187,7 +186,9 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("workbook", type=Path)
     parser.add_argument("timeout_seconds", nargs="?", type=int, default=DEFAULT_TIMEOUT)
-    parser.add_argument("--soft", action="store_true", help="exit 0 after formula errors; still fails operational errors")
+    parser.add_argument(
+        "--soft", action="store_true", help="exit 0 after formula errors; still fails operational errors"
+    )
     return parser.parse_args()
 
 

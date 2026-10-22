@@ -74,8 +74,9 @@ fi
 
 cd "$target_dir"
 
-# Refresh registry metadata so cached scans cannot hide newly published releases.
-taze_args=(major --force)
+# Refresh registry metadata so cached scans cannot hide newly published releases. Skip the GitHub Actions and
+# Node version-file scans: this workflow bumps npm dependencies, and those scans dominate runtime in large repos.
+taze_args=(major --force --no-github-actions --no-node-version)
 
 # Auto-detect monorepo
 if grep -q '"workspaces"' package.json 2>/dev/null ||

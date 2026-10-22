@@ -23,10 +23,16 @@ CONFIDENCE_FLOOR = 0.6
 ADJACENT_MASS_FLOOR = 0.8
 ROUNDING_BOUND = 0.005
 FLOAT_EPSILON = 1e-12
-RESPONSE_VALIDATION_CODES = frozenset({
-    "answers", "score_type", "distribution_keys", "probability_range", "distribution_sum",
-    "confidence_consistency",
-})
+RESPONSE_VALIDATION_CODES = frozenset(
+    {
+        "answers",
+        "score_type",
+        "distribution_keys",
+        "probability_range",
+        "distribution_sum",
+        "confidence_consistency",
+    }
+)
 INSTRUCTIONS = (
     "Rate the worker capability and reasoning-effort tier this task needs, from the cheapest tier to the "
     "strongest. Prefer the lowest tier that would complete the task correctly. "
@@ -85,8 +91,10 @@ def validate_input(payload):
     for candidate in candidates:
         if not isinstance(candidate, dict):
             raise InvalidData("candidate")
-        if any(not isinstance(candidate.get(field), str) or not candidate[field].strip()
-               for field in ("id", "model", "effort", "description")):
+        if any(
+            not isinstance(candidate.get(field), str) or not candidate[field].strip()
+            for field in ("id", "model", "effort", "description")
+        ):
             raise InvalidData("candidate fields")
         if candidate["id"] in allowed:
             raise InvalidData("duplicate candidate")
@@ -187,20 +195,27 @@ def validate_answer(response, allowed):
     # Probability rounding scales by total distance over the uniform spread, plus confidence rounding.
     distance_total = sum(abs(index - best) for index in range(count))
     confidence_bound = ROUNDING_BOUND * (1 + distance_total / uniform_spread)
-    if not math.isclose(confidence, expected_confidence, rel_tol=0,
-                        abs_tol=confidence_bound + FLOAT_EPSILON):
+    if not math.isclose(confidence, expected_confidence, rel_tol=0, abs_tol=confidence_bound + FLOAT_EPSILON):
         raise InvalidData("confidence_consistency")
     candidate = allowed[ids[best]]
-    selected = {"status": "selected", "id": ids[best], "model": candidate["model"],
-                "effort": candidate["effort"], "confidence": confidence}
+    selected = {
+        "status": "selected",
+        "id": ids[best],
+        "model": candidate["model"],
+        "effort": candidate["effort"],
+        "confidence": confidence,
+    }
     if min(confidence, expected_confidence) >= CONFIDENCE_FLOOR:
         return {**selected, "rule": "confidence"}
     # A split between neighbouring tiers means either tier works. Accept the higher-probability one.
     runner_up = max(value for index, value in enumerate(levels) if index != best)
     neighbours = {levels[index] for index in (best - 1, best + 1) if 0 <= index < count}
     far_levels = [levels[index] for index in range(count) if abs(index - best) > 1]
-    if (runner_up in neighbours and all(value < runner_up for value in far_levels)
-            and top + runner_up >= ADJACENT_MASS_FLOOR - FLOAT_EPSILON):
+    if (
+        runner_up in neighbours
+        and all(value < runner_up for value in far_levels)
+        and top + runner_up >= ADJACENT_MASS_FLOOR - FLOAT_EPSILON
+    ):
         return {**selected, "rule": "adjacent_tiers", "top_two_mass": round(top + runner_up, 3)}
     result = {**fallback("low_confidence"), "confidence": confidence, "threshold": CONFIDENCE_FLOOR}
     if confidence >= CONFIDENCE_FLOOR:

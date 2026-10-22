@@ -38,8 +38,7 @@ def main() -> None:
     if type(age) is not int or age < 0:
         raise ValueError("minimumReleaseAge must be a nonnegative integer")
     if not isinstance(excludes, list) or any(
-        not isinstance(name, str) or not name or any(c in name for c in ",\r\n")
-        for name in excludes
+        not isinstance(name, str) or not name or any(c in name for c in ",\r\n") for name in excludes
     ):
         raise ValueError("minimumReleaseAgeExcludes must be an array of package names")
     if age:

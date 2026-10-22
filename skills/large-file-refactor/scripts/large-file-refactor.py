@@ -525,7 +525,9 @@ def print_report(scan_path: Path, base: Path, files: list[FileStat], metric: str
     print(f"- Scan root: `{display_path(scan_path, base)}`")
     print(f"- Threshold: files over {THRESHOLD} LOC (test files over {TEST_THRESHOLD} LOC)")
     print(f"- Metric: {metric}")
-    print(f"- Noise policy: {'include generated/vendor/build/dependency paths' if include_generated else 'source-only default'}")
+    print(
+        f"- Noise policy: {'include generated/vendor/build/dependency paths' if include_generated else 'source-only default'}"
+    )
     print()
 
     if not files:
@@ -535,10 +537,7 @@ def print_report(scan_path: Path, base: Path, files: list[FileStat], metric: str
     print("| Rank | LOC | Language | Path |")
     print("| ---: | ---: | --- | --- |")
     for index, stat in enumerate(files, start=1):
-        print(
-            f"| {index} | {stat.loc} | {md_escape(stat.language)} | "
-            f"`{md_escape(display_path(stat.path, base))}` |"
-        )
+        print(f"| {index} | {stat.loc} | {md_escape(stat.language)} | `{md_escape(display_path(stat.path, base))}` |")
 
     print()
     print("## Largest Candidates to Inspect")

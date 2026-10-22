@@ -297,9 +297,7 @@ def command_overlay(args: argparse.Namespace) -> int:
         raise UserError("missing_font", f"default font not found: {DEFAULT_FONT}")
     pdfmetrics.registerFont(TTFont(FONT_NAME, str(DEFAULT_FONT)))
     writer = PdfWriter(clone_from=str(input_path))
-    input_dimensions = [
-        (float(page.mediabox.width), float(page.mediabox.height)) for page in reader.pages
-    ]
+    input_dimensions = [(float(page.mediabox.width), float(page.mediabox.height)) for page in reader.pages]
     for page_number, page_placements in grouped.items():
         width, height = input_dimensions[page_number - 1]
         buffer = io.BytesIO()
@@ -312,9 +310,7 @@ def command_overlay(args: argparse.Namespace) -> int:
         overlay_page = PdfReader(buffer).pages[0]
         writer.pages[page_number - 1].merge_page(overlay_page)
 
-    output_dimensions = [
-        (float(page.mediabox.width), float(page.mediabox.height)) for page in writer.pages
-    ]
+    output_dimensions = [(float(page.mediabox.width), float(page.mediabox.height)) for page in writer.pages]
     if output_dimensions != input_dimensions:
         raise UserError("geometry_changed", "overlay changed page dimensions")
     atomic_write(writer, output_path)
