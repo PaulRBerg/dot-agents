@@ -149,8 +149,8 @@ To create a diff viewer for a specific commit:
 
 ## Theme support
 
-Use only the palette that matches the system appearance: light when the system uses light mode, dark otherwise. Do not
-add a theme toggle or a `prefers-color-scheme` variant.
+Unless the user specifies otherwise, use only the palette that matches the system appearance: light when the system uses
+light mode, dark otherwise. Do not add a theme toggle or a `prefers-color-scheme` variant.
 
 Light palette:
 

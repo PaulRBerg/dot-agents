@@ -15,8 +15,8 @@ Use **debrief mode** when the user asks for a debrief or a saved HTML findings/r
 
 ## Workflow
 
-1. Infer the audience, decisions, and required states. Existing design systems and explicit requirements override these
-   defaults.
+1. Infer the audience, decisions, and required states. Explicit requirements override the defaults below. Existing
+   design systems override them, except the layout and theme defaults.
 2. Read exactly one closest template and adapt it:
    - `templates/design-playground.md`
    - `templates/data-explorer.md`
@@ -55,13 +55,16 @@ and that the output contains no placeholders. Then run `open "$DEBRIEF_PATH"`.
 
 ## Opinionated Defaults
 
-Use these when product context does not indicate otherwise:
+Use these layout and theme defaults unless the user specifies otherwise. Product context does not override them:
 
-- controls beside a live preview, with prompt output below.
-- a desktop-browser layout. Do not implement or inspect responsive/mobile behavior unless requested.
+- a desktop-browser layout. Do not implement or inspect responsive/mobile behavior.
 - one polished theme that matches the system appearance: light when the system uses light mode, dark otherwise. Do not
   add a second theme, a theme toggle, or a `prefers-color-scheme` variant. On macOS,
   `defaults read -g AppleInterfaceStyle` prints `Dark` in dark mode and fails in light mode.
+
+Use these other defaults when product context does not indicate otherwise:
+
+- controls beside a live preview, with prompt output below.
 - system UI font, monospace code/values, minimal chrome.
 - sensible non-empty initial state and 3–5 cohesive named presets.
 - one state object, one update path, and immediate preview/prompt refresh.

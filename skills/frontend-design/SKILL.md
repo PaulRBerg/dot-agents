@@ -8,7 +8,7 @@ skill-dependencies:
 description:
   Use when creating or substantially redesigning web interfaces, landing pages, dashboards, components, or other
   frontend UI where visual direction and implementation quality matter. Produces subject-specific art direction,
-  accessible responsive code, and rendered visual verification.
+  accessible code, and rendered visual verification.
 ---
 
 # Frontend Design
@@ -30,10 +30,9 @@ Create a working frontend with a clear, subject-specific point of view. Then pro
 - Make the smallest defensible assumption when the subject, audience, or page job is missing. State it before building.
   Ask only when the answer would materially change scope or identity.
 
-## One-Off Pages
+## Layout and Theme Defaults
 
-A one-off page is a standalone page that the user requests for one specific purpose. It is not part of an existing
-product or design system. Unless the user or the repository requires otherwise, apply these defaults to a one-off page:
+Treat every build as a one-off page for a specific purpose. Apply these defaults unless the user specifies otherwise:
 
 - Build for a desktop browser window only. Do not add a mobile or responsive layout.
 - Build one theme only. Do not add a second theme, a theme toggle, or a `prefers-color-scheme` variant.
@@ -42,7 +41,8 @@ product or design system. Unless the user or the repository requires otherwise, 
 - On macOS, run `defaults read -g AppleInterfaceStyle`. It prints `Dark` in dark mode. In light mode, it fails because
   the key does not exist.
 
-These defaults replace the responsive, theme, and viewport requirements in the workflow below.
+When you change an existing surface, keep its working responsive and theme behavior. Do not extend it to new work unless
+the user asks.
 
 ## Workflow
 
@@ -120,9 +120,9 @@ any other default the result used and revise it.
   tooltips where appropriate.
 - Keep motion purposeful and concentrated. Respect reduced-motion preferences and ensure the experience remains clear
   without animation.
-- Prevent overlap, clipping, unreadable wrapping, and layout shift at every width in scope. For a one-off page, the
-  scope is one desktop width. For other surfaces, build responsive constraints from content rather than device labels,
-  and include narrow and wide widths.
+- Prevent overlap, clipping, unreadable wrapping, and layout shift at every width in scope. By default, the scope is one
+  desktop width. When the user requests responsive behavior, build responsive constraints from content rather than
+  device labels, and include narrow and wide widths.
 - For images, choose responsive crops and delivery sizes that preserve the focal point without unnecessary download
   weight. Give meaningful images useful alt text and decorative images empty alt text.
 - Preserve semantic structure, keyboard operation, visible focus, adequate contrast, and target sizes. Match the
@@ -140,10 +140,10 @@ scripts while a DevTools browser tool is available.
 
 Scale the inspection matrix to the change. Repository instructions may reduce the viewport/state matrix, including
 waiving multi-viewport checks. Follow those instructions. Absent such instructions, a small edit to existing UI needs
-verification only of the changed states at one representative viewport, while a new or substantially redesigned surface
-needs representative narrow and wide viewports and every changed interaction and state. A one-off page needs one desktop
-viewport in its single theme and every interaction and state. Behavior belongs in the repository's automated tests where
-they exist. Use the browser for visual, layout, and theme questions.
+verification only of the changed states at one representative viewport. A new or substantially redesigned surface needs
+one desktop viewport in its single theme and every changed interaction and state. When the user requests responsive
+behavior or several themes, add representative narrow and wide viewports and each requested theme. Behavior belongs in
+the repository's automated tests where they exist. Use the browser for visual, layout, and theme questions.
 
 Check the rendered result for content hierarchy, group boundaries, subject specificity, asset loading, overflow,
 overlap, truncation, contrast, focus, hover, motion, empty/error states, and theme variants in scope. Confirm that each
