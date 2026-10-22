@@ -26,8 +26,7 @@ Make every name in the current repository communicate one coherent domain model,
   authorized. Do not commit, push, publish, or write externally unless the user or repository instructions require it.
 - Serialize implementation and verification against intersecting repository writes. Complete codebase analysis and the
   refactor plan first, then claim the cumulative write set before each wave as defined under Acquire the Implementation
-  Scope. Claim the complete worktree only when consumers cannot be enumerated. If no reliable coordination mechanism is
-  available, require the user to confirm an exclusive write window instead.
+  Scope.
 - A verified no-op is valid only after exhaustive coverage. Do not rename a clear, conventional name merely to create
   churn, but do not retain a weak name to minimize diff size.
 
@@ -53,7 +52,8 @@ Use `retained` when the current name is justified, `renamed` when the path or it
 when behavior or contract safety cannot be established. `excluded` and `blocked` require reasons.
 
 For delegated runs, have each subagent write a dispositions TSV outside the repository with one record per line:
-`status<TAB>repo-relative-path<TAB>reason`. Apply each file in one batch:
+`status<TAB>repo-relative-path<TAB>reason`. Concurrent `mark` and `refresh` calls serialize on a sidecar
+`<scratch.json>.lock`. From the coordinating session, apply each file in one batch:
 
 ```sh
 uv run "<skill-dir>/scripts/naming-ledger.py" mark \
@@ -75,9 +75,9 @@ uv run "<skill-dir>/scripts/naming-ledger.py" refresh --ledger <scratch.json>
 uv run "<skill-dir>/scripts/naming-ledger.py" summary --ledger <scratch.json>
 ```
 
-Refresh after path moves and before final validation. New paths become pending. Removed paths remain in the ledger and
-must be accounted as renamed, excluded, or blocked. The run is complete only when the helper reports no pending or
-blocked paths.
+Refresh after path moves and before final validation. New paths become pending. A removed `retained` path returns to
+pending. Removed paths remain in the ledger and must be accounted as renamed, excluded, or blocked. The run is complete
+only when the helper reports no pending or blocked paths.
 
 ## Ground the Refactor
 

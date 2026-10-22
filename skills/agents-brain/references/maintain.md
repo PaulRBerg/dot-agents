@@ -104,14 +104,10 @@ CLAUDE.md symlink. Require explicit confirmation.
 
 ## CLAUDE.md Decisions
 
-Run the version check from Claude Code Compatibility in SKILL.md.
+Apply Claude Code Compatibility in SKILL.md, including its version check. When `agents_md_native=true`, also retire
+repository checks, hooks, and instructions that require the symlink.
 
-When `agents_md_native=true`, delete every CLAUDE.md symlink in the selected tree that resolves to its sibling
-AGENTS.md, without confirmation. Use `git rm` when tracked. In that case, also retire repository checks, hooks, and
-instructions that require the symlink. Report any remaining regular CLAUDE.md or CLAUDE.local.md that still suppresses
-direct AGENTS.md loading.
-
-Otherwise, create or refresh a sibling symlink only when CLAUDE.md is missing or already a symlink:
+Otherwise, create or refresh the sibling symlink with this command:
 
 ```sh
 (cd "$dir" && ln -sfn AGENTS.md CLAUDE.md)

@@ -606,7 +606,7 @@ function unique<T>(values: T[]): T[] {
 }
 
 function isSemver(value: string): boolean {
-  return /^\d+\.\d+\.\d+(?:-[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)*)?(?:\+[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)*)?$/.test(value);
+  return /^\d+\.\d+\.\d+(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/.test(value);
 }
 
 function stripLeadingV(value: string): string | null {
@@ -639,14 +639,16 @@ function compareSemver(a: string, b: string): number {
     if (lNum && rNum) return Number(l) - Number(r);
     if (lNum) return -1;
     if (rNum) return 1;
-    return l.localeCompare(r);
+    return l < r ? -1 : 1;
   }
   return 0;
 }
 
 function parseSemver(value: string): Semver {
   const withoutBuild = value.split("+")[0] ?? value;
-  const [core = "0.0.0", pre = ""] = withoutBuild.split("-");
+  const dash = withoutBuild.indexOf("-");
+  const core = dash === -1 ? withoutBuild : withoutBuild.slice(0, dash);
+  const pre = dash === -1 ? "" : withoutBuild.slice(dash + 1);
   const [major = 0, minor = 0, patch = 0] = core.split(".").map(Number);
   return { major, minor, patch, pre: pre ? pre.split(".") : [] };
 }

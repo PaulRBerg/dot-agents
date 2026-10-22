@@ -68,8 +68,12 @@ const connections = [
 
 function renderDiagram() {
   const visibleNodes = nodes.filter((n) => state.layers[n.layer]);
+  const visibleIds = new Set(visibleNodes.map((n) => n.id));
+  const visibleConnections = connections.filter(
+    (c) => state.connectionTypes[c.type] && visibleIds.has(c.from) && visibleIds.has(c.to),
+  );
   // Draw connections first (under nodes), then nodes
-  connections.forEach((c) => drawConnection(c));
+  visibleConnections.forEach((c) => drawConnection(c));
   visibleNodes.forEach((n) => drawNode(n));
 }
 ```

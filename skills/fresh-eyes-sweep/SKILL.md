@@ -52,9 +52,10 @@ uv run "<skill-dir>/scripts/sweep-ledger.py" init \
   --root <repo> --ledger <scratch.json> [<path>...]
 ```
 
-With no paths, `init` maps the whole repository. With paths, it maps exactly those Git scopes. It records every tracked
-and non-ignored untracked file plus each path's pre-existing worktree status. The helper does not classify generated,
-vendored, binary, safe, important, or defective files.
+With no paths, `init` maps the whole repository. With paths, it maps exactly those Git scopes. A path that matches no
+tracked or non-ignored untracked file fails `init`. It records every tracked and non-ignored untracked file plus each
+path's pre-existing worktree status. The helper does not classify generated, vendored, binary, safe, important, or
+defective files.
 
 Record an agent decision atomically only after inspecting or otherwise accounting for the path:
 

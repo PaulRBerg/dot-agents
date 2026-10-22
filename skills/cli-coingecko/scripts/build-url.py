@@ -31,7 +31,7 @@ def main() -> int:
     args = parser.parse_args()
     try:
         print(build_url(args.coin_id, args.date))
-    except ValueError as error:
+    except (OverflowError, ValueError) as error:
         parser.error(str(error))
     return 0
 

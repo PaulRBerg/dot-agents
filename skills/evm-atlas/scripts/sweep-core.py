@@ -250,7 +250,7 @@ def evaluate(plan: Any, responses: Any) -> dict[str, Any]:
         if not isinstance(response, dict) or response.get("ok") is not True:
             gaps.append({"channel": channel, "reason": "missing or failed checkpoint-bound state response"})
             continue
-        if response.get("blockHash", "").lower() != checkpoint["blockHash"] and response.get("checkpointBound") is not True:
+        if str(response.get("blockHash") or "").lower() != checkpoint["blockHash"] and response.get("checkpointBound") is not True:
             gaps.append({"channel": channel, "reason": "state response is not bound to the checkpoint hash"})
             continue
         try:

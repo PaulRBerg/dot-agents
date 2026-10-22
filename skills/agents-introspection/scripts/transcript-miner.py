@@ -287,7 +287,6 @@ def new_coverage(codex_index_records: int) -> dict[str, Any]:
         "claude_candidates": 0,
         "selected_sessions": 0,
         "claude_tool_result_files": 0,
-        "claude_tool_result_failures": {},
         "codex_index_records": codex_index_records,
         "codex_scanned": 0,
         "claude_scanned": 0,
@@ -542,11 +541,13 @@ def mine_claude_sessions(
                 for path in paths
                 if not prune_if_stale(path, since, "claude_files_pruned", "claude_files_pruned_by_timestamp")
             ]
+        # Claude Code stores spilled tool output beside each transcript in <session-id>/tool-results/.
+        tool_result_files = sum(
+            1 for path in paths for result in (project_dir / path.stem / "tool-results").rglob("*") if result.is_file()
+        )
         for project in possible_projects:
             coverage[project]["claude_scanned"] += len(paths)
-            tool_results_dir = project_dir / "tool-results"
-            if tool_results_dir.is_dir():
-                coverage[project]["claude_tool_result_files"] += sum(1 for path in tool_results_dir.rglob("*") if path.is_file())
+            coverage[project]["claude_tool_result_files"] += tool_result_files
         for path in paths:
             path_directory_projects[path.resolve(strict=False)].update(possible_projects)
 

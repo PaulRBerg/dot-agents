@@ -329,6 +329,8 @@ def finalize(discovery: dict[str, Any], explicit_args: list[str]) -> dict[str, A
             item["decision"] = "evaluate unsupported dependency range"
         evaluated.append(item)
 
+    for package_id in sorted(release_nodes - set(versions)):
+        unresolved.append({"package": package_id, "decision": "choose dependent release version"})
     order, cycles = dependency_order(release_nodes, edges)
     if cycles:
         unresolved.append({"package": ",".join(cycles[0]), "decision": "resolve dependency cycle ordering"})

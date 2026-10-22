@@ -1,7 +1,7 @@
 ---
 argument-hint:
-  "[--all] [--staged] [--natural] [--conventional] [--push] [--close <issue_numbers>] [--finding <finding_ids>]
-  [--squash [--base <branch>]]"
+  "[--all] [--staged] [--natural] [--conventional] [--push] [--rebase] [--close <issue_numbers>] [--finding
+  <finding_ids>] [--squash [--base <branch>]]"
 compatibility:
   Requires Git and ai-commit with automatic ai-coord stale-dirt baseline discovery on PATH. Squash mode also requires
   uv.

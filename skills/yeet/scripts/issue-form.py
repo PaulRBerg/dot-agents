@@ -53,7 +53,7 @@ def normalize_projects(value: Any) -> list[str]:
 
 
 def load_yaml_text(args: argparse.Namespace) -> str:
-    local = args.input or args.fixture
+    local = args.input
     if local:
         try:
             return local.read_text(encoding="utf-8")
@@ -369,7 +369,7 @@ def _validate_render_form(form: Any) -> list[dict[str, Any]]:
         value = form.get(name)
         if value is not None and (not isinstance(value, list) or not all(isinstance(item, str) for item in value)):
             raise FormError(f"form {name} must be a string array")
-    invalid_projects = [project for project in form.get("projects", []) if not PROJECT_RE.fullmatch(project)]
+    invalid_projects = [project for project in form.get("projects") or [] if not PROJECT_RE.fullmatch(project)]
     if invalid_projects:
         raise FormError(f"form projects must use OWNER/NUMBER: {', '.join(invalid_projects)}")
     return fields
@@ -481,7 +481,6 @@ def build_parser() -> argparse.ArgumentParser:
     inspect.add_argument("--repo")
     inspect.add_argument("--template")
     inspect.add_argument("--input", type=Path)
-    inspect.add_argument("--fixture", type=Path, help=argparse.SUPPRESS)
     render = subparsers.add_parser("render")
     render.add_argument("--form", required=True, type=Path)
     render.add_argument("--answers", required=True, type=Path)

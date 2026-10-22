@@ -82,43 +82,8 @@ bunx daff before.tsv after.tsv
 
 ## External-Disclosure Profile
 
-When a report will be posted, published, or sent to a third party, or when the user asks, use redaction. Internal agent
-reports may include relevant unredacted samples.
+For a profile report that leaves the agent workspace, render Markdown with redacted samples:
 
 ```sh
 uv run "<skill-dir>/scripts/profile.py" txs.tsv --markdown --redact-samples
 ```
-
-The profile includes shape, issues, inferred types, null/cardinality signals, formula-prefix cells, and tool
-availability without making transformation recommendations.
-
-## Safe Workbook Creation
-
-Use XlsxWriter for new workbooks. Write formulas, not Python-computed constants.
-
-```python
-#!/usr/bin/env -S uv run --script
-# /// script
-# requires-python = ">=3.12"
-# dependencies = ["XlsxWriter"]
-# ///
-import xlsxwriter
-
-wb = xlsxwriter.Workbook("report.xlsx", {"constant_memory": True})
-ws = wb.add_worksheet("Report")
-header = wb.add_format({"bold": True})
-money = wb.add_format({"num_format": "$#,##0.00"})
-ws.write_row(0, 0, ["asset", "amount", "price_usd", "value_usd"], header)
-ws.write_row(1, 0, ["ETH", 1.5, 2400])
-ws.write_formula(1, 3, "=B2*C2", money)
-ws.freeze_panes(1, 0)
-wb.close()
-```
-
-Then run:
-
-```sh
-uv run "<skill-dir>/scripts/recalc.py" report.xlsx
-```
-
-Deliver only when the command exits `0` with `"status": "success"`.

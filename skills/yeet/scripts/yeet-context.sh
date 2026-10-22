@@ -242,7 +242,7 @@ labels_context() {
 
   labels="$(gh label list \
     --repo "$REPO" \
-    --limit 200 \
+    --limit 1000 \
     --json name,description)"
 
   printf '{"repository":"%s","labels":%s}\n' "$REPO" "$labels"

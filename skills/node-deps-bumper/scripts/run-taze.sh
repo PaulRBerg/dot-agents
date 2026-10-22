@@ -14,6 +14,7 @@
 #   1 - taze not installed
 #   2 - No package.json found
 #   64 - Usage error
+#   Other nonzero - Bun policy, taze, or plan parser failure
 
 set -euo pipefail
 
@@ -142,7 +143,11 @@ fi
 if [[ "$plan" == true ]]; then
   plan_output="$(mktemp "${TMPDIR:-/tmp}/taze-plan.XXXXXX")"
   trap 'rm -f "$plan_output"' EXIT
-  NO_COLOR=1 taze "${taze_args[@]}" --no-group --no-timediff --no-nodecompat --sort name-asc >"$plan_output" 2>&1
+  NO_COLOR=1 taze "${taze_args[@]}" --no-group --no-timediff --no-nodecompat --sort name-asc >"$plan_output" 2>&1 || {
+    rc=$?
+    cat "$plan_output" >&2
+    exit "$rc"
+  }
   uv run "$script_dir/parse-taze-plan.py" --input "$plan_output"
 else
   taze "${taze_args[@]}" 2>&1

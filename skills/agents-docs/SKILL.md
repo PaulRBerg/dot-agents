@@ -120,10 +120,8 @@ observations distinct in the answer. Do not turn a local implementation detail i
 
 ## Bound failures
 
-If topic-page retrieval fails, try the direct URL and one domain-restricted search. Then stop expanding sources. After
-an ordinary retrieval failure, the helper may return a cache entry validated within the previous seven days. When it
-reports `stale`, disclose its validation timestamp and do not describe it as live. Forced refreshes, expired entries,
-and integrity failures fail closed. State the bounded uncertainty.
+If topic-page retrieval fails, try the direct URL and one domain-restricted search. Then stop expanding sources. Helper
+forced refreshes, expired entries, and integrity failures fail closed. State the bounded uncertainty.
 
 Use local `--help`, `--version`, configuration, or observed behavior only when relevant. Label it as local evidence.
 Never silently substitute third-party sources, another provider's docs, or bundled knowledge.

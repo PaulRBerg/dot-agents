@@ -26,8 +26,9 @@ fi
 addr="0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe"
 url="https://api.blockscout.com/1/api/v2/addresses/$addr"
 
-headers=$(curl -fsS -D - -o /dev/null \
-  -H "authorization: Bearer $BLOCKSCOUT_API_KEY" "$url" 2>/dev/null) || {
+# Pass the key on stdin so it never appears in the process list.
+headers=$(printf 'authorization: Bearer %s\n' "$BLOCKSCOUT_API_KEY" \
+  | curl -fsS -D - -o /dev/null -H @- "$url" 2>/dev/null) || {
   echo "Error: request failed — invalid key or network issue (PRO host returns 401 for a bad key)." >&2
   exit 1
 }

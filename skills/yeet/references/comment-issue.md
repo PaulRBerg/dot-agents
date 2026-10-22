@@ -60,10 +60,6 @@ entry.
 
 - **Lead with the point.** If it is a reproduction, show it. If it is a "+1", say so and explain what specifically
   caused trouble for you. If it is a proposed fix, link or paste it.
-- **Match the thread's register.** If the thread is technical and terse, avoid unnecessary wording. If it is
-  collaborative and exploratory, do not be curt.
-- **No AI throat-clearing.** Skip "Great question!", "Thanks for filing this!", "Just chiming in here...". Go straight
-  to substance.
 - **No fake enthusiasm.** Do not over-promise ("I'll dig into this right away") unless the user explicitly said so.
 - **Cite specifics.** If you reference code, link to it (see `writing.md > Link Formatting`). If you reference a commit
   or PR, link it.

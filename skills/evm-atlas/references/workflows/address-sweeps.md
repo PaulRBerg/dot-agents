@@ -132,8 +132,6 @@ uv run scripts/sweep-core.py validate blockscout-address-counters < response.jso
 uv run scripts/sweep-core.py validate etherscan-transfer-topics --address <address> < response.json
 ```
 
-The existing shell validator commands remain output-compatible adapters.
-
 ## Coverage and Reporting
 
 A positive needs qualifying checkpoint-bounded evidence. It may still have partial channel coverage. A negative is valid

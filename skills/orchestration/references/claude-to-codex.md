@@ -133,15 +133,13 @@ turn. Pass the same `--coord-identity` on every fresh or resumed implementation 
 
 Research launches omit it because read-only agents make no writes and remain separately visible.
 
-Delegate prompts forbid ai-coord lifecycle commands. Delegates launched with `--coord-identity` share the orchestrating
-session's coordination identity. The guard now rejects a delegate's `ai-coord draft`, `ai-coord start`,
-`ai-coord bundle draft`, `ai-coord bundle start`, `ai-coord wait`, or `ai-coord done` with exit 64 and
-`lifecycle commands are not allowed from a delegate of <client>/<session>; the parent's claim covers this work`. Require
-every implementation prompt to state this rule explicitly. Permit only `ai-coord status`, `ai-coord touched`,
-`ai-coord inbox`, `ai-coord msg`, and `ai-coord finding` in that prompt. Also state that the parent's claim authorizes
-the assigned writes rather than conflicting with them.
+Delegates launched with `--coord-identity` share the orchestrating session's coordination identity. The guard rejects a
+delegate's `ai-coord draft`, `ai-coord start`, `ai-coord bundle draft`, `ai-coord bundle start`, `ai-coord wait`, or
+`ai-coord done` with exit 64 and
+`lifecycle commands are not allowed from a delegate of <client>/<session>; the parent's claim covers this work`. Every
+implementation prompt must state the shared lifecycle prohibition and permitted `ai-coord` commands explicitly.
 
-Delegate claims and work no longer appear as separate `ai-coord status` work rows. Transient Codex thread inventory may
+Delegate claims and work do not appear as separate `ai-coord status` work rows. Transient Codex thread inventory may
 remain visible while delegates run. Handoff artifacts contain per-delegate progress.
 
 Add these host constraints to the shared implementation prompt:

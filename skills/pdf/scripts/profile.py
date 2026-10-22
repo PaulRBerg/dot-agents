@@ -131,6 +131,19 @@ def main() -> int:
 
     basic = run(["pdfinfo", str(pdf_path)])
     if basic.returncode != 0:
+        if "incorrect password" in basic.stderr.lower():
+            # A user (open) password blocks every read; owner-only encryption does not.
+            return emit(
+                {
+                    "schema_version": 1,
+                    "status": "password_required",
+                    "path": str(pdf_path),
+                    "size_bytes": pdf_path.stat().st_size,
+                    "encrypted": True,
+                    "integrity": {"status": "not_checked"},
+                },
+                1,
+            )
         return fail("unreadable_pdf", "pdfinfo could not read the input", pdf_path)
     info = parse_pdfinfo(basic.stdout)
     try:
@@ -149,10 +162,6 @@ def main() -> int:
         "encrypted": encrypted,
         "page_count": page_count,
     }
-    if encrypted:
-        base.update({"status": "password_required", "integrity": {"status": "not_checked"}})
-        return emit(base, 1)
-
     integrity = run(["qpdf", "--check", str(pdf_path)])
     if integrity.returncode not in (0, 3):
         return fail("integrity_failed", "qpdf rejected the input", pdf_path)

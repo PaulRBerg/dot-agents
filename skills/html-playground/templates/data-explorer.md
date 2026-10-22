@@ -40,8 +40,11 @@ Render syntax-highlighted output using `<span>` tags with color classes:
 ```javascript
 function renderPreview() {
   const el = document.getElementById("preview");
-  // Color-code by token type
+  // Escape HTML first so values such as `total < 50` render as text, then color-code by token type
   el.innerHTML = sql
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
     .replace(/\b(SELECT|FROM|WHERE|JOIN|ON|GROUP BY|ORDER BY|LIMIT)\b/g, '<span class="kw">$1</span>')
     .replace(/\b(users|orders|products)\b/g, '<span class="tbl">$1</span>')
     .replace(/'[^']*'/g, '<span class="str">$&</span>');

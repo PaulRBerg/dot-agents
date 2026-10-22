@@ -43,7 +43,7 @@ proposals, or any text that needs structured feedback with an approve/reject/com
 
 - Generates a prompt only from approved suggestions and user comments
 - Groups by: Approved Improvements, Additional Feedback, Rejected (for context)
-- Copy button with "Copied!" feedback
+- Copy button with `Copied` feedback
 
 ## State structure
 

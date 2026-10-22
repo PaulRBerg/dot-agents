@@ -53,7 +53,7 @@ local projects. Choose 3–6 short, discriminative keywords from relevant filena
 names, issue IDs, and skill names.
 
 In a Codex read-only sandbox, or whenever `uv` cannot write its cache, skip the helper. In either case, go directly to
-the Manual Fallback below. In either case, do not retry `uv run`.
+the reference's Manual Fallback and do not retry `uv run`.
 
 When the user or an invoking skill sets a history scope, use that scope in place of the default `--since`,
 `--max-sessions`, archive, and five-body limits below. A history scope can set a time window, a session count, specific

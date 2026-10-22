@@ -63,7 +63,7 @@ Use an admonition only for a material warning that would otherwise be missed.
 
 ```bash
 BRANCH=$(git branch --show-current)
-gh pr list --state all --head "$BRANCH" --json number,url --jq '.[0]' 2>/dev/null
+gh pr list --state open --head "$BRANCH" --json number,url --jq '.[0]' 2>/dev/null
 ```
 
 IF existing PR found: ERROR "PR already exists for this branch: $URL". Do not create or update.

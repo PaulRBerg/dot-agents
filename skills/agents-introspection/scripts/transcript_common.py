@@ -110,7 +110,7 @@ def redact_text(value: str | None) -> str:
 
 
 def truncate(value: str, limit: int = 160) -> str:
-    return value if len(value) <= limit else value[: limit - 1].rstrip() + "..."
+    return value if len(value) <= limit else value[: limit - 3].rstrip() + "..."
 
 
 def count_privacy_gaps(strings: list[str]) -> Counter[str]:

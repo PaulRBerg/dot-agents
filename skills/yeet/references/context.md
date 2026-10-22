@@ -5,9 +5,7 @@ Load only the sections linked by the active workflow.
 ## Auth Validation
 
 Do not run unconditional `gh auth status`. Treat the first required read-only `gh` command as auth validation. Resolve
-the bundled helper relative to the skill directory, never the target repository:
-
-Resolve `<skill-dir>` to the absolute directory containing the owning `SKILL.md` before running these commands:
+`<skill-dir>` to the absolute directory containing the owning `SKILL.md` before running these commands:
 
 ```sh
 <skill-dir>/scripts/yeet-context.sh repo "<owner>/<repo>" [--issue-templates] [--discussion-templates] [--discussion-categories]

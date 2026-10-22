@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import argparse
+import fcntl
 import json
 import os
 import subprocess
 import sys
 import tempfile
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
@@ -22,7 +24,10 @@ class LedgerError(ValueError):
 
 
 def git(root: Path, *args: str) -> bytes:
-    result = subprocess.run(["git", *args], cwd=root, capture_output=True)
+    try:
+        result = subprocess.run(["git", *args], cwd=root, capture_output=True)
+    except OSError as exc:
+        raise LedgerError(f"cannot run git: {exc}") from exc
     if result.returncode:
         message = result.stderr.decode(errors="replace").strip()
         raise LedgerError(message or f"git {' '.join(args)} failed")
@@ -75,6 +80,22 @@ def ensure_external_ledger(root: Path, ledger: Path) -> Path:
     raise LedgerError(f"ledger must be outside the repository: {resolved}")
 
 
+@contextmanager
+def exclusive(path: Path):
+    """Serialize read-modify-write cycles from concurrent callers on a sidecar lock."""
+    lock = path.with_name(f"{path.name}.lock")
+    try:
+        handle = lock.open("a")
+    except OSError as exc:
+        raise LedgerError(f"cannot lock ledger: {exc}") from exc
+    with handle:
+        fcntl.flock(handle, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(handle, fcntl.LOCK_UN)
+
+
 def atomic_write(path: Path, payload: dict[str, Any]) -> None:
     encoded = (json.dumps(payload, indent=2, ensure_ascii=False) + "\n").encode()
     descriptor, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
@@ -115,7 +136,8 @@ def load(path: Path) -> dict[str, Any]:
     except (OSError, json.JSONDecodeError) as exc:
         raise LedgerError(f"cannot read ledger: {exc}") from exc
     if (
-        payload.get("schemaVersion") != 1
+        not isinstance(payload, dict)
+        or payload.get("schemaVersion") != 1
         or not isinstance(payload.get("revision"), int)
         or not isinstance(payload.get("repoRoot"), str)
         or not isinstance(payload.get("files"), list)
@@ -302,6 +324,11 @@ def refresh_command(args: argparse.Namespace) -> dict[str, Any]:
         if item["present"] != present:
             item["present"] = present
             changed = True
+        if not present and item["status"] == "retained":
+            # A removed path can no longer justify its name; it must be re-accounted.
+            item["status"] = "pending"
+            item["reason"] = None
+            changed = True
     next_revision = payload["revision"] + 1
     added_paths = sorted(current_paths - by_path.keys())
     for path in added_paths:
@@ -362,7 +389,11 @@ def main() -> int:
     try:
         if getattr(args, "limit", 1) is not None and getattr(args, "limit", 1) < 1:
             raise LedgerError("--limit must be positive")
-        result = args.handler(args)
+        if args.command in ("mark", "refresh"):
+            with exclusive(args.ledger):
+                result = args.handler(args)
+        else:
+            result = args.handler(args)
     except LedgerError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 64

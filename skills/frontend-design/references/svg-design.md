@@ -40,8 +40,9 @@ control points to make curves share a clear direction and smooth joins. Align en
 Let spacing, line weight, and repetition create rhythm before adding detail.
 
 Gradients can fade a motif into its surface or direct attention toward a node. Keep stops related to the palette and
-match their direction to the geometry. Avoid using a multicolor glow as a substitute for composition. Compare light and
-dark treatments separately because the same opacity produces different results on each surface.
+match their direction to the geometry. Avoid using a multicolor glow as a substitute for composition. When the surface
+has light and dark themes, compare those treatments separately because the same opacity produces different results on
+each surface.
 
 ## Place it in the layout
 
@@ -54,8 +55,9 @@ dark treatments separately because the same opacity produces different results o
 - **Small accent:** Use a fragment near an empty state or section label. Keep it distinct from buttons and status
   indicators.
 
-Choose the crop at narrow widths rather than shrinking the entire desktop composition. Move, simplify, or hide secondary
-geometry when it crowds content. Use normal document flow for a graphic that needs space of its own.
+When narrow widths are in scope, choose the crop at those widths rather than shrinking the entire desktop composition.
+Move, simplify, or hide secondary geometry when it crowds content. Use normal document flow for a graphic that needs
+space of its own.
 
 ## Build with code-native SVG
 
@@ -115,8 +117,8 @@ project's styling system. Supply `--motif-color` from a theme token chosen for t
 }
 ```
 
-The right-aligned crop suits a wide header with text on the left. At narrow widths, choose a quieter fragment or hide
-the motif. Do not let this crop move the shared node behind the title.
+The right-aligned crop suits a wide header with text on the left. When narrow widths are in scope, choose a quieter
+fragment or hide the motif there. Do not let this crop move the shared node behind the title.
 
 ## Review the rendered result
 

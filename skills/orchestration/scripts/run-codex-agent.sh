@@ -227,8 +227,6 @@ prompt_file="$(mktemp "${TMPDIR:-/tmp}/orchestration.prompt.XXXXXX")"
 stdout_file="$(mktemp "${TMPDIR:-/tmp}/orchestration.stdout.XXXXXX")"
 stderr_file="$(mktemp "${TMPDIR:-/tmp}/orchestration.stderr.XXXXXX")"
 result_file="$(mktemp "${TMPDIR:-/tmp}/orchestration.result.XXXXXX")"
-timeout_marker="$(mktemp "${TMPDIR:-/tmp}/orchestration.timeout.XXXXXX")"
-rm -f "$timeout_marker"
 
 codex_pid=""
 started_at=""
@@ -275,7 +273,7 @@ cleanup() {
     kill -KILL "$codex_pid" >/dev/null 2>&1 || true
     wait "$codex_pid" >/dev/null 2>&1 || true
   fi
-  rm -f "$prompt_file" "$stdout_file" "$stderr_file" "$result_file" "$timeout_marker"
+  rm -f "$prompt_file" "$stdout_file" "$stderr_file" "$result_file"
 }
 
 forward_signal() {
@@ -343,7 +341,6 @@ timed_out=0
 while kill -0 "$codex_pid" >/dev/null 2>&1; do
   if ((SECONDS - started_at >= timeout_seconds)); then
     timed_out=1
-    : >"$timeout_marker"
     kill -TERM "$codex_pid" >/dev/null 2>&1 || true
     break
   fi
@@ -366,7 +363,7 @@ codex_pid=""
 
 elapsed=$(elapsed_now)
 
-if [[ -f "$timeout_marker" ]]; then
+if [[ $timed_out -eq 1 ]]; then
   emit_sentinel "{\"type\":\"handoff.failed\",\"reason\":\"timeout\",\"elapsed_seconds\":$elapsed}"
   report_elapsed
   echo "ERROR: Codex timed out after ${timeout_seconds}s" >&2

@@ -26,12 +26,11 @@ Expand Codex names to `gpt-6-luna`, `gpt-6.1-sol`, and `gpt-6-astra`. Use the Cl
 Claude, include only pairs verified as supported by the selected tool or CLI and model. Add Opus/xhigh to research only
 when support and the investigation justify it. Never infer pair support from the flag alone.
 
-Native Claude supports per-call effort from v2.1.292. Inspect the callable Agent schema as described in
-[the native adapter](native-claude.md#configuration). This skill explicitly requests the accepted Jev effort on
-supported non-fork calls. If the tool lacks effort control, replace explicit efforts with `inherited` and deduplicate
-candidates. Forked subagents inherit the parent's effort, so do not offer an effort override for them. For a custom
-Claude agent, preserve its configured model and effort unless the user explicitly overrides them. Do not create agent
-configuration files to expose effort. If host-controlled settings leave no choice, skip Jev.
+For Native Claude, determine per-call effort support as [the native adapter](native-claude.md#configuration) describes.
+If the tool lacks effort control, replace explicit efforts with `inherited` and deduplicate candidates. Forked subagents
+inherit the parent's effort, so do not offer an effort override for them. For a custom Claude agent, preserve its
+configured model and effort unless the user explicitly overrides them. If host-controlled settings leave no choice, skip
+Jev.
 
 An explicit model can expose supported efforts beyond the default table. Verify those pairs before offering them. An
 explicit effort can narrow supported models. If the route cannot honor a requested value, report the adapter

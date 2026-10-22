@@ -192,8 +192,6 @@ SLASH_COMMENT_LANGUAGES = {
     "Go",
     "JavaScript",
     "JavaScript JSX",
-    "Kotlin",
-    "Kotlin Script",
     "Less",
     "Rust",
     "SCSS",
@@ -268,6 +266,14 @@ def display_base(path: Path) -> Path:
     return path if path.is_dir() else path.parent
 
 
+def scoped_path(path: Path, base: Path) -> Path:
+    """Drop ancestors of the scan base so their names cannot ignore or reclassify files."""
+    try:
+        return path.relative_to(base)
+    except ValueError:
+        return path
+
+
 def normalize_part(part: str) -> str:
     return part.lower()
 
@@ -323,7 +329,7 @@ def threshold_for(path: Path) -> int:
     return TEST_THRESHOLD if is_test_path(path) else THRESHOLD
 
 
-def run_tokei(path: Path, include_generated: bool) -> list[FileStat] | None:
+def run_tokei(path: Path, include_generated: bool, base: Path) -> list[FileStat] | None:
     if shutil.which("tokei") is None:
         return None
     args = ["tokei", "--output", "json"]
@@ -354,14 +360,14 @@ def run_tokei(path: Path, include_generated: bool) -> list[FileStat] | None:
         files = payload.get("files") or payload.get("reports")
         if isinstance(files, dict):
             for raw_file, file_payload in files.items():
-                append_tokei_file(stats, path, Path(raw_file), file_payload, language, include_generated)
+                append_tokei_file(stats, path, Path(raw_file), file_payload, language, include_generated, base)
         elif isinstance(files, list):
             for file_payload in files:
                 if not isinstance(file_payload, dict):
                     continue
                 raw_file = file_payload.get("name") or file_payload.get("path")
                 if isinstance(raw_file, str):
-                    append_tokei_file(stats, path, Path(raw_file), file_payload, language, include_generated)
+                    append_tokei_file(stats, path, Path(raw_file), file_payload, language, include_generated, base)
     return stats
 
 
@@ -372,6 +378,7 @@ def append_tokei_file(
     payload: Any,
     language: str,
     include_generated: bool,
+    base: Path,
 ) -> None:
     if not isinstance(payload, dict):
         return
@@ -385,7 +392,7 @@ def append_tokei_file(
     scan_base = scan_path if scan_path.is_dir() else scan_path.parent
     path = raw_file if raw_file.is_absolute() else scan_base / raw_file
     path = path.resolve()
-    if is_ignored_path(path, include_generated):
+    if is_ignored_path(scoped_path(path, base), include_generated):
         return
     stats.append(FileStat(path=path, loc=code, language=language))
 
@@ -393,7 +400,7 @@ def append_tokei_file(
 def rg_files(root: Path, include_generated: bool) -> list[Path] | None:
     if shutil.which("rg") is None:
         return None
-    args = ["rg", "--files", "--hidden"]
+    args = ["rg", "--no-config", "--files", "--hidden"]
     if include_generated:
         args.append("--no-ignore")
     for name in sorted(ignored_dir_names(include_generated)):
@@ -424,13 +431,14 @@ def walk_files(root: Path, include_generated: bool) -> list[Path]:
 def candidate_files(path: Path, include_generated: bool) -> list[Path]:
     if path.is_file():
         return [path]
-    return rg_files(path, include_generated) or walk_files(path, include_generated)
+    files = rg_files(path, include_generated)
+    return files if files is not None else walk_files(path, include_generated)
 
 
-def fallback_stats(path: Path, include_generated: bool) -> list[FileStat]:
+def fallback_stats(path: Path, include_generated: bool, base: Path) -> list[FileStat]:
     stats: list[FileStat] = []
     for file_path in candidate_files(path, include_generated):
-        if is_ignored_path(file_path, include_generated):
+        if is_ignored_path(scoped_path(file_path, base), include_generated):
             continue
         language = fallback_language(file_path)
         if language is None:
@@ -489,10 +497,10 @@ def strip_slash_block_comment(line: str, in_block_comment: bool) -> tuple[str, b
     return output.strip(), in_block_comment
 
 
-def large_files(stats: list[FileStat]) -> list[FileStat]:
+def large_files(stats: list[FileStat], base: Path) -> list[FileStat]:
     by_path: dict[Path, FileStat] = {}
     for stat in stats:
-        if stat.loc <= threshold_for(stat.path):
+        if stat.loc <= threshold_for(scoped_path(stat.path, base)):
             continue
         current = by_path.get(stat.path)
         if current is None or stat.loc > current.loc:
@@ -511,8 +519,7 @@ def md_escape(text: str) -> str:
     return text.replace("|", "\\|")
 
 
-def print_report(scan_path: Path, files: list[FileStat], metric: str, include_generated: bool) -> None:
-    base = display_base(scan_path)
+def print_report(scan_path: Path, base: Path, files: list[FileStat], metric: str, include_generated: bool) -> None:
     print("# Large File Report")
     print()
     print(f"- Scan root: `{display_path(scan_path, base)}`")
@@ -543,15 +550,16 @@ def print_report(scan_path: Path, files: list[FileStat], metric: str, include_ge
 def main(argv: list[str]) -> int:
     args = parse_args(argv)
     scan_path = resolve_scan_path(args.path)
+    base = display_base(scan_path)
 
-    stats = run_tokei(scan_path, args.include_generated)
+    stats = run_tokei(scan_path, args.include_generated, base)
     if stats is None:
-        stats = fallback_stats(scan_path, args.include_generated)
+        stats = fallback_stats(scan_path, args.include_generated, base)
         metric = "portable source-line estimate; install tokei for language-aware counts"
     else:
         metric = "language-aware LOC via tokei"
 
-    print_report(scan_path, large_files(stats), metric, args.include_generated)
+    print_report(scan_path, base, large_files(stats, base), metric, args.include_generated)
     return 0
 
 

@@ -328,7 +328,7 @@ def apply(plan: dict[str, object]) -> dict[str, object]:
     except Exception as error:
         for original, backup in backups.items():
             try:
-                target = moved_path(original, plan) if repo_moved or claude_moved else original
+                target = moved_path(original, {**plan, "move_claude": claude_moved}) if repo_moved else original
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(backup, target)
             except Exception as rollback_error:  # pragma: no cover - best effort reporting

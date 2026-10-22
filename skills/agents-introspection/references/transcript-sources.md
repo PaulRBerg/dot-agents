@@ -138,11 +138,6 @@ exclusions auditable:
 - candidate `signal_channels` records eligible user and assistant message counts, ignored context, and structured tool
   failures.
 
-If a specific reported incident is missing, use Exact-Incident Fallback before widening the time window. Otherwise, make
-one pass with broader or OR-grouped keywords. If still weak, retry once with `--since` removed. Add `--include-archived`
-only for the final bounded fallback. Empty output after those passes is a coverage gap, not proof that no relevant
-behavior exists.
-
 ## Inspect Candidates
 
 Use the bundled inspector to get a bounded, redacted digest of a candidate transcript before opening its raw body:
@@ -156,7 +151,7 @@ uv run "$skill_dir/scripts/transcript-inspect.py" <transcript-path>... \
 
 For each file, the inspector emits a header with source, session ID, `session_kind`, `parent_session_id`, cwd, timestamp
 range, per-channel totals, and sampled flag. Explicit guardian paths remain inspectable. The inspector emits bounded
-entries with absolute record line numbers. Within the sampled records and output limit, these entries contain
+entries with zero-based absolute record line numbers. Within the sampled records and output limit, these entries contain
 non-context user messages, qualifying assistant messages, and tool failures. Redaction is always on. Entry text is
 capped at 240 characters.
 

@@ -84,7 +84,8 @@ makes the watcher exit `1` after all agents settle.
 If an unsettled agent exceeds its budget plus a 120-second grace, the watcher synthesizes
 `{"type":"handoff.failed","reason":"no-sentinel"}` and settles it as failed. The watcher ignores a wrapper sentinel
 arriving after that settlement. This only backstops a dead wrapper. The wrapper remains the timeout authority. Malformed
-or otherwise invalid progress emits `watcher.failed` and exits as an invariant failure, not an agent result.
+or otherwise invalid progress emits `watcher.failed` and exits as an invariant failure, not an agent result. On INT or
+TERM, the watcher emits `watcher.cancelled` with the settled counts and exits `143`.
 
 `watcher.digest.lastActivity` is deliberately privacy-minimal. It carries only `type` for messages, reasoning, web
 searches, todo lists, and item or stream errors. It carries `type` plus `status` for file changes. It carries `type`,

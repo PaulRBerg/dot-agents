@@ -24,7 +24,10 @@ class LedgerError(ValueError):
 
 
 def git(root: Path, *args: str) -> bytes:
-    result = subprocess.run(["git", *args], cwd=root, capture_output=True)
+    try:
+        result = subprocess.run(["git", *args], cwd=root, capture_output=True)
+    except OSError as exc:
+        raise LedgerError(f"cannot run git: {exc}") from exc
     if result.returncode:
         raise LedgerError(result.stderr.decode(errors="replace").strip() or f"git {' '.join(args)} failed")
     return result.stdout
@@ -110,7 +113,7 @@ def load(path: Path) -> dict[str, Any]:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise LedgerError(f"cannot read ledger: {exc}") from exc
-    if payload.get("schemaVersion") != 1 or not isinstance(payload.get("files"), list):
+    if not isinstance(payload, dict) or payload.get("schemaVersion") != 1 or not isinstance(payload.get("files"), list):
         raise LedgerError("unsupported ledger schema")
     paths = set()
     for item in payload["files"]:
@@ -156,6 +159,9 @@ def init_command(args: argparse.Namespace) -> dict[str, Any]:
     untracked = set(nul_paths(git(root, "ls-files", "--others", "--exclude-standard", "-z")))
     status = preexisting_status(root)
     paths = sorted(path for path in tracked | untracked if in_scope(path, scopes))
+    empty_scopes = [scope for scope in scopes if not any(in_scope(path, [scope]) for path in paths)]
+    if empty_scopes:
+        raise LedgerError(f"scopes match no tracked or untracked files: {', '.join(empty_scopes)}")
     payload = {
         "schemaVersion": 1,
         "revision": 0,
