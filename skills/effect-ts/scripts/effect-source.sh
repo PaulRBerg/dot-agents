@@ -20,7 +20,10 @@ fi
 last="$(cat "$stamp" 2>/dev/null || true)"
 case "$last" in '' | *[!0-9]*) last=0 ;; esac
 if [ $((now - last)) -ge "$max_age" ]; then
-  if git -C "$dir" fetch --quiet --tags --force --prune origin >&2; then
+  # Fetch only what release resolution reads: main and the effect@* tags. Auto-followed tags would pull every
+  # per-package tag too.
+  if git -C "$dir" fetch --quiet --no-tags --force --prune origin \
+    '+refs/heads/main:refs/remotes/origin/main' '+refs/tags/effect@*:refs/tags/effect@*' >&2; then
     printf '%s\n' "$now" >"$stamp"
   else
     echo "effect-source: fetch failed; using cached source" >&2

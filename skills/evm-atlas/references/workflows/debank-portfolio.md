@@ -64,7 +64,9 @@ async () => window.__debankCollect.start(["<addr>"])
 `chain/list` call. Otherwise, it returns `{ queued }` without waiting for the run. Awaiting it surfaces those errors. An
 optional second argument sets `{ timeoutMs: 30000, maxAttempts: 3, cooldownMs: 20000, haltAfter: 3 }` (the defaults).
 
-4. Poll `window.__debankCollect.status()` with short `evaluate_script` calls until `running` is `false`. It returns
+4. Wait for the run with `evaluate_script` calls of `async () => window.__debankCollect.wait()`. Repeat the call until
+   `running` is `false`. Each call returns `status()` when the run finishes, or after at most `maxMs` (default 25000)
+   while the run continues. `status()` returns
    `{ running, total, done, ok, failed, pending, rateLimited, blocked, startedAt, elapsedMs }`, with `startedAt` an ISO
    string. A profile takes about 2.5 s (1.2-4.6 s). A `429`, error, or timeout pauses the page for `cooldownMs` and
    requeues the address until `maxAttempts`, after which its record is `failed`. After `haltAfter` consecutive failed
@@ -103,11 +105,11 @@ render in an iframe. Thus, a loop never needs one page per address.
 - Use one owned page, opened with `new_page` (it reports visible, so timers are not throttled). Each profile costs about
   `10 + <chains>` requests, and bulk runs were blocked after every 30-55 profiles.
 - Split the addresses into batches of at most 25. Per batch, run `acquire --profiles <batch size>`. Then `start` the
-  batch. Poll it. Save `results()`. Then `release`.
+  batch. Wait for it. Save `results()`. Then `release`.
 
   Acquire again for the next batch.
 
-- The loop runs without being awaited, so no DevTools protocol timeout applies. Poll `status()` with short calls.
+- `start` does not await the loop. Each `wait()` call returns within `maxMs`, so no DevTools protocol timeout applies.
 - A new `start` throws while a run is active and clears the previous results once it begins. To abort an active run,
   reload the page. Then paste the script again.
 - A `failed` record is a coverage gap, never an empty wallet. Handle it per Fallbacks. An `ok` record with no tokens is

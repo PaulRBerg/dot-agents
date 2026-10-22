@@ -180,7 +180,7 @@ function debankCollect() {
   }
 
   async function start(addresses, { timeoutMs = 30000, maxAttempts = 3, cooldownMs = 20000, haltAfter = 3 } = {}) {
-    if (run && !run.finishedAt) throw new Error("a run is already active; poll status() until running is false");
+    if (run && !run.finishedAt) throw new Error("a run is already active; await wait() until running is false");
     if (!Array.isArray(addresses)) throw new Error("addresses must be an array");
     const invalid = addresses.filter((address) => typeof address !== "string" || !ADDRESS.test(address));
     if (invalid.length > 0) throw new Error(`invalid addresses: ${invalid.map(String).join(", ")}`);
@@ -223,8 +223,16 @@ function debankCollect() {
     };
   }
 
+  // Resolves with status() once the run finishes, or after maxMs so one evaluate_script call stays short.
+  async function wait(maxMs = 25000) {
+    if (!Number.isFinite(maxMs) || maxMs < 0) throw new Error("maxMs must be a non-negative number");
+    const deadline = Date.now() + maxMs;
+    while (run && !run.finishedAt && Date.now() < deadline) await sleep(Math.min(250, deadline - Date.now()));
+    return status();
+  }
+
   const results = () => (run ? run.addresses.map((address) => run.records.get(address)).filter(Boolean) : []);
 
-  window.__debankCollect = { start, status, results };
+  window.__debankCollect = { start, status, wait, results };
   return { installed: true, reused: false };
 }
