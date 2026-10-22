@@ -7,10 +7,10 @@ import json
 import os
 import re
 from collections import Counter, deque
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable, Literal
-
+from typing import Any, Literal
 
 EMAIL_RE = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 API_KEY_RE = re.compile(r"\b(?:sk|pk|rk|ghp|github_pat|xox[baprs])-[A-Za-z0-9_\-]{16,}\b")
@@ -50,8 +50,9 @@ CONTEXT_PREFIXES = (
     "Base directory for this skill:",
 )
 FAILURE_STATUSES = {"error", "failed", "failure", "cancelled", "canceled", "timed_out", "timeout"}
-INFLECTION_SUFFIXES = ("ing", "ies", "ied", "ed", "es", "s", "e", "y")
-MIN_INFLECTION_STEM = 5
+INFLECTION_SUFFIXES = ("ying", "ies", "ied", "ing", "ions", "ion", "ers", "er", "es", "ed", "en", "s", "e", "y")
+INFLECTION_ENDINGS = r"(?:ying|ies|ied|ing|ions|ion|ers|er|es|ed|en|s|e|y)?(?![a-z])"
+MIN_INFLECTION_STEM = 3
 MAX_FULL_SESSION_BYTES = 2_000_000
 SESSION_HEAD_RECORDS = 250
 SESSION_TAIL_RECORDS = 750
@@ -145,10 +146,11 @@ def keyword_alternatives(keyword: str) -> list[str]:
 
 
 def inflection_stem(term: str) -> str | None:
-    """Return a shorter stem for a plain word so substring matching also covers its regular inflections.
+    """Return the stem of a plain lowercase word with one regular inflection ending removed.
 
-    `overwrite` becomes `overwrit` (overwriting, overwritten) and `committed` becomes `commit`. Short stems return
-    None so that `retry` cannot match `retrieve`. Irregular forms such as `overwrote` still need an OR-group.
+    `overwrite` becomes `overwrit`, `committed` becomes `commit`, and `retry` becomes `retr`. The stem is only useful
+    together with `stem_pattern`, which requires an inflection ending or a word boundary after it. Irregular forms
+    such as `overwrote` still need an OR-group.
     """
     if not term.isascii() or not term.isalpha():
         return None
@@ -162,27 +164,51 @@ def inflection_stem(term: str) -> str | None:
     return None
 
 
-def keyword_match_terms(keywords: list[str]) -> list[str]:
-    """Lowercase OR-group alternatives plus their inflection stems, deduplicated in order."""
-    terms: list[str] = []
+def stem_pattern(stem: str) -> str:
+    """Regex source matching `stem`, an optional doubled final consonant, then an inflection ending or boundary."""
+    doubled = re.escape(stem[-1]) + "?" if stem[-1] not in "aeiou" else ""
+    return re.escape(stem) + doubled + INFLECTION_ENDINGS
+
+
+@dataclass(frozen=True)
+class KeywordMatcher:
+    """Case-insensitive matcher for one or more OR-group keywords against already lowercased text."""
+
+    exact: tuple[str, ...]
+    inflections: re.Pattern[str] | None
+
+    def matches(self, lowered: str) -> bool:
+        if any(term in lowered for term in self.exact):
+            return True
+        return self.inflections is not None and self.inflections.search(lowered) is not None
+
+
+def keyword_matcher(keywords: list[str]) -> KeywordMatcher | None:
+    """Build a matcher for lowercase OR-group alternatives plus their regular inflections, or None without any."""
+    exact: list[str] = []
+    stems: list[str] = []
     for keyword in keywords:
         for alternative in keyword_alternatives(keyword):
             lowered = alternative.lower()
+            if lowered not in exact:
+                exact.append(lowered)
             stem = inflection_stem(lowered)
-            for term in (lowered, stem):
-                if term and term not in terms:
-                    terms.append(term)
-    return terms
+            if stem and stem not in stems:
+                stems.append(stem)
+    if not exact:
+        return None
+    inflections = re.compile("|".join(stem_pattern(stem) for stem in stems)) if stems else None
+    return KeywordMatcher(tuple(exact), inflections)
 
 
 def count_keywords(strings: list[str], keywords: list[str]) -> Counter[str]:
     counter: Counter[str] = Counter()
     lowered = [text.lower() for text in strings]
     for keyword in keywords:
-        terms = keyword_match_terms([keyword])
-        if not terms:
+        matcher = keyword_matcher([keyword])
+        if matcher is None:
             continue
-        matches = sum(1 for text in lowered if any(term in text for term in terms))
+        matches = sum(1 for text in lowered if matcher.matches(text))
         if matches:
             counter[redact_text(keyword)] = matches
     return counter
@@ -208,14 +234,10 @@ def title_already_matches(title: str | None, keywords: list[str]) -> bool:
 
 
 def keywords_present_in_lines(lines: list[str], keywords: list[str]) -> bool:
-    terms = keyword_match_terms(keywords)
-    if not terms:
+    matcher = keyword_matcher(keywords)
+    if matcher is None:
         return False
-    for line in lines:
-        lowered = line.lower()
-        if any(term in lowered for term in terms):
-            return True
-    return False
+    return any(matcher.matches(line.lower()) for line in lines)
 
 
 def read_jsonl(path: Path) -> Iterable[Any]:
@@ -344,8 +366,8 @@ def parse_utc_timestamp(value: str | None) -> dt.datetime | None:
     except ValueError:
         return None
     if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=dt.timezone.utc)
-    return parsed.astimezone(dt.timezone.utc)
+        parsed = parsed.replace(tzinfo=dt.UTC)
+    return parsed.astimezone(dt.UTC)
 
 
 def file_modified_time(path: Path) -> dt.datetime | None:
@@ -353,11 +375,11 @@ def file_modified_time(path: Path) -> dt.datetime | None:
         mtime = path.stat().st_mtime
     except OSError:
         return None
-    return dt.datetime.fromtimestamp(mtime, tz=dt.timezone.utc)
+    return dt.datetime.fromtimestamp(mtime, tz=dt.UTC)
 
 
 def format_utc_iso(value: dt.datetime) -> str:
-    return value.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return value.astimezone(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def parse_jsonl_line(line: str) -> Any | None:

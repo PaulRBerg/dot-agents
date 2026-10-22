@@ -13,9 +13,10 @@ import os
 import re
 import sys
 from collections import Counter, defaultdict
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 from transcript_common import (
     CORRECTION_PATTERNS,
@@ -33,7 +34,7 @@ from transcript_common import (
     first_string_shallow,
     format_utc_iso,
     is_within,
-    keyword_match_terms,
+    keyword_matcher,
     keywords_present_in_lines,
     normalize_path,
     parse_utc_timestamp,
@@ -48,7 +49,6 @@ from transcript_common import (
     title_already_matches,
     truncate,
 )
-
 
 DATE_YEAR_RE = re.compile(r"^\d{4}$")
 DATE_COMPONENT_RE = re.compile(r"^\d{2}$")
@@ -204,13 +204,13 @@ def normalize_projects(raw_projects: list[str], historical_projects: list[str] |
 def build_since_filter(value: str) -> SinceFilter:
     match = SINCE_DAYS_RE.fullmatch(value)
     if match:
-        cutoff = dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=int(match.group(1)))
+        cutoff = dt.datetime.now(dt.UTC) - dt.timedelta(days=int(match.group(1)))
         return SinceFilter(value=value, cutoff=cutoff)
     try:
         parsed = dt.datetime.strptime(value, "%Y-%m-%d")
     except ValueError:
         raise ValueError(f"invalid --since value: {value!r} (expected YYYY-MM-DD or Nd)") from None
-    return SinceFilter(value=value, cutoff=parsed.replace(tzinfo=dt.timezone.utc))
+    return SinceFilter(value=value, cutoff=parsed.replace(tzinfo=dt.UTC))
 
 
 def mine_transcripts(
@@ -229,7 +229,7 @@ def mine_transcripts(
     codex_index = load_codex_index(codex_home / "session_index.jsonl")
     claude_history = load_claude_history(claude_home / "history.jsonl")
     coverage = {project: new_coverage(codex_index["records"]) for project in projects}
-    now = dt.datetime.now(dt.timezone.utc)
+    now = dt.datetime.now(dt.UTC)
 
     codex_sessions = mine_codex_sessions(
         projects,
@@ -479,7 +479,7 @@ def codex_ownership(
     canonical_cwds = set(turn_cwds)
     if any(not is_within(cwd, owner) for cwd in canonical_cwds):
         return None, owners
-    return Ownership("turn_context.cwd", str(sorted(canonical_cwds, key=str)[0]), str(owner)), set()
+    return Ownership("turn_context.cwd", str(min(canonical_cwds, key=str)), str(owner)), set()
 
 
 def codex_session_ids(metadata: list[Any], path: Path) -> set[str]:
@@ -631,7 +631,7 @@ def claude_ownership(
         return None, implicated
     owner = next(iter(owners))
     if cwd_values:
-        cwd = sorted(cwd_values, key=str)[0]
+        cwd = min(cwd_values, key=str)
         matched_via = "transcript.cwd+encoded-directory"
     else:
         cwd = owner
@@ -769,8 +769,8 @@ def build_excerpts(
         first = user_messages[0]
         excerpts.append({"channel": "user", "text": truncate(redact_text(first), 240)})
         seen.add(" ".join(first.split()))
-    if keywords:
-        terms = keyword_match_terms(keywords)
+    matcher = keyword_matcher(keywords)
+    if matcher is not None:
         for channel, messages in (("user", user_messages), ("assistant", assistant_messages)):
             for message in messages:
                 if len(excerpts) >= 3:
@@ -778,7 +778,7 @@ def build_excerpts(
                 normalized = " ".join(message.split())
                 if normalized in seen:
                     continue
-                if any(term in message.lower() for term in terms):
+                if matcher.matches(message.lower()):
                     excerpts.append({"channel": channel, "text": truncate(redact_text(message), 240)})
                     seen.add(normalized)
     return excerpts
