@@ -20,10 +20,10 @@ installed `codex --version` and generated schema.
 `--dangerously-bypass-hook-trust` bypasses hook trust for one Codex invocation. It does not grant persistent trust. Do
 not recommend it as a replacement for a narrowly authorized configuration update.
 
-## Local implementation notes: Codex CLI 0.156.1
+## Local implementation notes: Codex CLI 0.163.0
 
-Everything in this section was verified against `codex-cli 0.156.1` and its generated app-server JSON Schema. This
-verification does not promise the same behavior in older or newer versions.
+Everything in this section was verified against `codex-cli 0.163.0`, its generated app-server JSON Schema, and a live
+stdio exchange. This verification does not promise the same behavior in older or newer versions.
 
 Start the app-server over stdio and exchange JSONL. Send `initialize` and wait for its response. Then send the
 `initialized` notification before using the v2 methods below. When exact request or response shapes matter, generate a
@@ -35,8 +35,8 @@ codex app-server generate-json-schema --out "$TMPDIR/codex-app-server-schema"
 
 The schema exposes:
 
-- `hooks/list`, which returns hook metadata including `key`, `source`, `sourcePath`, `isManaged`, `currentHash`, and
-  `trustStatus`.
+- `hooks/list`, which returns one record per working directory under `data`, each with `hooks`, `errors`, and
+  `warnings`. Each hook carries `key`, `source`, `sourcePath`, `isManaged`, `currentHash`, and `trustStatus`.
 - `config/read`, which can return effective config and layers.
 - `config/batchWrite`, an atomic batch edit with `filePath` and `expectedVersion`.
 
