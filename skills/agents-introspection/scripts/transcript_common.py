@@ -50,6 +50,8 @@ CONTEXT_PREFIXES = (
     "Base directory for this skill:",
 )
 FAILURE_STATUSES = {"error", "failed", "failure", "cancelled", "canceled", "timed_out", "timeout"}
+INFLECTION_SUFFIXES = ("ing", "ies", "ied", "ed", "es", "s", "e", "y")
+MIN_INFLECTION_STEM = 5
 MAX_FULL_SESSION_BYTES = 2_000_000
 SESSION_HEAD_RECORDS = 250
 SESSION_TAIL_RECORDS = 750
@@ -142,14 +144,45 @@ def keyword_alternatives(keyword: str) -> list[str]:
     return [alternative.strip() for alternative in keyword.split("|") if alternative.strip()]
 
 
+def inflection_stem(term: str) -> str | None:
+    """Return a shorter stem for a plain word so substring matching also covers its regular inflections.
+
+    `overwrite` becomes `overwrit` (overwriting, overwritten) and `committed` becomes `commit`. Short stems return
+    None so that `retry` cannot match `retrieve`. Irregular forms such as `overwrote` still need an OR-group.
+    """
+    if not term.isascii() or not term.isalpha():
+        return None
+    for suffix in INFLECTION_SUFFIXES:
+        if not term.endswith(suffix):
+            continue
+        stem = term[: -len(suffix)]
+        if len(stem) >= 2 and stem[-1] == stem[-2] and stem[-1] not in "lsz":
+            stem = stem[:-1]
+        return stem if len(stem) >= MIN_INFLECTION_STEM else None
+    return None
+
+
+def keyword_match_terms(keywords: list[str]) -> list[str]:
+    """Lowercase OR-group alternatives plus their inflection stems, deduplicated in order."""
+    terms: list[str] = []
+    for keyword in keywords:
+        for alternative in keyword_alternatives(keyword):
+            lowered = alternative.lower()
+            stem = inflection_stem(lowered)
+            for term in (lowered, stem):
+                if term and term not in terms:
+                    terms.append(term)
+    return terms
+
+
 def count_keywords(strings: list[str], keywords: list[str]) -> Counter[str]:
     counter: Counter[str] = Counter()
     lowered = [text.lower() for text in strings]
     for keyword in keywords:
-        alternatives = [alternative.lower() for alternative in keyword_alternatives(keyword)]
-        if not alternatives:
+        terms = keyword_match_terms([keyword])
+        if not terms:
             continue
-        matches = sum(1 for text in lowered if any(alternative in text for alternative in alternatives))
+        matches = sum(1 for text in lowered if any(term in text for term in terms))
         if matches:
             counter[redact_text(keyword)] = matches
     return counter
@@ -175,12 +208,12 @@ def title_already_matches(title: str | None, keywords: list[str]) -> bool:
 
 
 def keywords_present_in_lines(lines: list[str], keywords: list[str]) -> bool:
-    alternatives = [alternative.lower() for keyword in keywords for alternative in keyword_alternatives(keyword)]
-    if not alternatives:
+    terms = keyword_match_terms(keywords)
+    if not terms:
         return False
     for line in lines:
         lowered = line.lower()
-        if any(alternative in lowered for alternative in alternatives):
+        if any(term in lowered for term in terms):
             return True
     return False
 

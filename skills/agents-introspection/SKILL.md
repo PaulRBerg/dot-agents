@@ -62,8 +62,10 @@ scope in `🗂 Historical coverage`.
 
 1. Run the bundled miner for the current project and each task-relevant local project, unarchived sessions only, with
    the chosen keywords, `--since 60d`, `--excerpts`, and `--max-sessions 8`. Encode synonyms as one OR-group keyword
-   (`--keyword 'a|b'`) rather than separate `--keyword` flags. `--max-excerpt-bytes` (default 8192) limits the total
-   excerpt size. When `excerpts_truncated` is `true`, use the inspector for candidates without excerpts.
+   (`--keyword 'a|b'`) rather than separate `--keyword` flags. The miner also matches regular inflections of a
+   plain-word keyword, so `overwrite` matches `overwriting` and `overwritten`. Irregular forms such as `overwrote` still
+   need an OR-group. `--max-excerpt-bytes` (default 8192) limits the total excerpt size. When `excerpts_truncated` is
+   `true`, use the inspector for candidates without excerpts.
 2. Treat source ownership as a miner invariant. The miner assigns every candidate once from source-native cwd,
    directory, and history metadata, never from transcript content. Review `ownership`. Reject a candidate only when
    fallback ownership such as `turn_context.cwd` remains materially ambiguous for the task. The miner excludes
@@ -75,11 +77,15 @@ scope in `🗂 Historical coverage`.
    evidence by themselves. Inspect up to five highest-relevance transcript bodies through the bundled inspector digest
    (`scripts/transcript-inspect.py`) first. Open raw bodies only when the digest is insufficient. Stop earlier when the
    evidence bar is met. Include a comparable successful session when available.
-4. If a specific reported incident is missing, use the reference's Exact-Incident Fallback before widening the time
+4. When the keyword pass selects fewer than three candidates for a project whose coverage shows owned sessions
+   (`structurally_matched` above zero), rerun the miner for that project with no `--keyword` and the same other flags.
+   This signals-only pass keeps every owned session and ranks by correction, failure, verification, and recency signals.
+   A relevant session can use vocabulary that no keyword predicts. Report the pass in `🗂 Historical coverage`.
+5. If a specific reported incident is missing, use the reference's Exact-Incident Fallback before widening the time
    window. Both helpers can omit the middle of long sessions. Otherwise, retry once with broader or OR-grouped keywords.
    If evidence remains weak, retry once with `--since` removed. If unarchived history still lacks signal, retry once
    with `--include-archived`.
-5. Exceed these bounds only to resolve contradictory evidence or satisfy an explicitly exhaustive request. If the helper
+6. Exceed these bounds only to resolve contradictory evidence or satisfy an explicitly exhaustive request. If the helper
    fails, use one project-scoped manual fallback from the reference.
 
 Stop and report the coverage gap when the bounded fallbacks still lack useful evidence. Absence of evidence is not

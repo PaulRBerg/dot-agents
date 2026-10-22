@@ -23,7 +23,7 @@ from transcript_common import (
     extract_session_lineage,
     extract_tool_failures,
     first_string_shallow,
-    keyword_alternatives,
+    keyword_match_terms,
     read_jsonl_sampled_with_lines,
     redact_text,
     truncate,
@@ -206,11 +206,7 @@ def keyword_group_matches(text: str, keywords: list[str]) -> bool:
     if not keywords:
         return False
     lowered = text.lower()
-    for keyword in keywords:
-        alternatives = [alternative.lower() for alternative in keyword_alternatives(keyword)]
-        if alternatives and any(alternative in lowered for alternative in alternatives):
-            return True
-    return False
+    return any(term in lowered for term in keyword_match_terms(keywords))
 
 
 def guess_source(items: list[Any]) -> str:

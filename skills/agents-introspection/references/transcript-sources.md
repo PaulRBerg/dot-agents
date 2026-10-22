@@ -74,6 +74,13 @@ Scores and counts select candidates only. Validate every reported finding agains
 `keyword_hits` counts eligible `(message, keyword)` pairs keyed by the full OR-group keyword string, not repeated
 substring occurrences.
 
+Keyword matching is case-insensitive substring matching. For a plain-word alternative, the helper also matches an
+inflection stem, so `overwrite` matches `overwriting` and `overwritten`, and `committed` matches `commit`. The helper
+does not use a stem shorter than five characters, so `retry` does not match `retrieve`. Irregular forms such as
+`overwrote` need an OR-group. Without `--keyword`, the helper keeps every owned session and ranks by correction,
+failure, verification, and recency signals only. Use that signals-only pass when the keyword pass selects fewer than
+three candidates for a project with owned sessions.
+
 With `--since <YYYY-MM-DD|Nd>`, the helper keeps sessions with activity at or after the cutoff. First, it prunes files
 with an mtime older than the cutoff. A later mtime does not prove recent activity, because other tools can touch a file.
 For each remaining file, the helper reads the last record timestamp from a bounded tail of the file. When that timestamp

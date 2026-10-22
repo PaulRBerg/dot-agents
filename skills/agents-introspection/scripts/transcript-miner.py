@@ -33,7 +33,7 @@ from transcript_common import (
     first_string_shallow,
     format_utc_iso,
     is_within,
-    keyword_alternatives,
+    keyword_match_terms,
     keywords_present_in_lines,
     normalize_path,
     parse_utc_timestamp,
@@ -770,7 +770,7 @@ def build_excerpts(
         excerpts.append({"channel": "user", "text": truncate(redact_text(first), 240)})
         seen.add(" ".join(first.split()))
     if keywords:
-        alternatives = [alternative.lower() for keyword in keywords for alternative in keyword_alternatives(keyword)]
+        terms = keyword_match_terms(keywords)
         for channel, messages in (("user", user_messages), ("assistant", assistant_messages)):
             for message in messages:
                 if len(excerpts) >= 3:
@@ -778,7 +778,7 @@ def build_excerpts(
                 normalized = " ".join(message.split())
                 if normalized in seen:
                     continue
-                if any(alternative in message.lower() for alternative in alternatives):
+                if any(term in message.lower() for term in terms):
                     excerpts.append({"channel": channel, "text": truncate(redact_text(message), 240)})
                     seen.add(normalized)
     return excerpts
