@@ -41,6 +41,11 @@ Include all task-relevant repository constraints in each prompt. Explore does no
 thoroughness hint: `medium` for bounded surveys or `very thorough` for multi-subsystem investigations. Require the
 shared research result fields. Prohibit edits, design decisions, and plans.
 
+Explore agents refuse to create files and to run state-changing commands, including scratch files and throwaway
+processes, and return `blocked` instead. Keep research briefs to read-only probes. When evidence needs disposable
+fixtures, a throwaway process, or a scratch script, assign that probe to the parent or to an implementation agent's
+validation.
+
 Explore agents are one-shot and return no reusable agent ID. Do not apply implementation continuation to them. Missing
 evidence remains an open question or blocker in the consolidated result.
 
