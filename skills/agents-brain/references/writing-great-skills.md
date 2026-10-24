@@ -73,6 +73,10 @@ Choose:
 Inline what every branch needs. Route conditional detail directly from `SKILL.md`. The wording of the link must say when
 to read it. Co-locate a concept's definition, rules, and caveats. Keep each meaning in one authoritative place.
 
+Treat the environment as a source of truth. Read scripts, configuration, directory layouts, and command help directly
+when a cheap lookup answers the question. Document conventions, reasons, and pitfalls that those lookups do not reveal.
+Repeat discoverable facts only when the lookup cost justifies maintaining a copy.
+
 Judge context economy relative to the current target models. Remove a sentence when it does not change their behavior.
 Resolve disagreements with representative runs rather than intuition. Prune descriptions hardest because they may load
 on every turn.

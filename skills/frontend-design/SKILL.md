@@ -64,7 +64,8 @@ understand the interface and act.
 Before coding, define a compact direction:
 
 - **Thesis:** one sentence connecting the visual idea to the subject and screen job.
-- **System:** role-based color tokens, explicit type roles and scale, spacing and density, and a layout principle.
+- **System:** role-based color tokens, explicit type roles and scale, spacing and density, and deliberate layout and
+  alignment choices.
 - **Signature:** one memorable element drawn from the domain's objects, workflows, data shapes, environments, or
   language.
 - **Risk:** one deliberate departure from the obvious solution, with a reason it serves this brief.
@@ -97,10 +98,10 @@ expressive force in the signature and make the surrounding system support it.
 Clear delineation is a functional requirement. Borders and containers are valid when they make grouping and ownership
 easier to scan. Do not remove useful boundaries merely to make a design flatter or less conventional.
 
-Name concrete patterns to avoid. Generic "avoid an AI look" advice only replaces one default with another. Without a
-brief that calls for them, avoid these known model defaults: cream or off-white backgrounds, italic accent words in
-headlines, numbered `01/02/03` section labels, monospace labels, and pill-shaped buttons. After the first render, name
-any other default the result used and revise it.
+Use concrete patterns as critique prompts, not absolute bans. Question cream backgrounds, italic headline accents,
+`01/02/03` section labels, monospace labels, and pill-shaped buttons when the brief does not support them. Apply the
+same test to repeated decorative cards, shadows, and section entrance effects. Preserve these choices when they serve
+the brief or a clear function. After the first render, identify other unexamined defaults and revise them.
 
 ### 4. Build the actual experience
 
@@ -113,13 +114,15 @@ any other default the result used and revise it.
   spacing. Preserve useful group borders unless a rendered replacement makes the boundaries at least as clear.
 - Use cards for related or repeated objects. Use nested containers only when they communicate a real hierarchy.
 - Give typography deliberate display, body, and utility roles. Use available fonts first. Do not add a font dependency
-  solely for novelty.
+  solely for novelty. One or two font families can provide these roles.
+- Keep body text readable, usually below 80 characters per line. Adjust the measure and line height to the typeface and
+  content.
 - Write interface copy from the user's side: specific nouns, active verbs, consistent action names, sentence case, and
   useful empty and error states. A control's label must describe its result.
 - Use familiar controls and the project's icon library. Give unfamiliar icon-only controls accessible names and visible
   tooltips where appropriate.
-- Keep motion purposeful and concentrated. Respect reduced-motion preferences and ensure the experience remains clear
-  without animation.
+- Motion is optional. When using it, concentrate it where it explains hierarchy or gives useful interaction feedback.
+  Respect reduced-motion preferences and ensure the experience remains clear without animation.
 - Prevent overlap, clipping, unreadable wrapping, and layout shift at every width in scope. By default, the scope is one
   desktop width. When the user requests responsive behavior, build responsive constraints from content rather than
   device labels, and include narrow and wide widths.
