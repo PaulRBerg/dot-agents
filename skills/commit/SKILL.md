@@ -49,13 +49,23 @@ Arguments: `$ARGUMENTS`
   description or subject.
 
 If the requested operation is only to push a clean branch that is already ahead, skip preparation. Check the push
-destination below, then run `ai-commit push --rebase`.
+destination below. Run `ai-commit push --rebase` only when a destination is available.
 
 ### Push Destination
 
+Before requesting a push, read the current branch with `git symbolic-ref --short HEAD`. Check
+`git config --get branch.<name>.remote` and `git remote`. Config exit `1` means the branch has no configured remote.
+Other command failures are errors, not evidence that no remote exists.
+
+When no branch remote and no named remotes exist, omit `--push` and `--rebase`. Complete the local commit and report
+`Push skipped: no remote configured.` For push-only work, report the skip without invoking `ai-commit push`. Do not
+create a remote or retry. If the user requires remote publication, report the missing destination as a blocker.
+
 `ai-commit` pushes to the configured upstream: `branch.<name>.remote` and `branch.<name>.merge`. The remote can be a
-named remote or a URL. If the upstream branch has a different name, `branch.<name>.pushRemote` must equal
-`branch.<name>.remote`. `gh pr checkout` writes this configuration for a PR that lets maintainers push.
+named remote or a URL, even when `git remote` is empty. Without a branch remote, `ai-commit` uses `origin`. Other
+configured remotes do not replace `origin` automatically. If the upstream branch has a different name,
+`branch.<name>.pushRemote` must equal `branch.<name>.remote`. `gh pr checkout` writes this configuration for a PR that
+lets maintainers push.
 
 When you work on an existing PR, get its head repository and branch from `gh pr view` before you commit or push. A push
 to another branch does not update the PR. If the upstream does not match the PR head, correct the branch configuration:
@@ -188,14 +198,16 @@ and push stand. Replay the same command once. If it fails again, report the stde
 
 Keep the receipt compact and forward its outcome lines without decoration:
 
-- `COMMITTED <transaction-id> <commit-oid>` proves commit creation or idempotent recovery. Without push authorization,
-  it is completion.
+- `COMMITTED <transaction-id> <commit-oid>` proves commit creation or idempotent recovery. It completes local commit
+  work when a push is unauthorized or skipped because no remote exists.
 - `HOOK_ADDED <path>` identifies content introduced by a hook outside the prepared path set. Disclose every such line.
 - `FINDING_RESOLVED <id>` proves the ledger finding is resolved with the commit OID. `FINDING_UNRESOLVED <id>` means the
   commit stands but the ledger still shows the finding open. Follow the step 4 replay rule.
 - `REBASED <branch> <count>` discloses that `ai-commit` rebased the branch onto `<count>` upstream commits before the
   push. In the commit workflow, an `INTEGRATED` line follows it.
 - `PUSHED <branch>` or `PUSHED_NEW <branch>` proves propagation and completes push-authorized or push-only work.
+- `PUSH_SKIPPED <branch> no-remote` means no branch remote or named remotes exist. No fetch, rebase, or push ran. The
+  local commit remains complete, and its receipt is not marked pushed. Do not retry or claim remote publication.
 - `PUSHED <transaction-id> <commit-oid>` is the retained proof returned when an already-pushed transaction is replayed.
 - `INTEGRATED <transaction-id> <head-oid>` discloses that the branch no longer contains the transaction's original
   commit, but HEAD holds its content, for example after a rebase or an identical upstream commit. The `PUSHED` line that
