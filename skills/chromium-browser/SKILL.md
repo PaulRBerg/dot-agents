@@ -13,10 +13,14 @@ description:
 Operate the configured Chrome DevTools MCP against the existing shared browser without disrupting unrelated tabs or
 authenticated state.
 
-This skill owns rendered browser UI interaction, inspection, automation, and verification through shared Chromium. When
-they fit, use search, fetch, APIs, CLIs, or connectors for retrieval. Use host native-app tools for non-browser UI. Do
-not use native-app tools as a fallback around this skill's shared-browser attachment, page-ownership, or privacy rules.
-If the user selects another available browser integration, follow its tool contract without mixing controllers.
+Prefer this skill for rendered web pages in shared Chromium. When they fit, use search, fetch, APIs, CLIs, or connectors
+for retrieval. Use host computer-use/CUA tools for native apps, browser chrome, and browser-internal pages such as
+`chrome://extensions`. Also use native controls for a user-requested browser without a usable browser integration.
+Existing task authorization covers this controller choice without a separate permission request.
+
+Use one controller at a time for each browser. Preserve existing profiles, sessions, and unrelated tabs across
+controllers. Native controls do not relax privacy rules or approval requirements for the action itself. If the user
+selects another available browser integration, follow its tool contract.
 
 ## Environment Contract
 
@@ -44,6 +48,9 @@ request. Otherwise do not load it. Discover captures through serial API requests
 selected replay when rendered inspection adds evidence.
 
 ## Page Ownership
+
+The numbered steps below apply to MCP pages. With native controls, track task-created tabs through the native UI. Verify
+the requested result, then close only those tabs unless the user asked to leave them open.
 
 1. Call `list_pages` before interacting and preserve the initial pages as pre-existing state.
 2. Prefer `new_page` with `background: true` when a fresh page satisfies the task. Record the exact `pageId` returned by
@@ -185,8 +192,9 @@ Use these workflows only when the tools are exposed in the current session.
   Recheck the live version. Call `list_pages` for fresh IDs. Verify that pre-existing pages were restored. Test creation
   and navigation on an owned page before closing it.
 
-- When a requested capability is missing, confirm the current tool inventory and wrapper configuration, then report the
-  boundary. Do not invent a fallback that weakens the configured privacy or concurrency defaults.
+- When a requested capability is missing, confirm the current tool inventory and wrapper configuration. Use native
+  controls for the browser UI cases described above, including an unsupported `chrome://extensions` URL. Otherwise,
+  report the boundary. Do not weaken the configured privacy or concurrency defaults.
 
 Completion requires fresh tool evidence for the requested outcome and confirmation that task-created pages were either
 closed or intentionally left open.
