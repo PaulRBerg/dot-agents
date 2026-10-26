@@ -45,6 +45,10 @@ Layers memoize by object identity, and v4 shares the memo map across `Effect.pro
 value to share an instance. Still compose layers before providing once. To build an isolated instance, use `Layer.fresh`
 or `Effect.provide(layer, { local: true })`. A factory call already creates a distinct Layer.
 
+From 4.0.6, the results of `Layer.provide`, `Layer.provideMerge`, and `Layer.mergeAll` also memoize by identity. A
+shared composed layer then shares every layer inside it, including dependencies wrapped in `Layer.fresh`. To get a
+separate copy, wrap the composed layer itself in `Layer.fresh`.
+
 ## Use `Effect.fn` for Reusable Effectful Functions
 
 Prefer `Effect.fn("qualifiedName")` for reusable generator functions that benefit from named traces and better stack

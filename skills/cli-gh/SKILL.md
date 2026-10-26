@@ -82,7 +82,7 @@ Use this workflow when the user asks why CI fails or asks to fix a failing run. 
   sign-in, run `gh config set expiring_credentials enabled`. Run `gh auth token` each time you need a token. Never cache
   its output. `GH_TOKEN` and `GITHUB_TOKEN` values never refresh.
 - `--attach '<file>#<alt>'` on issue/PR create, edit, and comment uploads images or videos. Route those writes through
-  `yeet`.
+  `yeet`. Since 2.103.2, GitHub App installation tokens can attach, and the upload endpoint decides permission.
 
 ## Completion
 

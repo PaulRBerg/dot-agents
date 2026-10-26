@@ -15,7 +15,8 @@ Use regular `it` for pure synchronous tests. Do not call `Effect.runPromise`, `r
 inside an Effect test. That escapes the test runtime and can silently replace test services.
 
 `effect/FastCheck` was removed. Use `it.prop` or `it.effect.prop` with Schemas or `effect/Arbitrary` values
-(`Arbitrary.schema(S)`). Import `fast-check` directly only when a test needs its own API.
+(`Arbitrary.schema(S)`). Import `fast-check` directly only when a test needs its own API. Use `it.effect.prop` when the
+property returns an Effect. From 4.0.6, `it.prop` rejects a callback that returns an Effect or a Promise.
 
 ## Destructure Tuple Cases
 
@@ -41,7 +42,9 @@ gate. Await `started` before opening the gate.
 ## Bound and Release
 
 Bound infinite streams and polling loops. Join or interrupt every fiber. Effect tests are already scoped, so let the
-test or Layer scope own finalizers instead of launching detached runtimes.
+test or Layer scope own finalizers instead of launching detached runtimes. From 4.0.6, `beforeAll` and `beforeEach` from
+`@effect/vitest` run a returned Effect with a `Scope` that closes after the suite or test. That Effect must not require
+other services.
 
 In `@effect/vitest/utils`, `assertSuccess`/`assertFailure` now assert `Result` values. Use `assertExitSuccess` and
 `assertExitFailure` for `Exit`.

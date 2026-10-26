@@ -34,3 +34,7 @@ causes for diagnostics. Map expected SQL or decode failures with `Effect.mapErro
 
 Use `sql.withTransaction` for writes that must commit atomically. Include audit, outbox, or ledger writes in the same
 transaction only when the product invariant requires one commit boundary.
+
+From 4.0.6, use `sql.afterCommit(effect)` to signal committed changes, such as waking workers or invalidating caches. It
+runs after the outermost commit, or immediately outside a transaction. A rollback or a failed `COMMIT` discards it. If
+the process exits before it runs, the effect is lost. Write required follow-up work to a table in the same transaction.
