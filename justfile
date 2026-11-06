@@ -59,9 +59,6 @@ alias precommit := pre-commit
 #                                    SKILLS                                    #
 # ---------------------------------------------------------------------------- #
 
-# Skills synced from their own canonical sources rather than the catalog (must track `install-external`'s sync_skill calls)
-external_skills := "find-skills"
-
 # Print a colorized, titled list of skill names (or a "(none)" fallback)
 [private]
 [script("bash")]
@@ -82,54 +79,10 @@ _list-skills title *names:
 alias sl := list-skills
 alias list := list-skills
 
-# List externally managed skills (installed via install-external)
-[group("skills")]
-@list-skills-external:
-    just _list-skills "External skills" {{ external_skills }}
-
 # List catalog-managed skills (installed via install-catalog)
 [group("skills")]
 @list-skills-catalog:
-    just _list-skills "Catalog skills" $(comm -23 <(ls -1 skills 2>/dev/null | sort) <(printf '%s\n' {{ external_skills }} | sort))
-
-# Install or refresh externally managed skills from their canonical sources
-[group("skills")]
-[script("bash")]
-install-external: _require-clean
-    set -euo pipefail
-    canonical_skills_dir="$HOME/.agents/skills"
-    claude_skills_dir="$HOME/.claude/skills"
-
-    command -v bunx >/dev/null 2>&1 || {
-        echo "Error: required command not found: bunx" >&2
-        exit 1
-    }
-
-    sync_skill() {
-        source="$1"
-        skill_name="$2"
-
-        bunx skills add "$source" \
-            --global \
-            --agent claude-code codex \
-            --skill "$skill_name" \
-            --yes
-
-        [[ -f "$canonical_skills_dir/$skill_name/SKILL.md" ]] || {
-            echo "Error: $skill_name missing from the universal install" >&2
-            exit 1
-        }
-        [[ -f "$claude_skills_dir/$skill_name/SKILL.md" ]] || {
-            echo "Error: $skill_name missing from the Claude Code install" >&2
-            exit 1
-        }
-    }
-
-    sync_skill "vercel-labs/skills" "find-skills"
-
-    printf '{{ GREEN }}%s{{ NORMAL }}\n' "✅ Synced 1 externally managed skill"
-
-alias ie := install-external
+    just _list-skills "Catalog skills" $(ls -1 skills 2>/dev/null)
 
 # Source-owned catalog updates use agent-skills' guarded publish-skills workflow.
 # Stale upstream skill pruning is tracked upstream: https://github.com/vercel-labs/skills/issues/415
@@ -308,6 +261,5 @@ reset-skills: _require-clean
     echo "Skills purged. Run these commands to reinstall:"
     echo ""
     echo "  just install-catalog"
-    echo "  just install-external"
 
 alias rs := reset-skills

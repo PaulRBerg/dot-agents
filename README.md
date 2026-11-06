@@ -49,7 +49,6 @@ Skills are installed from these repositories:
 | Source                                                              | Managed skills    | Description                                          |
 | ------------------------------------------------------------------- | ----------------- | ---------------------------------------------------- |
 | [PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills) | Catalog portfolio | General-purpose skills (commit, yeet, orchestration) |
-| [vercel-labs/skills](https://github.com/vercel-labs/skills)         | `find-skills`     | Skills ecosystem discovery                           |
 
 For bootstrap or recovery, install the catalog directly from its remote source; this does not require a local
 `agent-skills` checkout:
@@ -64,14 +63,6 @@ snapshot, not the catalog publication workflow.
 To change or reconcile the PaulRBerg catalog, work in the `agent-skills` source repository and follow its guarded
 `publish-skills` workflow after source changes. That owner workflow commits and pushes the source, coordinates target
 updates, checks the expected `HEAD` and process lock, and verifies source-owned installation and CLI-lock drift.
-
-The PaulRBerg row is catalog-owned. Every other row is an intentionally external source: its files are tracked here as
-global installation snapshots, while canonical ownership remains upstream. They are valid dependencies even though they
-do not belong in the `agent-skills` catalog.
-
-Use `just install-external` to install or refresh the declared external skills for Codex and Claude Code. **Do not
-modify, refactor, or include externally sourced skills in catalog tasks.** When skills are added or removed, update this
-table and the sync recipe together.
 
 ## Instructions
 
